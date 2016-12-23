@@ -1,0 +1,10 @@
+{{define "body"}}
+<a href="/">Home</a>
+
+<h3>Login</h3>
+<form action="/login" method="POST">
+  <label>Username: <input type="text" placeholder="username" /></label><br/>
+  <label>Password: <input type="password" placeholder="password" /></label><br/>
+  <input type="submit" value="Login" />
+</form>
+{{end}}
