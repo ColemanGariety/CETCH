@@ -5,7 +5,7 @@ import (
 	"unicode"
 )
 
-func StripSpace(str string) (string) {
+func StripSpaces(str string) (string) {
 	return strings.Map(func(r rune) rune {
 		if unicode.IsSpace(r) {
 			return -1

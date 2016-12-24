@@ -20,13 +20,14 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 		PasswordConfirmation: r.FormValue("password_confirmation"),
 	}
 
-	if (form.Validate() == false) {
+	if (form.validate() == false) {
 		utils.Render(w, "signup.html", form)
 	} else {
 		models.UserCreate(form.Username, form.Password)
 		utils.Render(w, "index.html", nil)
 	}
 }
+
 // Validations
 
 type SignupForm struct {
@@ -36,7 +37,7 @@ type SignupForm struct {
 	PasswordConfirmation string
 }
 
-func (form *SignupForm) Validate() bool {
+func (form *SignupForm) validate() (bool) {
 	form.Errors = make(map[string]string)
 
 	form.ValidatePresence(form.Password, "Password")

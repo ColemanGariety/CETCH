@@ -14,13 +14,11 @@ type User struct {
 
 type Users []User
 
-var db, err = gorm.Open("postgres", "user=wetch dbname=wetch_development sslmode=disable")
-
 func UserByName(name string) (*User, error) {
 	user := User{}
-	dbc := db.First(&user, "name = ?", name)
+	c := db.First(&user, "name = ?", name)
 
-	return &user, dbc.Error
+	return &user, c.Error
 }
 
 func UserExistsByName(name string) (bool) {
@@ -33,14 +31,14 @@ func UserCreate(name string, password string) (error) {
 	user := User{Name: name, PasswordHash: string(passwordHash)}
 
 	db.NewRecord(user)
-	dbc := db.Create(&user)
+	c := db.Create(&user)
 
-	return dbc.Error
+	return c.Error
 }
 
 func UserDelete(name string) (error) {
 	user, _ := UserByName(name)
-	dbc := db.Delete(&user)
+	c := db.Delete(&user)
 
-	return dbc.Error
+	return c.Error
 }
