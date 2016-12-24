@@ -1,41 +1,56 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
-	"html/template"
 
 	"github.com/JacksonGariety/wetch/models"
+	"github.com/JacksonGariety/wetch/utils"
 )
 
+// Actions
+
 func SignupShow(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("views/layout.html", "views/signup.html")
-	t.ExecuteTemplate(w, "layout", nil)
+	utils.Render(w, "signup.html", nil)
 }
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		// handle parse error
+	form := &SignupForm{
+		Username: r.FormValue("username"),
+		Password: r.FormValue("password"),
+		PasswordConfirmation: r.FormValue("password_confirmation"),
 	}
 
-	name := r.PostFormValue("username")
-	password := r.PostFormValue("password")
-	passwordConfirmation := r.PostFormValue("password_confirmation")
-
-	if password != passwordConfirmation {
-		return
-		// flash error
-	}
-
-	if models.UserExistsByName(name)  {
-		log.Println("user exists")
-		http.Redirect(w, r, "/signup", http.StatusFound)
-		// flash user exists
-		return
+	if (form.Validate() == false) {
+		utils.Render(w, "signup.html", form)
 	} else {
-		err := models.UserCreate(name, password)
-		log.Println(err)
-		http.Redirect(w, r, "/", http.StatusFound)
+		models.UserCreate(form.Username, form.Password)
+		utils.Render(w, "index.html", nil)
 	}
+}
+// Validations
+
+type SignupForm struct {
+	utils.Form
+	Username             string
+	Password             string
+	PasswordConfirmation string
+}
+
+func (form *SignupForm) Validate() bool {
+	form.Errors = make(map[string]string)
+
+	form.ValidatePresence(form.Password, "Password")
+	form.ValidatePresence(form.PasswordConfirmation, "PasswordConfirmation")
+
+	if form.ValidatePresence(form.Username, "Username") {
+		form.ValidateNoSpace(form.Username, "Username")
+
+		if models.UserExistsByName(form.Username)  {
+			form.SetError("Username", "Username is already in use")
+		}
+	}
+
+	form.ValidateConfirmation(form.Password, "Password", form.PasswordConfirmation, "PasswordConfirmation")
+
+	return form.IsValid()
 }

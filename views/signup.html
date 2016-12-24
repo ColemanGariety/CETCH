@@ -3,9 +3,22 @@
 
 <h3>Signup</h3>
 <form action="/signup" method="POST">
-  <label>Username: <input type="text" name="username" /></label><br/>
-  <label>Password: <input type="password" name="password" /></label><br/>
-  <label>Confirm: <input type="password" name="password_confirmation" /></label><br/>
+  <label>Username: <input type="text" name="username" value="{{ .Username }}" /></label>
+  {{ with .Errors.Username }}
+  <span class="error">({{ . }})</span>
+  {{ end }}
+  <br/>
+  <label>Password: <input type="password" name="password" value="{{ .Password }}" /></label>
+  {{ with .Errors.Password }}
+  <span class="error">({{ . }})</span>
+  {{ end }}
+  <br/>
+  <label>Confirm: <input type="password" name="password_confirmation" value="{{ .PasswordConfirmation }}" /></label>
+  {{ with .Errors.PasswordConfirmation }}
+  <span class="error">({{ . }})</span>
+  {{ end }}
+  <br/>
+  <br/>
   <input type="submit" value="Signup" />
 </form>
 {{end}}

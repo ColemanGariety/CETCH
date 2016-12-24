@@ -5,7 +5,10 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/JacksonGariety/wetch/controllers"
+	"github.com/gorilla/sessions"
 )
+
+var store = sessions.NewCookieStore([]byte("session-secret"))
 
 func NewRouter() *mux.Router {
 	// The router

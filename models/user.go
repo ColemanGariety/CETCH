@@ -14,7 +14,7 @@ type User struct {
 
 type Users []User
 
-var db, _ = gorm.Open("postgres", "user=wetch dbname=wetch_development sslmode=disable")
+var db, err = gorm.Open("postgres", "user=wetch dbname=wetch_development sslmode=disable")
 
 func UserByName(name string) (*User, error) {
 	user := User{}

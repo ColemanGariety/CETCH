@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Inconsolata');
 
 body {
-    background: #DDD;
     font-family: Inconsolata, monospace;
+}
+
+.error {
+    color: red;
 }

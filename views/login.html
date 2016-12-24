@@ -1,10 +1,18 @@
-{{define "body"}}
+{{ define "body" }}
 <a href="/">Home</a>
 
 <h3>Login</h3>
 <form action="/login" method="POST">
-  <label>Username: <input type="text" name="username" /></label><br/>
-  <label>Password: <input type="password" name="password" /></label><br/>
+  <label>Username: <input type="text" name="username" value="{{ .Username }}" /></label>
+  {{ with .Errors.Username }}
+  <span class="error">({{ . }})</span>
+  {{ end }}
+  <br/>
+  <label>Password: <input type="password" name="password" value="{{ .Password }}" /></label>
+  {{ with .Errors.Password }}
+  <span class="error">({{ . }})</span>
+  {{ end }}
+  <br/>
   <input type="submit" value="Login" />
 </form>
-{{end}}
+{{ end }}
