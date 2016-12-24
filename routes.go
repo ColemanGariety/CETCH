@@ -18,6 +18,9 @@ func NewRouter() *mux.Router {
 	// RESTful Routes
 	router.Methods("Get").Path("/").HandlerFunc(controllers.Index)
 	router.Methods("Get").Path("/login").HandlerFunc(controllers.LoginShow)
+	router.Methods("Post").Path("/login").HandlerFunc(controllers.LoginPost)
+	router.Methods("Get").Path("/signup").HandlerFunc(controllers.SignupShow)
+	router.Methods("Post").Path("/signup").HandlerFunc(controllers.SignupPost)
 
 	return router
 }

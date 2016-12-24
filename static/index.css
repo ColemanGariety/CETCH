@@ -1,4 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
 body {
     background: #DDD;
-    font-family: monospace;
+    font-family: Inconsolata, monospace;
 }
