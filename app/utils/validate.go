@@ -33,6 +33,15 @@ func (form Form) ValidateConfirmation(value string, field string, confirmationVa
 	return true
 }
 
+func (form Form) ValidateLength(value string, field string, min int, max int) bool {
+	length := len(value)
+	if length < min || length > max {
+		form.SetError(field, fmt.Sprintf("%s must be between %d and %d characters in length", field, min, max))
+		return false
+	}
+	return true
+}
+
 func (form Form) FieldIsValid(field string) bool {
 	return form.Errors[field] == ""
 }

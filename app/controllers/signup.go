@@ -28,6 +28,7 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 	if (form.validate() == false) {
 		utils.Render(w, "signup.html", &utils.Props{
 			"errors": form.Errors,
+			"username": form.Username,
 			"password": form.Password,
 			"passwordConfirmation": form.PasswordConfirmation,
 		})
@@ -49,8 +50,9 @@ type SignupForm struct {
 func (form *SignupForm) validate() (bool) {
 	form.Errors = make(map[string]string)
 
-	form.ValidatePresence(form.Password, "Password")
-	form.ValidatePresence(form.PasswordConfirmation, "PasswordConfirmation")
+	if form.ValidatePresence(form.Password, "Password") {
+		form.ValidateLength(form.Password, "Password", 5, 30)
+	}
 
 	if form.ValidatePresence(form.Username, "Username") {
 		form.ValidateNoSpace(form.Username, "Username")
@@ -60,7 +62,9 @@ func (form *SignupForm) validate() (bool) {
 		}
 	}
 
-	form.ValidateConfirmation(form.Password, "Password", form.PasswordConfirmation, "PasswordConfirmation")
+	if form.ValidatePresence(form.PasswordConfirmation, "PasswordConfirmation") {
+		form.ValidateConfirmation(form.Password, "Password", form.PasswordConfirmation, "PasswordConfirmation")
+	}
 
 	return form.IsValid()
 }
