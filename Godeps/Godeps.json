@@ -4,6 +4,10 @@
 	"GodepVersion": "v75",
 	"Deps": [
 		{
+			"ImportPath": "github.com/NYTimes/gziphandler",
+			"Rev": "172fbbbb329cf7e031dd3ab35766186fc2081eab"
+		},
+		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
 			"Comment": "v3.0.0-10-g9ed569b",
 			"Rev": "9ed569b5d1ac936e6494082958d63a6aa4fff99a"
@@ -26,6 +30,11 @@
 		{
 			"ImportPath": "github.com/jinzhu/inflection",
 			"Rev": "74387dc39a75e970e7a3ae6a3386b5bd2e5c5cff"
+		},
+		{
+			"ImportPath": "github.com/justinas/alice",
+			"Comment": "1.0.0-16-g1051eaf",
+			"Rev": "1051eaf52fcafdd87ead59d28b065f1fcb8274ec"
 		},
 		{
 			"ImportPath": "github.com/lib/pq",
