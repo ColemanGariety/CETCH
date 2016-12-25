@@ -4,8 +4,11 @@ import (
 	"net/http"
 	"github.com/gorilla/mux"
 
-	"github.com/JacksonGariety/wetch/controllers"
-	"github.com/JacksonGariety/wetch/utils"
+	"github.com/justinas/alice"
+	"github.com/NYTimes/gziphandler"
+
+	"github.com/JacksonGariety/wetch/app/controllers"
+	"github.com/JacksonGariety/wetch/app/middleware"
 )
 
 func NewRouter() *mux.Router {
@@ -16,19 +19,27 @@ func NewRouter() *mux.Router {
 	fs := http.FileServer(http.Dir("static"))
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 
-	// WTful Routes
-	router.Methods("Get").Path("/").HandlerFunc(controllers.Index)
+	// Middleware
+	chain := alice.New(
+		middleware.Timeout,
+		middleware.Authorize,
+		gziphandler.GzipHandler,
+	)
+
+	// Routes
+	router.Methods("Get").Path("/").Handler(chain.ThenFunc(controllers.Index))
 
 	// login
-	router.Methods("Get").Path("/login").HandlerFunc(controllers.LoginShow)
-	router.Methods("Post").Path("/login").HandlerFunc(controllers.LoginPost)
-	router.Methods("Get").Path("/logout").HandlerFunc(utils.AuthorizeClaims(controllers.LogoutShow))
+	router.Methods("Get").Path("/login").Handler(chain.ThenFunc(controllers.LoginShow))
+	router.Methods("Post").Path("/login").Handler(chain.ThenFunc(controllers.LoginPost))
+	router.Methods("Get").Path("/logout").Handler(chain.ThenFunc(controllers.LogoutShow))
 
 	// signup
-	router.Methods("Get").Path("/signup").HandlerFunc(controllers.SignupShow)
-	router.Methods("Post").Path("/signup").HandlerFunc(controllers.SignupPost)
+	router.Methods("Get").Path("/signup").Handler(chain.ThenFunc(controllers.SignupShow))
+	router.Methods("Post").Path("/signup").Handler(chain.ThenFunc(controllers.SignupPost))
 
-	router.Methods("Get", "Post").Path("/profile").HandlerFunc(utils.AuthorizeClaims(controllers.ProfileShow))
+	// profile
+	router.Methods("Get", "Post").Path("/profile").Handler(chain.ThenFunc(controllers.ProfileShow))
 
 	return router
 }

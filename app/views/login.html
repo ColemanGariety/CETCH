@@ -2,13 +2,13 @@
 
 <h3>Login</h3>
 <form action="/login" method="POST">
-  <label>Username: <input type="text" name="username" value="{{ .Username }}" /></label>
-  {{ with .Errors.Username }}
+  <label>Username: <input type="text" name="username" value="{{ .username }}" /></label>
+  {{ with .errors.Username }}
   <span class="error">({{ . }})</span>
   {{ end }}
   <br/>
-  <label>Password: <input type="password" name="password" value="{{ .Password }}" /></label>
-  {{ with .Errors.Password }}
+  <label>Password: <input type="password" name="password" value="{{ .password }}" /></label>
+  {{ with .errors.Password }}
   <span class="error">({{ . }})</span>
   {{ end }}
   <br/>

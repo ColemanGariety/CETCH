@@ -5,14 +5,19 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"time"
 
-	"github.com/JacksonGariety/wetch/models"
-	"github.com/JacksonGariety/wetch/utils"
+	"github.com/JacksonGariety/wetch/app/models"
+	"github.com/JacksonGariety/wetch/app/utils"
+	"github.com/JacksonGariety/wetch/app/middleware"
 )
 
 // Actions
 
 func LoginShow(w http.ResponseWriter, r *http.Request) {
-	utils.Render(w, "login.html", nil)
+	if _, ok := middleware.CurrentUser(r); !ok {
+		utils.Render(w, "login.html", nil)
+	} else {
+		http.Redirect(w, r, "/profile", 307)
+	}
 }
 
 func LoginPost(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +26,12 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 		Password: r.FormValue("password"),
 	}
 
-	if (form.validate() == false) { // sets form.Errors
-		utils.Render(w, "login.html", form) // back to login page with form payload
+	if (form.validate() == false) {
+		utils.Render(w, "login.html", &utils.Props{
+			"errors": form.Errors,
+			"username": form.Username,
+			"password": form.Password,
+		})
 	} else {
 	  signedToken, expireCookie := models.ClaimsCreate(form.Username) // creates a JWT token
 		cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}

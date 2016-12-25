@@ -3,14 +3,19 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/JacksonGariety/wetch/models"
-	"github.com/JacksonGariety/wetch/utils"
+	"github.com/JacksonGariety/wetch/app/models"
+	"github.com/JacksonGariety/wetch/app/utils"
+	"github.com/JacksonGariety/wetch/app/middleware"
 )
 
 // Actions
 
 func SignupShow(w http.ResponseWriter, r *http.Request) {
-	utils.Render(w, "signup.html", nil)
+	if _, ok := middleware.CurrentUser(r); !ok {
+		utils.Render(w, "signup.html", nil)
+	} else {
+		http.Redirect(w, r, "/profile", 307)
+	}
 }
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
@@ -21,7 +26,11 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if (form.validate() == false) {
-		utils.Render(w, "signup.html", form)
+		utils.Render(w, "signup.html", &utils.Props{
+			"errors": form.Errors,
+			"password": form.Password,
+			"passwordConfirmation": form.PasswordConfirmation,
+		})
 	} else {
 		models.UserCreate(form.Username, form.Password)
 		utils.Render(w, "index.html", nil)

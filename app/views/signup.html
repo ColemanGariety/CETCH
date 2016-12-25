@@ -1,0 +1,22 @@
+{{define "body"}}
+<h3>Signup</h3>
+<form action="/signup" method="POST">
+  <label>Username: <input type="text" name="username" value="{{ .username }}" /></label>
+  {{ with .errors.Username }}
+  <span class="error">({{ . }})</span>
+  {{ end }}
+  <br/>
+  <label>Password: <input type="password" name="password" value="{{ .password }}" /></label>
+  {{ with .errors.Password }}
+  <span class="error">({{ . }})</span>
+  {{ end }}
+  <br/>
+  <label>Confirm: <input type="password" name="password_confirmation" value="{{ .passwordConfirmation }}" /></label>
+  {{ with .errors.PasswordConfirmation }}
+  <span class="error">({{ . }})</span>
+  {{ end }}
+  <br/>
+  <br/>
+  <input type="submit" value="Signup" />
+</form>
+{{end}}

@@ -1,20 +1,19 @@
-package utils
+package middleware
 
 import (
 	"net/http"
-	"github.com/dgrijalva/jwt-go"
 	"fmt"
 	"context"
+	"github.com/dgrijalva/jwt-go"
 
-	"github.com/JacksonGariety/wetch/models"
+	"github.com/JacksonGariety/wetch/app/models"
 )
 
-func AuthorizeClaims(protectedPage http.HandlerFunc) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request){
-
+func Authorize(next http.Handler) http.Handler {
+	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("Auth")
 		if err != nil {
-			protectedPage.ServeHTTP(w, r)
+			next.ServeHTTP(w, r)
 			return
 		}
 
@@ -27,16 +26,21 @@ func AuthorizeClaims(protectedPage http.HandlerFunc) http.HandlerFunc {
 			return []byte("secret"), nil
 		})
 		if err != nil {
-			protectedPage.ServeHTTP(w, r)
+			next.ServeHTTP(w, r)
 			return
 		}
 
 		if claims, ok := token.Claims.(*models.Claims); ok && token.Valid {
 			ctx := context.WithValue(r.Context(), "foo", *claims)
-			protectedPage(w, r.WithContext(ctx))
+			next.ServeHTTP(w, r.WithContext(ctx))
 		} else {
-			protectedPage.ServeHTTP(w, r)
+			next.ServeHTTP(w, r)
 			return
 		}
 	})
+}
+
+func CurrentUser(r *http.Request) (models.Claims, bool) {
+	claims, ok := r.Context().Value("foo").(models.Claims)
+	return claims, ok
 }

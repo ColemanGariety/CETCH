@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
-	"github.com/JacksonGariety/wetch/models"
+	"github.com/JacksonGariety/wetch/app/models"
 )
 
 func main() {

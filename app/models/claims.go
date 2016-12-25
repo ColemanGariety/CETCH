@@ -11,9 +11,8 @@ type Claims struct {
 }
 
 func ClaimsCreate(username string) (string, time.Time) {
-
-	expireToken := time.Now().Add(time.Hour * 1).Unix()
-	expireCookie := time.Now().Add(time.Hour * 1)
+	expireToken := time.Now().Add(time.Hour * 8760).Unix() // 24 hours * 365 days = 8760 hours/year
+	expireCookie := time.Now().Add(time.Hour * 8760)
 
 	claims := Claims {
 		username,
@@ -23,10 +22,8 @@ func ClaimsCreate(username string) (string, time.Time) {
 		},
 	}
 
-	// Create the token using your claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	// Signs the token with a secret.
 	signedToken, _ := token.SignedString([]byte("secret"))
 
 	return signedToken, expireCookie
