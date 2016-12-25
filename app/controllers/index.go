@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/JacksonGariety/wetch/app/utils"
-	"github.com/JacksonGariety/wetch/app/middleware"
+	"github.com/JacksonGariety/cetch/app/utils"
+	"github.com/JacksonGariety/cetch/app/middleware"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {

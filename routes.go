@@ -7,8 +7,8 @@ import (
 	"github.com/justinas/alice"
 	"github.com/NYTimes/gziphandler"
 
-	"github.com/JacksonGariety/wetch/app/controllers"
-	"github.com/JacksonGariety/wetch/app/middleware"
+	"github.com/JacksonGariety/cetch/app/controllers"
+	"github.com/JacksonGariety/cetch/app/middleware"
 )
 
 func NewRouter() *mux.Router {

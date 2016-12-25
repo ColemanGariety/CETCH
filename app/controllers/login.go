@@ -5,9 +5,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"time"
 
-	"github.com/JacksonGariety/wetch/app/models"
-	"github.com/JacksonGariety/wetch/app/utils"
-	"github.com/JacksonGariety/wetch/app/middleware"
+	"github.com/JacksonGariety/cetch/app/models"
+	"github.com/JacksonGariety/cetch/app/utils"
+	"github.com/JacksonGariety/cetch/app/middleware"
 )
 
 // Actions

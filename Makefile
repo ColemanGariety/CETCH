@@ -2,7 +2,7 @@ build:
 	go build
 
 run:
-	./wetch
+	./cetch
 
 install:
 	godep update

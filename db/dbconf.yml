@@ -1,7 +1,7 @@
 development:
   driver: postgres
-  open: user=wetch dbname=wetch_development sslmode=disable
+  open: user=cetch dbname=cetch_development sslmode=disable
 
 test:
   driver: postgres
-  open: user=wetch dbname=wetch_test sslmode=disable
+  open: user=cetch dbname=cetch_test sslmode=disable

@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/JacksonGariety/wetch",
+	"ImportPath": "github.com/JacksonGariety/cetch",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v75",
 	"Deps": [

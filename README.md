@@ -1,4 +1,4 @@
-# wetch.com
+# cetch.com
 
 Install the deps
 

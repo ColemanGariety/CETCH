@@ -6,7 +6,7 @@ import (
 	"context"
 	"github.com/dgrijalva/jwt-go"
 
-	"github.com/JacksonGariety/wetch/app/models"
+	"github.com/JacksonGariety/cetch/app/models"
 )
 
 func Authorize(next http.Handler) http.Handler {
