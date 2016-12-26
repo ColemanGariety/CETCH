@@ -11,7 +11,7 @@ type Claims struct {
 }
 
 func ClaimsCreate(username string) (string, time.Time) {
-	expireToken := time.Now().Add(time.Hour * 8760).Unix() // 24 hours * 365 days = 8760 hours/year
+	expireToken := time.Now().Add(time.Hour * 8760).Unix() // 24 hours * 365 days = 8760 hours per year
 	expireCookie := time.Now().Add(time.Hour * 8760)
 
 	claims := Claims {

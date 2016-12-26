@@ -1,8 +1,10 @@
-package utils
+package models
 
 import (
 	"fmt"
 	"strings"
+
+	"github.com/JacksonGariety/cetch/app/utils"
 )
 
 type Form struct {
@@ -18,7 +20,7 @@ func (form Form) ValidatePresence(value string, field string) bool {
 }
 
 func (form Form) ValidateNoSpace(value string, field string) bool {
-	if StripSpaces(value) != value {
+	if utils.StripSpaces(value) != value {
 		form.SetError(field, fmt.Sprintf("%s may not contain spaces", field))
 		return false
 	}

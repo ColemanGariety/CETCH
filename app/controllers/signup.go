@@ -34,14 +34,14 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 		})
 	} else {
 		models.UserCreate(form.Username, form.Password)
-		utils.Render(w, "index.html", nil)
+		http.Redirect(w, r, "/profile", 307)
 	}
 }
 
 // Validations
 
 type SignupForm struct {
-	utils.Form
+	models.Form
 	Username             string
 	Password             string
 	PasswordConfirmation string

@@ -49,7 +49,7 @@ func LogoutShow(w http.ResponseWriter, r *http.Request){
 // Validations
 
 type LoginForm struct {
-	utils.Form
+	models.Form
 	Username string
 	Password string
 }

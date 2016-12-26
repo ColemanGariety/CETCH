@@ -12,7 +12,11 @@ type User struct {
 	PasswordHash string
 }
 
-type Users []User
+func UserAll() ([]User) {
+	users := []User{}
+	db.Find(&users)
+	return users
+}
 
 func UserByName(name string) (*User, error) {
 	user := User{}
@@ -37,8 +41,16 @@ func UserCreate(name string, password string) (error) {
 }
 
 func UserDelete(name string) (error) {
-	user, _ := UserByName(name)
-	c := db.Delete(&user)
+	user, err := UserByName(name)
+	if err != nil {
+		return err
+	}
 
+	c := db.Unscoped().Delete(&user)
 	return c.Error
+}
+
+func UserDeleteAll() {
+	users := []User{}
+	db.Unscoped().Delete(&users)
 }
