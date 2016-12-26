@@ -48,6 +48,10 @@ func TestSignupInUseUsername(t *testing.T) {
 
 	SignupPost(w, r)
 
+	assert.Contains(t, w.Body.String(), "<input type=\"email\" name=\"email\" value=\"foo@bar.raz\" />")
+	assert.Contains(t, w.Body.String(), "<input type=\"text\" name=\"username\" value=\"foo\" />")
+	assert.Contains(t, w.Body.String(), "<input type=\"password\" name=\"password\" value=\"bar\" />")
+	assert.Contains(t, w.Body.String(), "<input type=\"password\" name=\"password_confirmation\" value=\"bar\" />")
 	assert.Contains(t, w.Body.String(), "username is already in use")
 	signupTestTeardown()
 }
