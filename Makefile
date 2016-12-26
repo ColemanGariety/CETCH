@@ -5,6 +5,7 @@ run:
 	env session_key=needed_key session_hash=needed_hash dbname=cetch_production base_path=$$GOPATH/src/github.com/JacksonGariety/cetch ./cetch
 
 install:
+	go get github.com/tools/godep
 	godep restore
 
 install_dev:

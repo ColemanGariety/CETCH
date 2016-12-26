@@ -1,0 +1,17 @@
+language: go
+
+go:
+  - master
+
+services:
+  - postgresql
+
+install:
+  - make install
+  - make install_dev
+  
+before_script:
+  - psql -c 'create user cetch superuser;' -U postgres
+
+script:
+  - make test
