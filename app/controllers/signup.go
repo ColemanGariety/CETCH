@@ -19,57 +19,49 @@ func SignupShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
-	form := &SignupForm{
-		Email: r.FormValue("email"),
-		Username: r.FormValue("username"),
-		Password: r.FormValue("password"),
-		PasswordConfirmation: r.FormValue("password_confirmation"),
+	form := models.Form{
+		"errors": make(map[string]string),
+		"email": r.FormValue("email"),
+		"username": r.FormValue("username"),
+		"password": r.FormValue("password"),
+		"password_confirmation": r.FormValue("password_confirmation"),
 	}
 
-	if (form.validate() == false) {
-		utils.Render(w, "signup.html", &utils.Props{
-			"errors": form.Errors,
-			"email": form.Email,
-			"username": form.Username,
-			"password": form.Password,
-			"passwordConfirmation": form.PasswordConfirmation,
-		})
+	if (validateSignupForm(form) == false) {
+		utils.Render(w, "signup.html", form)
 	} else {
-		(&models.User{ Name: form.Username, Email: form.Email }).CreateFromPassword(form.Password)
+		(&models.User{ Name: form["username"].(string), Email: form["email"].(string) }).CreateFromPassword(form["password"].(string))
 		http.Redirect(w, r, "/profile", 307)
 	}
 }
 
 // Validations
 
-type SignupForm struct {
-	models.Form
-	Email                string
-	Username             string
-	Password             string
-	PasswordConfirmation string
-}
-
-func (form *SignupForm) validate() (bool) {
-	form.Errors = make(map[string]string)
-
-	form.ValidatePresence(form.Email, "Email")
-
-	if form.ValidatePresence(form.Password, "Password") {
-		form.ValidateLength(form.Password, "Password", 5, 30)
-	}
-
-	if form.ValidatePresence(form.Username, "Username") {
-		form.ValidateNoSpace(form.Username, "Username")
-
-		exists, _ := (&models.User{ Name: form.Username }).Exists()
-		if exists {
-			form.SetError("Username", "Username is already in use")
+func validateSignupForm(form models.Form) (bool) {
+	if form.ValidatePresence("email") {
+		if form.ValidateEmail("email") {
+			exists, _ := (&models.User{ Email: form["email"].(string)}).Exists()
+			if exists {
+				form.SetError("email", "email is already in use")
+			}
 		}
 	}
 
-	if form.ValidatePresence(form.PasswordConfirmation, "PasswordConfirmation") {
-		form.ValidateConfirmation(form.Password, "Password", form.PasswordConfirmation, "PasswordConfirmation")
+	if form.ValidatePresence("password") {
+		form.ValidateLength("password", 5, 30)
+	}
+
+	if form.ValidatePresence("username") {
+		form.ValidateNoSpace("username")
+
+		exists, _ := (&models.User{ Name: form["username"].(string) }).Exists()
+		if exists {
+			form.SetError("username", "username is already in use")
+		}
+	}
+
+	if form.ValidatePresence("password_confirmation") {
+		form.ValidateConfirmation("password", "password_confirmation")
 	}
 
 	return form.IsValid()

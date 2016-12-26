@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Inconsolata');
 
 body {
-    font-family: Inconsolata, monospace;
+    font-family: Consolas, Inconsolata, Source Code Pro, DejaVu Sans Mono, Anonymous Pro, monospace;
 }
 
 .error {

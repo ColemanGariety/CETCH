@@ -45,7 +45,7 @@ func TestLoginNonexistentUsername(t *testing.T) {
 
 	LoginPost(w, r)
 
-	assert.Contains(t, w.Body.String(), "Username does not exist")
+	assert.Contains(t, w.Body.String(), "invalid username or password")
 	loginTestTeardown()
 }
 
@@ -60,7 +60,7 @@ func TestLoginIncorrectPassword(t *testing.T) {
 
 	LoginPost(w, r)
 
-	assert.Contains(t, w.Body.String(), "Password is incorrect")
+	assert.Contains(t, w.Body.String(), "invalid username or password")
 	loginTestTeardown()
 }
 

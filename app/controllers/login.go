@@ -21,19 +21,16 @@ func LoginShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginPost(w http.ResponseWriter, r *http.Request) {
-	form := &LoginForm{
-		Username: r.FormValue("username"),
-		Password: r.FormValue("password"),
+	form := models.Form{
+		"errors": make(map[string]string),
+		"username": r.FormValue("username"),
+		"password": r.FormValue("password"),
 	}
 
-	if (form.validate() == false) {
-		utils.Render(w, "login.html", &utils.Props{
-			"errors": form.Errors,
-			"username": form.Username,
-			"password": form.Password,
-		})
+	if (validateLoginForm(form) == false) {
+		utils.Render(w, "login.html", form)
 	} else {
-	  signedToken, expireCookie := models.ClaimsCreate(form.Username) // creates a JWT token
+	  signedToken, expireCookie := models.ClaimsCreate(form["username"].(string)) // creates a JWT token
 		cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}
 		http.SetCookie(w, &cookie)
 		http.Redirect(w, r, "/profile", 307)
@@ -48,25 +45,17 @@ func LogoutShow(w http.ResponseWriter, r *http.Request){
 
 // Validations
 
-type LoginForm struct {
-	models.Form
-	Username string
-	Password string
-}
+func validateLoginForm(form models.Form) (bool) {
+	hasPassword := form.ValidatePresence("password")
 
-func (form *LoginForm) validate() (bool) {
-	form.Errors = make(map[string]string)
-
-	hasPassword := form.ValidatePresence(form.Password, "Password")
-
-	if form.ValidatePresence(form.Username, "Username") {
-		user, err := (&models.User{ Name: form.Username }).Find()
+	if form.ValidatePresence("username") {
+		user, err := (&models.User{ Name: form["username"].(string) }).Find()
 		if err != nil {
-			form.SetError("Username", "Username does not exist")
+			form.SetError("username", "invalid username or password")
 		} else if hasPassword {
-			err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(form.Password))
+			err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(form["password"].(string)))
 			if err != nil {
-				form.SetError("Password", "Password is incorrect")
+				form.SetError("username", "invalid username or password")
 			}
 		}
 	}

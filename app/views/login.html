@@ -8,8 +8,8 @@
         <td>Username:</td>
         <td> <input type="text" name="username" value="{{ .username }}" /></td>
         <td>
-          {{ with .errors.Username }}
-          <span class="error">({{ . }})</span>
+          {{ with .errors.username }}
+          <span class="error"> ({{ . }})</span>
           {{ end }}
         </td>
       </tr>
@@ -17,8 +17,8 @@
         <td>Password:</td>
         <td><input type="password" name="password" value="{{ .password }}" /></td>
         <td>
-          {{ with .errors.Password }}
-          <span class="error">({{ . }})</span>
+          {{ with .errors.password }}
+          <span class="error"> ({{ . }})</span>
           {{ end }}
         </td>
       </tr>

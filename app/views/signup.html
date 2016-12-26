@@ -7,8 +7,8 @@
         <td> Email: </td>
         <td> <input type="email" name="email" value="{{ .email }}" /> </td>
         <td class="error">
-          {{ with .errors.Email }}
-          <span>({{ . }})</span>
+          {{ with .errors.email }}
+          <span> ({{ . }})</span>
           {{ end }}
         </td>
       </tr>
@@ -16,8 +16,8 @@
         <td> Username: </td>
         <td> <input type="text" name="username" value="{{ .username }}" /> </td>
         <td class="error">
-          {{ with .errors.Username }}
-          <span>({{ . }})</span>
+          {{ with .errors.username }}
+          <span> ({{ . }})</span>
           {{ end }}
         </td>
       </tr>
@@ -25,19 +25,19 @@
         <td> Password: </td>
         <td> <input type="password" name="password" value="{{ .password }}" /> </td>
         <td class="error">
-          {{ with .errors.Password }}
-          <span>({{ . }})</span>
+          {{ with .errors.password }}
+          <span> ({{ . }})</span>
           {{ end }}
         </td>
       </tr>
       <tr>
         <td> Confirm: </td>
         <td>
-          <input type="password" name="password_confirmation" value="{{ .passwordConfirmation }}" />
+          <input type="password" name="password_confirmation" value="{{ .password_confirmation }}" />
         </td>
         <td class="error">
-          {{ with .errors.PasswordConfirmation }}
-          <span>({{ . }})</span>
+          {{ with .errors.password_confirmation }}
+          <span> ({{ . }})</span>
           {{ end }}
         </td>
       </tr>

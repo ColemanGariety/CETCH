@@ -48,7 +48,7 @@ func TestSignupInUseUsername(t *testing.T) {
 
 	SignupPost(w, r)
 
-	assert.Contains(t, w.Body.String(), "Username is already in use")
+	assert.Contains(t, w.Body.String(), "username is already in use")
 	signupTestTeardown()
 }
 
