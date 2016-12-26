@@ -13,10 +13,10 @@ import (
 // Actions
 
 func LoginShow(w http.ResponseWriter, r *http.Request) {
-	if _, ok := middleware.CurrentUser(r); !ok {
+	if claims, ok := middleware.CurrentUser(r); !ok {
 		utils.Render(w, "login.html", nil)
 	} else {
-		http.Redirect(w, r, "/profile", 307)
+		http.Redirect(w, r, claims.Userpath(), 307)
 	}
 }
 
@@ -30,10 +30,10 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 	if (validateLoginForm(form) == false) {
 		utils.Render(w, "login.html", form)
 	} else {
-	  signedToken, expireCookie := models.ClaimsCreate(form["username"].(string)) // creates a JWT token
+	  signedToken, expireCookie, claims := models.ClaimsCreate(form["username"].(string)) // creates a JWT token
 		cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}
 		http.SetCookie(w, &cookie)
-		http.Redirect(w, r, "/profile", 307)
+		http.Redirect(w, r, claims.Userpath(), 307)
 	}
 }
 

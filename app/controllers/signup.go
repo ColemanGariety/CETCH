@@ -11,10 +11,10 @@ import (
 // Actions
 
 func SignupShow(w http.ResponseWriter, r *http.Request) {
-	if _, ok := middleware.CurrentUser(r); !ok {
+	if claims, ok := middleware.CurrentUser(r); !ok {
 		utils.Render(w, "signup.html", nil)
 	} else {
-		http.Redirect(w, r, "/profile", 307)
+		http.Redirect(w, r, claims.Userpath(), 307)
 	}
 }
 
@@ -31,7 +31,10 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 		utils.Render(w, "signup.html", form)
 	} else {
 		(&models.User{ Name: form["username"].(string), Email: form["email"].(string) }).CreateFromPassword(form["password"].(string))
-		http.Redirect(w, r, "/profile", 307)
+	  signedToken, expireCookie, claims := models.ClaimsCreate(form["username"].(string)) // creates a JWT token
+		cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}
+		http.SetCookie(w, &cookie)
+		http.Redirect(w, r, claims.Userpath(), 307)
 	}
 }
 

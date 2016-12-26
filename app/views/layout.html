@@ -10,11 +10,11 @@
     <header>
       <a href="/">Home</a>
       {{ if .authorized }}
-      <a href="/profile">Profile</a>
+      <a href="{{.userpath}}">Profile</a>
       <a href="/logout">Logout</a>
       {{ else }}
-      <a href="/signup">Signup</a>
       <a href="/login">Login</a>
+      <a href="/signup">Signup</a>
       {{ end }}
     </header>
     {{ template "body" .}}

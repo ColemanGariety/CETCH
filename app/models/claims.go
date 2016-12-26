@@ -4,16 +4,17 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"time"
 	"os"
+	"fmt"
 )
 
 type Claims struct {
-    Username string `json:"username"`
-    jwt.StandardClaims
+	Username string `json:"username"`
+	jwt.StandardClaims
 }
 
 var sessionHash = os.Getenv("session_hash")
 
-func ClaimsCreate(username string) (string, time.Time) {
+func ClaimsCreate(username string) (string, time.Time, Claims) {
 	expireToken := time.Now().Add(time.Hour * 8760).Unix() // 24 hours * 365 days = 8760 hours per year
 	expireCookie := time.Now().Add(time.Hour * 8760)
 
@@ -29,5 +30,9 @@ func ClaimsCreate(username string) (string, time.Time) {
 
 	signedToken, _ := token.SignedString([]byte(sessionHash))
 
-	return signedToken, expireCookie
+	return signedToken, expireCookie, claims
+}
+
+func (claims *Claims) Userpath() string {
+	return fmt.Sprintf("/user/%s", claims.Username)
 }

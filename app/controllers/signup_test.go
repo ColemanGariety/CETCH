@@ -66,7 +66,7 @@ func TestSignupSuccess(t *testing.T) {
 
 	SignupPost(w, r)
 
-	assert.Equal(t, "/profile", w.Header().Get("Location"))
+	assert.Equal(t, "/user/foo", w.Header().Get("Location"))
 	assert.Equal(t, 307, w.Code)
 
 	signupTestTeardown()

@@ -8,9 +8,11 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	_, ok := middleware.CurrentUser(r)
+	claims, ok := middleware.CurrentUser(r)
 
 	utils.Render(w, "index.html", &utils.Props{
 		"authorized": ok,
+		"authorized_username": claims.Username,
+		"userpath": claims.Userpath(),
 	})
 }

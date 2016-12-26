@@ -80,7 +80,7 @@ func TestLoginSuccess(t *testing.T) {
 
 	LoginPost(w, r)
 
-	assert.Equal(t, "/profile", w.Header().Get("Location"))
+	assert.Equal(t, "/user/foo", w.Header().Get("Location"))
 	assert.Equal(t, 307, w.Code)
 
 	loginTestTeardown()

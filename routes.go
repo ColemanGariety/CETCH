@@ -43,7 +43,7 @@ func NewRouter() *mux.Router {
 	router.Methods("Post").Path("/signup").Handler(chain.ThenFunc(controllers.SignupPost))
 
 	// profile
-	router.Methods("Get", "Post").Path("/profile").Handler(chain.ThenFunc(controllers.ProfileShow))
+	router.Methods("Get", "Post").Path("/user/{name}").Handler(chain.ThenFunc(controllers.UserShow))
 
 	return router
 }

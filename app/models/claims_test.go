@@ -6,6 +6,6 @@ import (
 )
 
 func TestClaimsCreate(t *testing.T) {
-	signedToken, _ := ClaimsCreate("foo")
+	signedToken, _, _ := ClaimsCreate("foo")
 	assert.NotNil(t, signedToken)
 }
