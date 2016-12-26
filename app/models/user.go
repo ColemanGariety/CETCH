@@ -8,49 +8,44 @@ import (
 
 type User struct {
 	gorm.Model
+	Email        string
 	Name         string
 	PasswordHash string
 }
 
-func UserAll() ([]User) {
-	users := []User{}
-	db.Find(&users)
-	return users
+type Users []User
+
+func (user *User) Find() (*User, error) {
+	c := db.Where(&user).First(&user)
+	return user, c.Error
 }
 
-func UserByName(name string) (*User, error) {
-	user := User{}
-	c := db.First(&user, "name = ?", name)
-
-	return &user, c.Error
+func (user *User) Exists() (bool, error) {
+	c := db.Where(&user).First(&user)
+	return !(c.RecordNotFound()), c.Error
 }
 
-func UserExistsByName(name string) (bool) {
-	var user User
-	return !(db.Where("name = ?", name).First(&user).RecordNotFound())
-}
-
-func UserCreate(name string, password string) (error) {
+func (user *User) CreateFromPassword(password string) (*User, error) {
 	passwordHash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	user := User{Name: name, PasswordHash: string(passwordHash)}
+	user.PasswordHash = string(passwordHash)
 
 	db.NewRecord(user)
 	c := db.Create(&user)
 
+	return user, c.Error
+}
+
+func (user *User) Delete() (error) {
+	c := db.Delete(&user)
 	return c.Error
 }
 
-func UserDelete(name string) (error) {
-	user, err := UserByName(name)
-	if err != nil {
-		return err
-	}
-
-	c := db.Unscoped().Delete(&user)
-	return c.Error
+func (users *Users) FindAll() (*Users, error) {
+	c := db.Find(&users)
+	return users, c.Error
 }
 
-func UserDeleteAll() {
-	users := []User{}
-	db.Unscoped().Delete(&users)
+func (users *Users) DeleteAll() (error) {
+	c := db.Unscoped().Find(&users).Delete(Users{})
+	return c.Error
 }

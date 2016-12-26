@@ -20,6 +20,7 @@ func SignupShow(w http.ResponseWriter, r *http.Request) {
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
 	form := &SignupForm{
+		Email: r.FormValue("email"),
 		Username: r.FormValue("username"),
 		Password: r.FormValue("password"),
 		PasswordConfirmation: r.FormValue("password_confirmation"),
@@ -28,12 +29,13 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 	if (form.validate() == false) {
 		utils.Render(w, "signup.html", &utils.Props{
 			"errors": form.Errors,
+			"email": form.Email,
 			"username": form.Username,
 			"password": form.Password,
 			"passwordConfirmation": form.PasswordConfirmation,
 		})
 	} else {
-		models.UserCreate(form.Username, form.Password)
+		(&models.User{ Name: form.Username, Email: form.Email }).CreateFromPassword(form.Password)
 		http.Redirect(w, r, "/profile", 307)
 	}
 }
@@ -42,6 +44,7 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 
 type SignupForm struct {
 	models.Form
+	Email                string
 	Username             string
 	Password             string
 	PasswordConfirmation string
@@ -50,6 +53,8 @@ type SignupForm struct {
 func (form *SignupForm) validate() (bool) {
 	form.Errors = make(map[string]string)
 
+	form.ValidatePresence(form.Email, "Email")
+
 	if form.ValidatePresence(form.Password, "Password") {
 		form.ValidateLength(form.Password, "Password", 5, 30)
 	}
@@ -57,7 +62,8 @@ func (form *SignupForm) validate() (bool) {
 	if form.ValidatePresence(form.Username, "Username") {
 		form.ValidateNoSpace(form.Username, "Username")
 
-		if models.UserExistsByName(form.Username)  {
+		exists, _ := (&models.User{ Name: form.Username }).Exists()
+		if exists {
 			form.SetError("Username", "Username is already in use")
 		}
 	}

@@ -3,26 +3,25 @@ package controllers
 import (
 	"testing"
 	"net/http"
-	"net/url"
 	"os"
 	"net/http/httptest"
 	"github.com/stretchr/testify/assert"
 	"bytes"
+	"net/url"
 
 	"github.com/JacksonGariety/cetch/app/models"
 )
 
-func signupSetup() {
+func signupTestSetup() {
 	models.InitDB(os.Getenv("dbname"))
 }
 
-func signupTeardown() {
-	models.UserDelete("foo")
+func signupTestTeardown() {
+	(&models.Users{}).DeleteAll()
 	models.CloseDB()
 }
 
 func TestSignupShowOK(t *testing.T) {
-	signupSetup()
 	ts := httptest.NewServer(http.HandlerFunc(SignupShow))
 	defer ts.Close()
 
@@ -34,64 +33,37 @@ func TestSignupShowOK(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, 200, res.StatusCode)
-	signupTeardown()
 }
 
-func TestSignupPostSuccess(t *testing.T) {
-	signupSetup()
+func TestSignupInUseUsername(t *testing.T) {
+	signupTestSetup()
 
-	mux := http.NewServeMux()
-	mux.Handle("/signup", http.HandlerFunc(SignupPost))
-	mux.Handle("/", http.HandlerFunc(Index))
-	ts := httptest.NewServer(mux)
-	defer ts.Close()
+	// make the user
+	(&models.User{ Name: "foo" }).CreateFromPassword("bar")
 
-	var u bytes.Buffer
-	u.WriteString(string(ts.URL))
-	u.WriteString("/signup")
+	data := url.Values{ "email": {"foo@bar.raz"}, "username": {"foo"}, "password": {"bar"}, "password_confirmation": {"bar"} }
+	w := httptest.NewRecorder()
+	r, _ := http.NewRequest("POST", "/signup",  bytes.NewBufferString(data.Encode()))
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	res, err := client.PostForm(u.String(), url.Values{
-		"username": {"foo"},
-		"password": {"testpass"},
-		"password_confirmation": {"testpass"},
-	})
+	SignupPost(w, r)
 
-	assert.NoError(t, err)
-	assert.Equal(t, 307, res.StatusCode)
-
-	signupTeardown()
+	assert.Contains(t, w.Body.String(), "Username is already in use")
+	signupTestTeardown()
 }
 
-func TestSignupPostFail(t *testing.T) {
-	signupSetup()
+func TestSignupSuccess(t *testing.T) {
+	signupTestSetup()
 
-	mux := http.NewServeMux()
-	mux.Handle("/signup", http.HandlerFunc(SignupPost))
-	mux.Handle("/", http.HandlerFunc(Index))
-	ts := httptest.NewServer(mux)
-	defer ts.Close()
+	data := url.Values{ "email": {"foo@bar.raz"}, "username": {"foo"}, "password": {"testpass"}, "password_confirmation": {"testpass"} }
+	w := httptest.NewRecorder()
+	r, _ := http.NewRequest("POST", "/signup",  bytes.NewBufferString(data.Encode()))
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	var u bytes.Buffer
-	u.WriteString(string(ts.URL))
-	u.WriteString("/signup")
+	SignupPost(w, r)
 
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	res, err := client.PostForm(u.String(), url.Values{
-		"foo": {"bar"}, // bad form post
-	})
+	assert.Equal(t, "/profile", w.Header().Get("Location"))
+	assert.Equal(t, 307, w.Code)
 
-	assert.NoError(t, err)
-	assert.Equal(t, "/signup", res.Request.URL.Path)
-	assert.Equal(t, 200, res.StatusCode)
-
-	signupTeardown()
+	signupTestTeardown()
 }

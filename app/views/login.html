@@ -2,16 +2,28 @@
 
 <h3>Login</h3>
 <form action="/login" method="POST">
-  <label>Username: <input type="text" name="username" value="{{ .username }}" /></label>
-  {{ with .errors.Username }}
-  <span class="error">({{ . }})</span>
-  {{ end }}
-  <br/>
-  <label>Password: <input type="password" name="password" value="{{ .password }}" /></label>
-  {{ with .errors.Password }}
-  <span class="error">({{ . }})</span>
-  {{ end }}
-  <br/>
+  <table>
+    <tbody>
+      <tr>
+        <td>Username:</td>
+        <td> <input type="text" name="username" value="{{ .username }}" /></td>
+        <td>
+          {{ with .errors.Username }}
+          <span class="error">({{ . }})</span>
+          {{ end }}
+        </td>
+      </tr>
+      <tr>
+        <td>Password:</td>
+        <td><input type="password" name="password" value="{{ .password }}" /></td>
+        <td>
+          {{ with .errors.Password }}
+          <span class="error">({{ . }})</span>
+          {{ end }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <input type="submit" value="Login" />
 </form>
 {{ end }}

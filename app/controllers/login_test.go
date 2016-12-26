@@ -12,12 +12,12 @@ import (
 	"github.com/JacksonGariety/cetch/app/models"
 )
 
-func loginSetup() {
+func loginTestSetup() {
 	models.InitDB(os.Getenv("dbname"))
 }
 
-func loginTeardown() {
-	models.UserDelete("foo")
+func loginTestTeardown() {
+	(&models.Users{}).DeleteAll()
 	models.CloseDB()
 }
 
@@ -35,61 +35,49 @@ func TestLoginShowOK(t *testing.T) {
 	assert.Equal(t, 200, res.StatusCode)
 }
 
-func TestLoginPostSuccess(t *testing.T) {
-	loginSetup()
-	models.UserCreate("foo", "testpass")
+func TestLoginNonexistentUsername(t *testing.T) {
+	loginTestSetup()
 
-	mux := http.NewServeMux()
-	mux.Handle("/login", http.HandlerFunc(LoginPost))
-	mux.Handle("/", http.HandlerFunc(Index))
-	ts := httptest.NewServer(mux)
-	defer ts.Close()
+	data := url.Values{ "username": {"foo"}, "password": {"bar"} }
+	w := httptest.NewRecorder()
+	r, _ := http.NewRequest("POST", "/login",  bytes.NewBufferString(data.Encode()))
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	var u bytes.Buffer
-	u.WriteString(string(ts.URL))
-	u.WriteString("/login")
+	LoginPost(w, r)
 
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	res, err := client.PostForm(u.String(), url.Values{
-		"username": {"foo"},
-		"password": {"testpass"},
-	})
-
-	assert.NoError(t, err)
-	assert.Equal(t, 307, res.StatusCode)
-
-	loginTeardown()
+	assert.Contains(t, w.Body.String(), "Username does not exist")
+	loginTestTeardown()
 }
 
-func TestLoginPostFail(t *testing.T) {
-	loginSetup()
+func TestLoginIncorrectPassword(t *testing.T) {
+	loginTestSetup()
+	(&models.User{ Name: "foo" }).CreateFromPassword("notbar")
 
-	mux := http.NewServeMux()
-	mux.Handle("/login", http.HandlerFunc(LoginPost))
-	mux.Handle("/", http.HandlerFunc(Index))
-	ts := httptest.NewServer(mux)
-	defer ts.Close()
+	data := url.Values{ "username": {"foo"}, "password": {"bar"} }
+	w := httptest.NewRecorder()
+	r, _ := http.NewRequest("POST", "/login",  bytes.NewBufferString(data.Encode()))
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	var u bytes.Buffer
-	u.WriteString(string(ts.URL))
-	u.WriteString("/login")
+	LoginPost(w, r)
 
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	res, err := client.PostForm(u.String(), url.Values{
-		"foo": {"bar"}, // bad form post
-	})
+	assert.Contains(t, w.Body.String(), "Password is incorrect")
+	loginTestTeardown()
+}
 
-	assert.NoError(t, err)
-	assert.Equal(t, "/login", res.Request.URL.Path)
-	assert.Equal(t, 200, res.StatusCode)
+func TestLoginSuccess(t *testing.T) {
+	loginTestSetup()
 
-	loginTeardown()
+	(&models.User{ Name: "foo" }).CreateFromPassword("testpass")
+
+	data := url.Values{ "username": {"foo"}, "password": {"testpass"} }
+	w := httptest.NewRecorder()
+	r, _ := http.NewRequest("POST", "/login",  bytes.NewBufferString(data.Encode()))
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	LoginPost(w, r)
+
+	assert.Equal(t, "/profile", w.Header().Get("Location"))
+	assert.Equal(t, 307, w.Code)
+
+	loginTestTeardown()
 }

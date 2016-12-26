@@ -60,7 +60,7 @@ func (form *LoginForm) validate() (bool) {
 	hasPassword := form.ValidatePresence(form.Password, "Password")
 
 	if form.ValidatePresence(form.Username, "Username") {
-		user, err := models.UserByName(form.Username)
+		user, err := (&models.User{ Name: form.Username }).Find()
 		if err != nil {
 			form.SetError("Username", "Username does not exist")
 		} else if hasPassword {

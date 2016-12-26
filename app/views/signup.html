@@ -1,22 +1,48 @@
 {{define "body"}}
 <h3>Signup</h3>
 <form action="/signup" method="POST">
-  <label>Username: <input type="text" name="username" value="{{ .username }}" /></label>
-  {{ with .errors.Username }}
-  <span class="error">({{ . }})</span>
-  {{ end }}
-  <br/>
-  <label>Password: <input type="password" name="password" value="{{ .password }}" /></label>
-  {{ with .errors.Password }}
-  <span class="error">({{ . }})</span>
-  {{ end }}
-  <br/>
-  <label>Confirm: <input type="password" name="password_confirmation" value="{{ .passwordConfirmation }}" /></label>
-  {{ with .errors.PasswordConfirmation }}
-  <span class="error">({{ . }})</span>
-  {{ end }}
-  <br/>
-  <br/>
+  <table>
+    <tbody>
+      <tr>
+        <td> Email: </td>
+        <td> <input type="email" name="email" value="{{ .email }}" /> </td>
+        <td class="error">
+          {{ with .errors.Email }}
+          <span>({{ . }})</span>
+          {{ end }}
+        </td>
+      </tr>
+      <tr>
+        <td> Username: </td>
+        <td> <input type="text" name="username" value="{{ .username }}" /> </td>
+        <td class="error">
+          {{ with .errors.Username }}
+          <span>({{ . }})</span>
+          {{ end }}
+        </td>
+      </tr>
+      <tr>
+        <td> Password: </td>
+        <td> <input type="password" name="password" value="{{ .password }}" /> </td>
+        <td class="error">
+          {{ with .errors.Password }}
+          <span>({{ . }})</span>
+          {{ end }}
+        </td>
+      </tr>
+      <tr>
+        <td> Confirm: </td>
+        <td>
+          <input type="password" name="password_confirmation" value="{{ .passwordConfirmation }}" />
+        </td>
+        <td class="error">
+          {{ with .errors.PasswordConfirmation }}
+          <span>({{ . }})</span>
+          {{ end }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <input type="submit" value="Signup" />
 </form>
 {{end}}

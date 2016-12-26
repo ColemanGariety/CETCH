@@ -5,9 +5,13 @@ import (
 	"fmt"
 	"context"
 	"github.com/dgrijalva/jwt-go"
+	"os"
 
 	"github.com/JacksonGariety/cetch/app/models"
 )
+
+var sessionKey = os.Getenv("session_key")
+var sessionHash = os.Getenv("session_hash")
 
 func Authorize(next http.Handler) http.Handler {
 	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
@@ -23,7 +27,7 @@ func Authorize(next http.Handler) http.Handler {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("Unexpected siging method")
 			}
-			return []byte("secret"), nil
+			return []byte(sessionHash), nil
 		})
 		if err != nil {
 			next.ServeHTTP(w, r)
@@ -31,7 +35,7 @@ func Authorize(next http.Handler) http.Handler {
 		}
 
 		if claims, ok := token.Claims.(*models.Claims); ok && token.Valid {
-			ctx := context.WithValue(r.Context(), "foo", *claims)
+			ctx := context.WithValue(r.Context(), sessionKey, *claims)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		} else {
 			next.ServeHTTP(w, r)
@@ -41,6 +45,6 @@ func Authorize(next http.Handler) http.Handler {
 }
 
 func CurrentUser(r *http.Request) (models.Claims, bool) {
-	claims, ok := r.Context().Value("foo").(models.Claims)
+	claims, ok := r.Context().Value(sessionKey).(models.Claims)
 	return claims, ok
 }

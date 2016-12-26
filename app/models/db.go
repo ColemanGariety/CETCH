@@ -1,7 +1,6 @@
 package models
 
 import (
-	"log"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
@@ -15,7 +14,7 @@ func InitDB(dbname string) {
 	db, err = gorm.Open("postgres", fmt.Sprintf("user=cetch dbname=%s sslmode=disable", dbname))
 
 	if err != nil {
-		log.Panic(err)
+		panic(err)
 	}
 }
 

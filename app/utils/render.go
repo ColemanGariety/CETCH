@@ -9,7 +9,7 @@ import (
 
 type Props map[string]interface{}
 
-var basePath = os.Getenv("basePath")
+var basePath = os.Getenv("base_path")
 
 func Render(w http.ResponseWriter, filename string, props interface{}) {
 	tmpl := template.Must(template.New("base").ParseFiles(path.Join(basePath, "./app/views/layout.html"), path.Join(basePath, "app/views", filename)))
