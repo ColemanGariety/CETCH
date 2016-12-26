@@ -1,0 +1,20 @@
+{{ define "body" }}
+<h3>Password Reset</h3>
+<form action="/forgotten" method="POST">
+  <table>
+    <tbody>
+      <tr>
+        <td>Email:</td>
+        <td> <input type="email" name="email" value="{{ .email }}" /></td>
+        <td>
+          {{ with .errors.email }}
+          <span class="error"> ({{ . }})</span>
+          {{ end }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br/>
+  <input type="submit" value="Send Reset Email" />
+</form>
+{{ end }}

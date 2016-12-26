@@ -6,5 +6,5 @@ import (
 )
 
 func Timeout(h http.Handler) http.Handler {
-	return http.TimeoutHandler(h, 30 * time.Second, "timed out")
+	return http.TimeoutHandler(h, 20 * time.Second, "504 gateway timeout")
 }

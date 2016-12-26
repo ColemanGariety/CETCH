@@ -37,7 +37,7 @@ func LoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func LogoutShow(w http.ResponseWriter, r *http.Request){
+func LogoutShow(w http.ResponseWriter, r *http.Request) {
     deleteCookie := http.Cookie{Name: "Auth", Value: "none", Expires: time.Now()}
     http.SetCookie(w, &deleteCookie)
 		http.Redirect(w, r, "/", 307)

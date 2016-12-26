@@ -26,13 +26,17 @@ func NewRouter() *mux.Router {
 		gziphandler.GzipHandler,
 	)
 
-	// Routes
+	// Index
 	router.Methods("Get").Path("/").Handler(chain.ThenFunc(controllers.Index))
 
-	// login
+	// login/logout
 	router.Methods("Get").Path("/login").Handler(chain.ThenFunc(controllers.LoginShow))
 	router.Methods("Post").Path("/login").Handler(chain.ThenFunc(controllers.LoginPost))
 	router.Methods("Get").Path("/logout").Handler(chain.ThenFunc(controllers.LogoutShow))
+
+	// forgotten/reset
+	router.Methods("Get").Path("/forgotten").Handler(chain.ThenFunc(controllers.ForgottenShow))
+	router.Methods("Post").Path("/forgotten").Handler(chain.ThenFunc(controllers.ForgottenPost))
 
 	// signup
 	router.Methods("Get").Path("/signup").Handler(chain.ThenFunc(controllers.SignupShow))
