@@ -7,28 +7,23 @@ import (
 
 	"github.com/JacksonGariety/cetch/app/models"
 	"github.com/JacksonGariety/cetch/app/utils"
-	"github.com/JacksonGariety/cetch/app/middleware"
 )
 
 // Actions
 
 func LoginShow(w http.ResponseWriter, r *http.Request) {
-	if currentUser, ok := middleware.CurrentUser(r); !ok {
-		utils.Render(w, "login.html", nil)
-	} else {
-		http.Redirect(w, r, currentUser.Userpath(), 307)
-	}
+	utils.Render(w, r, "login.html", &utils.Props{})
 }
 
 func LoginPost(w http.ResponseWriter, r *http.Request) {
-	form := models.Form{
+	form := utils.Props{
 		"errors": make(map[string]string),
 		"username": r.FormValue("username"),
 		"password": r.FormValue("password"),
 	}
 
 	if (validateLoginForm(form) == false) {
-		utils.Render(w, "login.html", form)
+		utils.Render(w, r, "login.html", &form)
 	} else {
 	  signedToken, expireCookie, claims := models.ClaimsCreate(form["username"].(string)) // creates a JWT token
 		cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}
@@ -45,7 +40,7 @@ func LogoutShow(w http.ResponseWriter, r *http.Request) {
 
 // Validations
 
-func validateLoginForm(form models.Form) (bool) {
+func validateLoginForm(form utils.Props) (bool) {
 	hasPassword := form.ValidatePresence("password")
 
 	if form.ValidatePresence("username") {

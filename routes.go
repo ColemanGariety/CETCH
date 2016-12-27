@@ -7,8 +7,8 @@ import (
 	"github.com/justinas/alice"
 	"github.com/NYTimes/gziphandler"
 
-	"github.com/JacksonGariety/cetch/app/controllers"
-	"github.com/JacksonGariety/cetch/app/middleware"
+	c "github.com/JacksonGariety/cetch/app/controllers"
+	m "github.com/JacksonGariety/cetch/app/middleware"
 )
 
 func NewRouter() *mux.Router {
@@ -21,35 +21,35 @@ func NewRouter() *mux.Router {
 
 	// Middleware
 	chain := alice.New(
-		middleware.Timeout,
-		middleware.Authorize,
+		m.Timeout,
 		gziphandler.GzipHandler,
+		m.Authenticate,
 	)
 
 	// Index
-	router.Methods("Get").Path("/").Handler(chain.ThenFunc(controllers.Index))
+	router.Methods("Get").Path("/").Handler(chain.ThenFunc(c.Index))
 
 	// login/logout
-	router.Methods("Get").Path("/login").Handler(chain.ThenFunc(controllers.LoginShow))
-	router.Methods("Post").Path("/login").Handler(chain.ThenFunc(controllers.LoginPost))
-	router.Methods("Get").Path("/logout").Handler(chain.ThenFunc(controllers.LogoutShow))
+	router.Methods("Get").Path("/login").Handler(chain.Append(m.Retain).ThenFunc(c.LoginShow))
+	router.Methods("Post").Path("/login").Handler(chain.Append(m.Retain).ThenFunc(c.LoginPost))
+	router.Methods("Get").Path("/logout").Handler(chain.ThenFunc(c.LogoutShow))
 
 	// forgotten/reset
-	router.Methods("Get").Path("/forgotten").Handler(chain.ThenFunc(controllers.ForgottenShow))
-	router.Methods("Post").Path("/forgotten").Handler(chain.ThenFunc(controllers.ForgottenPost))
+	router.Methods("Get").Path("/forgotten").Handler(chain.Append(m.Retain).ThenFunc(c.ForgottenShow))
+	router.Methods("Post").Path("/forgotten").Handler(chain.Append(m.Retain).ThenFunc(c.ForgottenPost))
 
 	// signup
-	router.Methods("Get").Path("/signup").Handler(chain.ThenFunc(controllers.SignupShow))
-	router.Methods("Post").Path("/signup").Handler(chain.ThenFunc(controllers.SignupPost))
+	router.Methods("Get").Path("/signup").Handler(chain.Append(m.Retain).ThenFunc(c.SignupShow))
+	router.Methods("Post").Path("/signup").Handler(chain.Append(m.Retain).ThenFunc(c.SignupPost))
 
 	// profile
-	router.Methods("Get", "Post").Path("/user/{name}").Handler(chain.ThenFunc(controllers.UserShow))
+	router.Methods("Get", "Post").Path("/user/{name}").Handler(chain.ThenFunc(c.UserShow))
 
 	// competitions
-	router.Methods("Get").Path("/competition/new").Handler(chain.Append(middleware.Protect).ThenFunc(controllers.CompetitionNew))
-	router.Methods("Get").Path("/competition/{id}").Handler(chain.ThenFunc(controllers.CompetitionShow))
-	router.Methods("Post").Path("/competition/new").Handler(chain.Append(moddleare.Protect).ThenFunc(controllers.CompetitionCreate))
-	router.Methods("Get", "Post").Path("/competitions").Handler(chain.ThenFunc(controllers.CompetitionsShow))
+	router.Methods("Get").Path("/competition/new").Handler(chain.Append(m.Protect).ThenFunc(c.CompetitionNew))
+	router.Methods("Get").Path("/competition/{id}").Handler(chain.ThenFunc(c.CompetitionShow))
+	router.Methods("Post").Path("/competition/new").Handler(chain.Append(m.Protect).ThenFunc(c.CompetitionCreate))
+	router.Methods("Get", "Post").Path("/competitions").Handler(chain.ThenFunc(c.CompetitionsShow))
 
 	return router
 }

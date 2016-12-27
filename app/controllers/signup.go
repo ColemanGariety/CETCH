@@ -5,21 +5,16 @@ import (
 
 	"github.com/JacksonGariety/cetch/app/models"
 	"github.com/JacksonGariety/cetch/app/utils"
-	"github.com/JacksonGariety/cetch/app/middleware"
 )
 
 // Actions
 
 func SignupShow(w http.ResponseWriter, r *http.Request) {
-	if currentUser, ok := middleware.CurrentUser(r); !ok {
-		utils.Render(w, "signup.html", nil)
-	} else {
-		http.Redirect(w, r, currentUser.Userpath(), 307)
-	}
+	utils.Render(w, r, "signup.html", &utils.Props{})
 }
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
-	form := models.Form{
+	form := utils.Props{
 		"errors": make(map[string]string),
 		"email": r.FormValue("email"),
 		"username": r.FormValue("username"),
@@ -28,7 +23,7 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if (validateSignupForm(form) == false) {
-		utils.Render(w, "signup.html", form)
+		utils.Render(w, r, "signup.html", &form)
 	} else {
 		(&models.User{ Name: form["username"].(string), Email: form["email"].(string) }).CreateFromPassword(form["password"].(string))
 	  signedToken, expireCookie, claims := models.ClaimsCreate(form["username"].(string)) // creates a JWT token
@@ -40,7 +35,7 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 
 // Validations
 
-func validateSignupForm(form models.Form) (bool) {
+func validateSignupForm(form utils.Props) (bool) {
 	if form.ValidatePresence("email") {
 		if form.ValidateEmail("email") {
 			exists, _ := (&models.User{ Email: form["email"].(string)}).Exists()

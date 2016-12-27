@@ -12,17 +12,17 @@ import (
 // Actions
 
 func ForgottenShow(w http.ResponseWriter, r *http.Request) {
-	utils.Render(w, "forgotten.html", nil)
+	utils.Render(w, r, "forgotten.html", &utils.Props{})
 }
 
 func ForgottenPost(w http.ResponseWriter, r *http.Request) {
-	form := models.Form{
+	form := utils.Props{
 		"errors": make(map[string]string),
 		"email": r.FormValue("email"),
 	}
 
 	if (validateForgottenForm(form) == false) {
-		utils.Render(w, "forgotten.html", form)
+		utils.Render(w, r, "forgotten.html", &form)
 	} else {
 		// err := smtp.SendMail(
 		// 	"mail.example.com:25",
@@ -44,7 +44,7 @@ func ForgottenPost(w http.ResponseWriter, r *http.Request) {
 
 // Validations
 
-func validateForgottenForm(form models.Form) (bool) {
+func validateForgottenForm(form utils.Props) (bool) {
 	if form.ValidatePresence("email") {
 		exists, _ := (&models.User{ Email: form["email"].(string) }).Exists()
 		if !exists {

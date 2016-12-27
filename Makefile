@@ -2,7 +2,7 @@ build:
 	go build
 
 run:
-	env session_key=needed_key session_hash=needed_hash dbname=cetch_production base_path=$$GOPATH/src/github.com/JacksonGariety/cetch ./cetch
+	env session_hash=needed_hash dbname=cetch_production base_path=$$GOPATH/src/github.com/JacksonGariety/cetch ./cetch
 
 install:
 	go get github.com/tools/godep
@@ -20,11 +20,11 @@ db_migrate:
 	goose -env development up
 
 watch:
-	env session_key=dev_key session_hash=dev_hash dbname=cetch_development base_path=$$GOPATH/src/github.com/JacksonGariety/cetch fresh
+	env session_hash=dev_hash dbname=cetch_development base_path=$$GOPATH/src/github.com/JacksonGariety/cetch fresh
 
 test:
 	dropdb cetch_test --if-exists
 	createdb cetch_test
 	goose -env test up
-	env session_key=test_key session_hash=test_hash dbname=cetch_test base_path=$$GOPATH/src/github.com/JacksonGariety/cetch/ go test ./app/...
+	env session_hash=test_hash dbname=cetch_test base_path=$$GOPATH/src/github.com/JacksonGariety/cetch/ go test ./app/...
 	dropdb cetch_test
