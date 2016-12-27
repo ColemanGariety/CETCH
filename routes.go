@@ -45,5 +45,11 @@ func NewRouter() *mux.Router {
 	// profile
 	router.Methods("Get", "Post").Path("/user/{name}").Handler(chain.ThenFunc(controllers.UserShow))
 
+	// competitions
+	router.Methods("Get").Path("/competition/new").Handler(chain.Append(middleware.Protect).ThenFunc(controllers.CompetitionNew))
+	router.Methods("Get").Path("/competition/{id}").Handler(chain.ThenFunc(controllers.CompetitionShow))
+	router.Methods("Post").Path("/competition/new").Handler(chain.Append(moddleare.Protect).ThenFunc(controllers.CompetitionCreate))
+	router.Methods("Get", "Post").Path("/competitions").Handler(chain.ThenFunc(controllers.CompetitionsShow))
+
 	return router
 }

@@ -1,0 +1,30 @@
+{{ define "body" }}
+New competition:
+<form action="/competition/new" method="post">
+  <table>
+    <tr>
+      <td>Name:</td>
+      <td><input type="text" name="name" value="{{ .name }}" /></td>
+      <td class="error">
+        {{ with .errors.name }}
+        <span> ({{ . }})</span>
+        {{ end }}
+      </td>
+    </tr>
+    <tr>
+      <td>Description:</td>
+      <td>
+        <textarea name="description" rows="10" cols="20">
+        {{ .description  }}
+        </textarea>
+      </td>
+      <td class="error">
+        {{ with .errors.description }}
+        <span> ({{ . }})</span>
+        {{ end }}
+      </td>
+    </tr>
+  </table>
+  <input type="submit" value="Create Competition" />
+</form>
+{{ end }}

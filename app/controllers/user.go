@@ -14,11 +14,12 @@ import (
 func UserShow(w http.ResponseWriter, r *http.Request){
 	user := &models.User{ Name: mux.Vars(r)["name"] }
 	if exists, _ := user.Exists(); exists {
-		claims, ok := middleware.CurrentUser(r)
+		currentUser, ok := middleware.CurrentUser(r)
 		utils.Render(w, "user.html", &utils.Props{
 			"authorized": ok,
-			"authorized_username": claims.Username,
+			"authorized_username": currentUser.Name,
 			"username": user.Name,
+			"admin": user.Admin,
 		})
 	} else {
 		w.WriteHeader(http.StatusNotFound)

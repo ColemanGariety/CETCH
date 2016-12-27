@@ -44,7 +44,20 @@ func Authorize(next http.Handler) http.Handler {
 	})
 }
 
-func CurrentUser(r *http.Request) (models.Claims, bool) {
+func Protect(next http.Handler) http.Handler {
+	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+		_, ok := CurrentUser(r)
+		if ok {
+			next.ServeHTTP(w, r)
+		} else {
+			w.WriteHeader(http.StatusUnauthorized)
+			fmt.Fprintf(w, "401 unauthorized")
+		}
+	})
+}
+
+func CurrentUser(r *http.Request) (*models.User, bool) {
 	claims, ok := r.Context().Value(sessionKey).(models.Claims)
-	return claims, ok
+	user, _ := (&models.User{ Name: claims.Username }).Find()
+	return user, ok
 }

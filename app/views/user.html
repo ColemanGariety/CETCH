@@ -1,6 +1,15 @@
 {{ define "body" }}
+
 <h4>{{ .username }}</h4>
+
 {{ if (eq .username .authorized_username) }}
-This is <b>your</b> profile!
+This is your profile.
 {{ end }}
+
+<br/>
+
+{{ if .admin }}
+You are an admin.
+{{ end }}
+
 {{ end }}

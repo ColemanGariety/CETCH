@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"golang.org/x/crypto/bcrypt"
@@ -11,15 +12,17 @@ type User struct {
 	Email        string
 	Name         string
 	PasswordHash string
+	Admin        bool
 }
 
 type Users []User
 
-func NewUser(email string, name string, password string) *User {
+func NewUser(email string, name string, password string, admin bool) *User {
 	return &User{
 		Email: email,
 		Name: name,
 		PasswordHash: hashPassword(password),
+		Admin: admin,
 	}
 }
 
@@ -49,6 +52,10 @@ func (user *User) CreateFromPassword(password string) (*User, error) {
 func (user *User) Delete() (error) {
 	c := db.Delete(&user)
 	return c.Error
+}
+
+func (user *User) Userpath() (string) {
+	return fmt.Sprintf("/user/%s", user.Name)
 }
 
 func (users *Users) FindAll() (*Users, error) {

@@ -13,10 +13,10 @@ import (
 // Actions
 
 func LoginShow(w http.ResponseWriter, r *http.Request) {
-	if claims, ok := middleware.CurrentUser(r); !ok {
+	if currentUser, ok := middleware.CurrentUser(r); !ok {
 		utils.Render(w, "login.html", nil)
 	} else {
-		http.Redirect(w, r, claims.Userpath(), 307)
+		http.Redirect(w, r, currentUser.Userpath(), 307)
 	}
 }
 

@@ -1,0 +1,21 @@
+{{ define "body" }}
+<br/>
+Competitions archive:
+<table>
+  <tbody>
+    {{ range $comp := .competitions }}
+    <tr>
+      <td>{{ $comp.Id }}</td>
+      <td>{{ $comp.Name }}</td>
+      <td>{{ $comp.Description }}</td>
+    </tr>
+    {{ end }}
+  </tbody>
+</table>
+
+<br/>
+
+{{ if .admin }}
+You are an admin: <a href="/competition/new">Create a Competition</a>
+{{ end }}
+{{ end }}

@@ -6,6 +6,7 @@ import (
 
 type Competition struct {
 	gorm.Model
+	Id          int    `gorm:"primary_key"`
 	Name        string
 	Description string
 	Position    int
@@ -13,7 +14,7 @@ type Competition struct {
 
 type Competitions []Competition
 
-func NewCompetition(name string, description string, position int, ) *Competition {
+func NewCompetition(name string, description string, position int) *Competition {
 	return &Competition{
 		Name: name,
 		Description: description,
@@ -23,6 +24,11 @@ func NewCompetition(name string, description string, position int, ) *Competitio
 
 func (competition *Competition) Find() (*Competition, error) {
 	c := db.Where(&competition).First(&competition)
+	return competition, c.Error
+}
+
+func (competition *Competition) FindById(id int) (*Competition, error) {
+	c := db.First(&competition, id)
 	return competition, c.Error
 }
 

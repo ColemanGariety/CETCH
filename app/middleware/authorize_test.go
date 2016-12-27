@@ -11,9 +11,9 @@ import (
 
 func makeTestHandlerFail(t *testing.T) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		claims, ok := CurrentUser(r)
+		user, ok := CurrentUser(r)
 		assert.False(t, ok)
-		assert.Empty(t, claims.Username)
+		assert.Empty(t, user.Username)
 	}
 	return http.HandlerFunc(fn)
 }
