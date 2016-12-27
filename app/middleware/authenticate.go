@@ -51,6 +51,19 @@ func Protect(next http.Handler) http.Handler {
 	})
 }
 
+// non-admin users recieve 403
+func Forbid(next http.Handler) http.Handler {
+	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+		data := r.Context().Value("data").(*utils.Props)
+		if (*data)["authorized"].(bool) && (*data)["admin"].(bool) {
+			next.ServeHTTP(w, r)
+		} else {
+			w.WriteHeader(http.StatusUnauthorized)
+			fmt.Fprintf(w, "403 forbidden")
+		}
+	})
+}
+
 // authorized users are redirected to home
 func Retain(next http.Handler) http.Handler {
 	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {

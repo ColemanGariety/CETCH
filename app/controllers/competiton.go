@@ -12,13 +12,13 @@ import (
 
 func CompetitionsShow(w http.ResponseWriter, r *http.Request) {
 	competitions, _ := (&models.Competitions{}).FindAll()
-	utils.Render(w, r, "competitions.html", &utils.Props{ "competitions": competitions })
+	utils.Render(w, r, "competitions.html", &utils.Props{ "competitions": *competitions })
 }
 
 func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
-	comp := &models.Competition{ Id: id }
-	if exists, _ := comp.Exists(); exists {
+	comp := &models.Competition{ }
+	if exists, _ := comp.ExistsById(id); exists {
 		utils.Render(w, r, "competition_show.html", &utils.Props{ "competition": comp })
 	} else {
 		w.WriteHeader(http.StatusNotFound)

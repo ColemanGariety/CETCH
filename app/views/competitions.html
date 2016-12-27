@@ -1,13 +1,11 @@
 {{ define "body" }}
-<br/>
-Competitions archive:
-<table>
+<h3>Competitions archive</h3>
+<table class="alternate">
   <tbody>
     {{ range $comp := .competitions }}
     <tr>
-      <td>{{ $comp.Id }}</td>
-      <td>{{ $comp.Name }}</td>
-      <td>{{ $comp.Description }}</td>
+      <td>{{ $comp.ID }}</td>
+      <td><a href="/competition/{{ $comp.ID }}">{{ $comp.Name }}</a></td>
     </tr>
     {{ end }}
   </tbody>

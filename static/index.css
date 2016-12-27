@@ -2,6 +2,12 @@
 
 body {
     font-family: Consolas, Inconsolata, Source Code Pro, DejaVu Sans Mono, Anonymous Pro, monospace;
+    background-color: #FFF;
+    color: #222;
+}
+
+table.alternate tr:nth-child(odd) {
+    background-color: #EEE;
 }
 
 .error {

@@ -46,9 +46,9 @@ func NewRouter() *mux.Router {
 	router.Methods("Get", "Post").Path("/user/{name}").Handler(chain.ThenFunc(c.UserShow))
 
 	// competitions
-	router.Methods("Get").Path("/competition/new").Handler(chain.Append(m.Protect).ThenFunc(c.CompetitionNew))
+	router.Methods("Get").Path("/competition/new").Handler(chain.Append(m.Forbid).ThenFunc(c.CompetitionNew))
 	router.Methods("Get").Path("/competition/{id}").Handler(chain.ThenFunc(c.CompetitionShow))
-	router.Methods("Post").Path("/competition/new").Handler(chain.Append(m.Protect).ThenFunc(c.CompetitionCreate))
+	router.Methods("Post").Path("/competition/new").Handler(chain.Append(m.Forbid).ThenFunc(c.CompetitionCreate))
 	router.Methods("Get", "Post").Path("/competitions").Handler(chain.ThenFunc(c.CompetitionsShow))
 
 	return router
