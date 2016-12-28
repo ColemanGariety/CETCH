@@ -1,8 +1,11 @@
+setup:
+	goose -env production up
+
 build:
 	go build
 
 run:
-	env session_hash=needed_hash dbname=cetch_production base_path=$$GOPATH/src/github.com/JacksonGariety/cetch ./cetch
+	env session_hash=needed_hash dbname=cetch env=production base_path=$$GOPATH/src/github.com/JacksonGariety/cetch ./cetch
 
 install:
 	go get github.com/tools/godep

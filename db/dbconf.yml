@@ -5,3 +5,7 @@ development:
 test:
   driver: postgres
   open: user=cetch dbname=cetch_test sslmode=disable
+
+development:
+  driver: postgres
+  open: user=cetch dbname=cetch sslmode=disable

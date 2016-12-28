@@ -1,6 +1,7 @@
 package models
 
 import (
+	"time"
 	"github.com/jinzhu/gorm"
 )
 
@@ -9,6 +10,8 @@ type Competition struct {
 	Name        string
 	Description string
 	Position    int
+	Date        time.Time
+	Solution    float64
 }
 
 type Competitions []Competition
@@ -19,6 +22,12 @@ func NewCompetition(name string, description string, position int) *Competition 
 		Description: description,
 		Position:    position,
 	}
+}
+
+func (competition *Competition) FirstWhere(query string, vars ...interface{}) (*Competition, error) {
+	comp := &Competition{}
+	c := db.Where(query, vars...).First(comp)
+	return comp, c.Error
 }
 
 func (competition *Competition) Find() (*Competition, error) {
@@ -50,6 +59,22 @@ func (competition *Competition) Create() (*Competition, error) {
 func (competition *Competition) Delete() error {
 	c := db.Delete(&competition)
 	return c.Error
+}
+
+func (competition *Competition) Save() error {
+	c := db.Save(&competition)
+	return c.Error
+}
+
+func (competition *Competition) DeleteById(id int) error {
+	c := db.Delete(&competition, id)
+	return c.Error
+}
+
+func (competitions *Competitions) Where(query string, vars ...interface{}) (*Competitions, error) {
+	comps := &Competitions{}
+	c := db.Where(query, vars...).Find(comps)
+	return comps, c.Error
 }
 
 func (competitions *Competitions) FindAll() (*Competitions, error) {

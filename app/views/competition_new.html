@@ -1,5 +1,5 @@
 {{ define "body" }}
-New competition:
+<h3>New Competition</h3>
 <form action="/competition/new" method="post">
   <table>
     <tr>
@@ -22,7 +22,17 @@ New competition:
         {{ end }}
       </td>
     </tr>
+    <tr>
+      <td>Solution:</td>
+      <td><input type="text" name="solution" value="{{ .solution }}" /></td>
+      <td class="error">
+        {{ with .errors.solution }}
+        <span> ({{ . }})</span>
+        {{ end }}
+      </td>
+    </tr>
   </table>
+  <br/>
   <input type="submit" value="Create Competition" />
 </form>
 {{ end }}

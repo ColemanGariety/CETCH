@@ -1,19 +1,19 @@
 {{ define "body" }}
-<h3>Competitions archive</h3>
-<table class="alternate">
+<h3>Competition Archive</h3>
+<table>
+  <thead>
+    <td>#</td>
+    <td>Name</td>
+    <td>Date</td>
+  </thead>
   <tbody>
     {{ range $comp := .competitions }}
     <tr>
       <td>{{ $comp.ID }}</td>
       <td><a href="/competition/{{ $comp.ID }}">{{ $comp.Name }}</a></td>
+      <td>{{ $comp.Date }}</td>
     </tr>
     {{ end }}
   </tbody>
 </table>
-
-<br/>
-
-{{ if .admin }}
-You are an admin: <a href="/competition/new">Create a Competition</a>
-{{ end }}
 {{ end }}

@@ -6,8 +6,20 @@ body {
     color: #222;
 }
 
-table.alternate tr:nth-child(odd) {
-    background-color: #EEE;
+table td {
+    padding: 3px;
+}
+
+table, table th, table td {
+    border: 1px solid #222;
+}
+
+form table tr {
+    background-color: #FFF !important;
+}
+
+form table, form table th, form table td {
+    border: none;
 }
 
 .error {

@@ -33,10 +33,12 @@ func NewRouter() http.Handler {
 	mux.Get("/user/:name", chain.ThenFunc(c.UserShow))
 	mux.Post("/user/:name", chain.ThenFunc(c.UserShow))
 	mux.Get("/competition/new", chain.Append(m.Forbid).ThenFunc(c.CompetitionNew))
-	mux.Get("/competition/:id", chain.ThenFunc(c.CompetitionShow))
 	mux.Post("/competition/new", chain.Append(m.Forbid).ThenFunc(c.CompetitionCreate))
+	mux.Get("/competition/:id", chain.ThenFunc(c.CompetitionShow))
 	mux.Get("/competitions", chain.ThenFunc(c.CompetitionsShow))
 	mux.Post("/competitions", chain.ThenFunc(c.CompetitionsShow))
+	mux.Get("/schedule", chain.Append(m.Forbid).ThenFunc(c.ScheduleShow))
+	mux.Post("/schedule", chain.Append(m.Forbid).ThenFunc(c.SchedulePost))
 
 	return mux
 }

@@ -3,13 +3,17 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>CETCH (the code execution time championships)</title>
+    <title>CETCH (code execution time championships)</title>
     <link rel="stylesheet" type="text/css" href="/static/index.css" />
   </head>
   <body>
     <header>
       <a href="/">Home</a>
       <a href="/competitions">Archive</a>
+      {{ if .admin }}
+      <a href="/schedule">Schedule</a>
+      <a href="/competition/new">New</a>
+      {{ end }}
       -
       {{ if .authorized }}
       <a href="{{.userpath}}">Profile</a>

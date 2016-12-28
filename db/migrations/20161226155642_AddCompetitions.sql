@@ -4,7 +4,7 @@
 
 CREATE TABLE competitions (
        id SERIAL UNIQUE NOT NULL,
-       name TEXT NOT NULL,
+       name TEXT UNIQUE NOT NULL,
        description TEXT NOT NULL,
        position INT NOT NULL,
        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

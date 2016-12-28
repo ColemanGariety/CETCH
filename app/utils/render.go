@@ -12,9 +12,17 @@ import (
 type Props map[string]interface{}
 
 func (props Props) ValidatePresence(field string) bool {
-	if strings.TrimSpace(props[field].(string)) == "" {
-		props.SetError(field, fmt.Sprintf("%s can't be blank", field))
-		return false
+	switch value := props[field].(type) {
+	case string:
+		if value == "" {
+			props.SetError(field, fmt.Sprintf("%s can't be blank", field))
+			return false
+		}
+	case float64:
+		if value == 0.0 {
+			props.SetError(field, fmt.Sprintf("%s can't be blank", field))
+			return false
+		}
 	}
 	return true
 }
