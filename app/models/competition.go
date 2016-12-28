@@ -15,9 +15,9 @@ type Competitions []Competition
 
 func NewCompetition(name string, description string, position int) *Competition {
 	return &Competition{
-		Name: name,
+		Name:        name,
 		Description: description,
-		Position: position,
+		Position:    position,
 	}
 }
 
@@ -47,7 +47,7 @@ func (competition *Competition) Create() (*Competition, error) {
 	return competition, c.Error
 }
 
-func (competition *Competition) Delete() (error) {
+func (competition *Competition) Delete() error {
 	c := db.Delete(&competition)
 	return c.Error
 }
@@ -57,7 +57,7 @@ func (competitions *Competitions) FindAll() (*Competitions, error) {
 	return competitions, c.Error
 }
 
-func (competitions *Competitions) DeleteAll() (error) {
+func (competitions *Competitions) DeleteAll() error {
 	c := db.Unscoped().Find(&competitions).Delete(Competitions{})
 	return c.Error
 }

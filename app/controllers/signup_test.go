@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"testing"
-	"net/http"
-	"os"
-	"net/http/httptest"
-	"github.com/stretchr/testify/assert"
 	"bytes"
+	"github.com/stretchr/testify/assert"
+	"net/http"
+	"net/http/httptest"
 	"net/url"
+	"os"
+	"testing"
 
 	"github.com/JacksonGariety/cetch/app/models"
 )
@@ -39,11 +39,11 @@ func TestSignupInUseUsername(t *testing.T) {
 	signupTestSetup()
 
 	// make the user
-	(&models.User{ Name: "foo" }).CreateFromPassword("bar")
+	(&models.User{Name: "foo"}).CreateFromPassword("bar")
 
-	data := url.Values{ "email": {"foo@bar.raz"}, "username": {"foo"}, "password": {"bar"}, "password_confirmation": {"bar"} }
+	data := url.Values{"email": {"foo@bar.raz"}, "username": {"foo"}, "password": {"bar"}, "password_confirmation": {"bar"}}
 	w := httptest.NewRecorder()
-	r, _ := http.NewRequest("POST", "/signup",  bytes.NewBufferString(data.Encode()))
+	r, _ := http.NewRequest("POST", "/signup", bytes.NewBufferString(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	SignupPost(w, r)
@@ -59,9 +59,9 @@ func TestSignupInUseUsername(t *testing.T) {
 func TestSignupSuccess(t *testing.T) {
 	signupTestSetup()
 
-	data := url.Values{ "email": {"foo@bar.raz"}, "username": {"foo"}, "password": {"testpass"}, "password_confirmation": {"testpass"} }
+	data := url.Values{"email": {"foo@bar.raz"}, "username": {"foo"}, "password": {"testpass"}, "password_confirmation": {"testpass"}}
 	w := httptest.NewRecorder()
-	r, _ := http.NewRequest("POST", "/signup",  bytes.NewBufferString(data.Encode()))
+	r, _ := http.NewRequest("POST", "/signup", bytes.NewBufferString(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	SignupPost(w, r)

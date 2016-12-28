@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"testing"
+	"bytes"
+	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
-	"github.com/stretchr/testify/assert"
-	"bytes"
 	"os"
+	"testing"
 
 	"github.com/JacksonGariety/cetch/app/models"
 )

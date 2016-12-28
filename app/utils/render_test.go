@@ -1,15 +1,15 @@
 package utils
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestValidatePresence(t *testing.T) {
 	props := Props{
 		"errors": make(map[string]string),
-		"foo": "",
-		"bar": "",
+		"foo":    "",
+		"bar":    "",
 	}
 
 	props.ValidatePresence("foo")
@@ -24,7 +24,7 @@ func TestValidatePresence(t *testing.T) {
 func TestValidateNoSpace(t *testing.T) {
 	props := Props{
 		"errors": make(map[string]string),
-		"foo": "f o o",
+		"foo":    "f o o",
 	}
 
 	props.ValidateNoSpace("foo")
@@ -38,8 +38,8 @@ func TestValidateNoSpace(t *testing.T) {
 func TestValidateConfirmation(t *testing.T) {
 	props := Props{
 		"errors": make(map[string]string),
-		"foo": "foo",
-		"bar": "bar",
+		"foo":    "foo",
+		"bar":    "bar",
 	}
 
 	props.ValidateConfirmation("foo", "bar")
@@ -53,8 +53,8 @@ func TestValidateConfirmation(t *testing.T) {
 func TestValidateLength(t *testing.T) {
 	props := Props{
 		"errors": make(map[string]string),
-		"foo": "2shrt",
-		"bar": "toooloooonnnnggggsttttrrrriiiinnngggg",
+		"foo":    "2shrt",
+		"bar":    "toooloooonnnnggggsttttrrrriiiinnngggg",
 	}
 
 	props.ValidateLength("foo", 6, 10)
@@ -69,7 +69,7 @@ func TestValidateLength(t *testing.T) {
 func TestValidateEmail(t *testing.T) {
 	props := Props{
 		"errors": make(map[string]string),
-		"foo": "foobar.com",
+		"foo":    "foobar.com",
 	}
 
 	props.ValidateEmail("foo")
@@ -79,7 +79,7 @@ func TestValidateEmail(t *testing.T) {
 func TestFieldIsValid(t *testing.T) {
 	props := Props{
 		"errors": make(map[string]string),
-		"foo": "foo",
+		"foo":    "foo",
 	}
 
 	props.ValidatePresence("foo")
@@ -96,7 +96,7 @@ func TestFieldIsValid(t *testing.T) {
 func TestIsValid(t *testing.T) {
 	props := Props{
 		"errors": make(map[string]string),
-		"foo": "foo",
+		"foo":    "foo",
 	}
 
 	props.ValidatePresence("foo")
@@ -113,7 +113,7 @@ func TestIsValid(t *testing.T) {
 func TestIsNotValid(t *testing.T) {
 	props := Props{
 		"errors": make(map[string]string),
-		"foo": "",
+		"foo":    "",
 	}
 
 	props.ValidatePresence("foo")

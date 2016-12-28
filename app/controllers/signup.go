@@ -15,18 +15,18 @@ func SignupShow(w http.ResponseWriter, r *http.Request) {
 
 func SignupPost(w http.ResponseWriter, r *http.Request) {
 	form := utils.Props{
-		"errors": make(map[string]string),
-		"email": r.FormValue("email"),
-		"username": r.FormValue("username"),
-		"password": r.FormValue("password"),
+		"errors":                make(map[string]string),
+		"email":                 r.FormValue("email"),
+		"username":              r.FormValue("username"),
+		"password":              r.FormValue("password"),
 		"password_confirmation": r.FormValue("password_confirmation"),
 	}
 
-	if (validateSignupForm(form) == false) {
+	if validateSignupForm(form) == false {
 		utils.Render(w, r, "signup.html", &form)
 	} else {
-		(&models.User{ Name: form["username"].(string), Email: form["email"].(string) }).CreateFromPassword(form["password"].(string))
-	  signedToken, expireCookie, claims := models.ClaimsCreate(form["username"].(string)) // creates a JWT token
+		(&models.User{Name: form["username"].(string), Email: form["email"].(string)}).CreateFromPassword(form["password"].(string))
+		signedToken, expireCookie, claims := models.ClaimsCreate(form["username"].(string)) // creates a JWT token
 		cookie := http.Cookie{Name: "Auth", Value: signedToken, Expires: expireCookie, HttpOnly: true}
 		http.SetCookie(w, &cookie)
 		http.Redirect(w, r, claims.Userpath(), 307)
@@ -35,10 +35,10 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 
 // Validations
 
-func validateSignupForm(form utils.Props) (bool) {
+func validateSignupForm(form utils.Props) bool {
 	if form.ValidatePresence("email") {
 		if form.ValidateEmail("email") {
-			exists, _ := (&models.User{ Email: form["email"].(string)}).Exists()
+			exists, _ := (&models.User{Email: form["email"].(string)}).Exists()
 			if exists {
 				form.SetError("email", "email is already in use")
 			}
@@ -52,7 +52,7 @@ func validateSignupForm(form utils.Props) (bool) {
 	if form.ValidatePresence("username") {
 		form.ValidateNoSpace("username")
 
-		exists, _ := (&models.User{ Name: form["username"].(string) }).Exists()
+		exists, _ := (&models.User{Name: form["username"].(string)}).Exists()
 		if exists {
 			form.SetError("username", "username is already in use")
 		}

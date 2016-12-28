@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"testing"
+	"bytes"
+	"github.com/stretchr/testify/assert"
 	"net/http"
+	"net/http/httptest"
 	"net/url"
 	"os"
-	"net/http/httptest"
-	"github.com/stretchr/testify/assert"
-	"bytes"
+	"testing"
 
 	"github.com/JacksonGariety/cetch/app/models"
 )
@@ -38,9 +38,9 @@ func TestLoginShowOK(t *testing.T) {
 func TestLoginNonexistentUsername(t *testing.T) {
 	loginTestSetup()
 
-	data := url.Values{ "username": {"foo"}, "password": {"bar"} }
+	data := url.Values{"username": {"foo"}, "password": {"bar"}}
 	w := httptest.NewRecorder()
-	r, _ := http.NewRequest("POST", "/login",  bytes.NewBufferString(data.Encode()))
+	r, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	LoginPost(w, r)
@@ -53,11 +53,11 @@ func TestLoginNonexistentUsername(t *testing.T) {
 
 func TestLoginIncorrectPassword(t *testing.T) {
 	loginTestSetup()
-	(&models.User{ Name: "foo" }).CreateFromPassword("notbar")
+	(&models.User{Name: "foo"}).CreateFromPassword("notbar")
 
-	data := url.Values{ "username": {"foo"}, "password": {"bar"} }
+	data := url.Values{"username": {"foo"}, "password": {"bar"}}
 	w := httptest.NewRecorder()
-	r, _ := http.NewRequest("POST", "/login",  bytes.NewBufferString(data.Encode()))
+	r, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	LoginPost(w, r)
@@ -71,11 +71,11 @@ func TestLoginIncorrectPassword(t *testing.T) {
 func TestLoginSuccess(t *testing.T) {
 	loginTestSetup()
 
-	(&models.User{ Name: "foo" }).CreateFromPassword("testpass")
+	(&models.User{Name: "foo"}).CreateFromPassword("testpass")
 
-	data := url.Values{ "username": {"foo"}, "password": {"testpass"} }
+	data := url.Values{"username": {"foo"}, "password": {"testpass"}}
 	w := httptest.NewRecorder()
-	r, _ := http.NewRequest("POST", "/login",  bytes.NewBufferString(data.Encode()))
+	r, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	LoginPost(w, r)

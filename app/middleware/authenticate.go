@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"net/http"
-	"fmt"
 	"context"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"net/http"
 	"os"
 
 	"github.com/JacksonGariety/cetch/app/models"
@@ -14,23 +14,23 @@ import (
 var sessionHash = os.Getenv("session_hash")
 
 func Authenticate(next http.Handler) http.Handler {
-	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var ctx context.Context
 		claims, ok := isAuthentic(r)
 		if ok {
-			user, _ := (&models.User{ Name: claims.Username }).Find()
+			user, _ := (&models.User{Name: claims.Username}).Find()
 			ctx = context.WithValue(r.Context(), "data", &utils.Props{
-				"authorized": ok,
+				"authorized":          ok,
 				"authorized_username": claims.Username,
-				"userpath": user.Userpath(),
-				"admin": user.Admin,
+				"userpath":            user.Userpath(),
+				"admin":               user.Admin,
 			})
 		} else {
 			ctx = context.WithValue(r.Context(), "data", &utils.Props{
-				"authorized": false,
+				"authorized":          false,
 				"authorized_username": "",
-				"userpath": "",
-				"admin": false,
+				"userpath":            "",
+				"admin":               false,
 			})
 		}
 
@@ -40,7 +40,7 @@ func Authenticate(next http.Handler) http.Handler {
 
 // unauthorized users recieve 401
 func Protect(next http.Handler) http.Handler {
-	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		data := r.Context().Value("data").(*utils.Props)
 		if (*data)["authorized"].(bool) {
 			next.ServeHTTP(w, r)
@@ -53,7 +53,7 @@ func Protect(next http.Handler) http.Handler {
 
 // non-admin users recieve 403
 func Forbid(next http.Handler) http.Handler {
-	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		data := r.Context().Value("data").(*utils.Props)
 		if (*data)["authorized"].(bool) && (*data)["admin"].(bool) {
 			next.ServeHTTP(w, r)
@@ -66,7 +66,7 @@ func Forbid(next http.Handler) http.Handler {
 
 // authorized users are redirected to home
 func Retain(next http.Handler) http.Handler {
-	return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		data := r.Context().Value("data").(*utils.Props)
 		if (*data)["authorized"].(bool) {
 			http.Redirect(w, r, "/", 307)
@@ -84,7 +84,7 @@ func isAuthentic(r *http.Request) (*models.Claims, bool) {
 	}
 
 	// Return a Token using the cookie
-	token, err := jwt.ParseWithClaims(cookie.Value, &models.Claims{}, func(token *jwt.Token) (interface{}, error){
+	token, err := jwt.ParseWithClaims(cookie.Value, &models.Claims{}, func(token *jwt.Token) (interface{}, error) {
 		// Make sure token's signature wasn't changed
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected siging method")

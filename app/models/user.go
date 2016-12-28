@@ -19,10 +19,10 @@ type Users []User
 
 func NewUser(email string, name string, password string, admin bool) *User {
 	return &User{
-		Email: email,
-		Name: name,
+		Email:        email,
+		Name:         name,
 		PasswordHash: hashPassword(password),
-		Admin: admin,
+		Admin:        admin,
 	}
 }
 
@@ -49,12 +49,12 @@ func (user *User) CreateFromPassword(password string) (*User, error) {
 	return user, c.Error
 }
 
-func (user *User) Delete() (error) {
+func (user *User) Delete() error {
 	c := db.Delete(&user)
 	return c.Error
 }
 
-func (user *User) Userpath() (string) {
+func (user *User) Userpath() string {
 	return fmt.Sprintf("/user/%s", user.Name)
 }
 
@@ -63,7 +63,7 @@ func (users *Users) FindAll() (*Users, error) {
 	return users, c.Error
 }
 
-func (users *Users) DeleteAll() (error) {
+func (users *Users) DeleteAll() error {
 	c := db.Unscoped().Find(&users).Delete(Users{})
 	return c.Error
 }

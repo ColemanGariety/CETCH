@@ -1,11 +1,11 @@
 package utils
 
 import (
-	"net/http"
-	"html/template"
-	"path"
-	"os"
 	"fmt"
+	"html/template"
+	"net/http"
+	"os"
+	"path"
 	"strings"
 )
 
@@ -76,14 +76,13 @@ func Render(w http.ResponseWriter, r *http.Request, filename string, props inter
 
 	data, ok := r.Context().Value("data").(*Props)
 
-
 	if ok {
 		for k, v := range *data {
 			endProps[k] = v
 		}
 	}
 
-  if err := tmpl.ExecuteTemplate(w, "layout", endProps); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-  }
+	if err := tmpl.ExecuteTemplate(w, "layout", endProps); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }

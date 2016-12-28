@@ -18,10 +18,10 @@ func ForgottenShow(w http.ResponseWriter, r *http.Request) {
 func ForgottenPost(w http.ResponseWriter, r *http.Request) {
 	form := utils.Props{
 		"errors": make(map[string]string),
-		"email": r.FormValue("email"),
+		"email":  r.FormValue("email"),
 	}
 
-	if (validateForgottenForm(form) == false) {
+	if validateForgottenForm(form) == false {
 		utils.Render(w, r, "forgotten.html", &form)
 	} else {
 		// err := smtp.SendMail(
@@ -44,9 +44,9 @@ func ForgottenPost(w http.ResponseWriter, r *http.Request) {
 
 // Validations
 
-func validateForgottenForm(form utils.Props) (bool) {
+func validateForgottenForm(form utils.Props) bool {
 	if form.ValidatePresence("email") {
-		exists, _ := (&models.User{ Email: form["email"].(string) }).Exists()
+		exists, _ := (&models.User{Email: form["email"].(string)}).Exists()
 		if !exists {
 			form.SetError("email", "unrecognized email")
 		}

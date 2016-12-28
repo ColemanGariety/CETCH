@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"github.com/gorilla/mux"
+	"github.com/go-zoo/bone"
 
 	"github.com/justinas/alice"
 	"github.com/NYTimes/gziphandler"
@@ -11,13 +11,8 @@ import (
 	m "github.com/JacksonGariety/cetch/app/middleware"
 )
 
-func NewRouter() *mux.Router {
-	// The router
-	router := mux.NewRouter()
-
-	// Static files
-	fs := http.FileServer(http.Dir("static"))
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
+func NewRouter() http.Handler {
+	mux := bone.New()
 
 	// Middleware
 	chain := alice.New(
@@ -26,30 +21,22 @@ func NewRouter() *mux.Router {
 		m.Authenticate,
 	)
 
-	// Index
-	router.Methods("Get").Path("/").Handler(chain.ThenFunc(c.Index))
+	mux.Get("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	mux.Get("/", chain.ThenFunc(c.Index))
+	mux.Get("/login", chain.Append(m.Retain).ThenFunc(c.LoginShow))
+	mux.Post("/login", chain.Append(m.Retain).ThenFunc(c.LoginPost))
+	mux.Get("/logout", chain.ThenFunc(c.LogoutShow))
+	mux.Get("/forgotten", chain.Append(m.Retain).ThenFunc(c.ForgottenShow))
+	mux.Post("/forgotten", chain.Append(m.Retain).ThenFunc(c.ForgottenPost))
+	mux.Get("/signup", chain.Append(m.Retain).ThenFunc(c.SignupShow))
+	mux.Post("/signup", chain.Append(m.Retain).ThenFunc(c.SignupPost))
+	mux.Get("/user/:name", chain.ThenFunc(c.UserShow))
+	mux.Post("/user/:name", chain.ThenFunc(c.UserShow))
+	mux.Get("/competition/new", chain.Append(m.Forbid).ThenFunc(c.CompetitionNew))
+	mux.Get("/competition/:id", chain.ThenFunc(c.CompetitionShow))
+	mux.Post("/competition/new", chain.Append(m.Forbid).ThenFunc(c.CompetitionCreate))
+	mux.Get("/competitions", chain.ThenFunc(c.CompetitionsShow))
+	mux.Post("/competitions", chain.ThenFunc(c.CompetitionsShow))
 
-	// login/logout
-	router.Methods("Get").Path("/login").Handler(chain.Append(m.Retain).ThenFunc(c.LoginShow))
-	router.Methods("Post").Path("/login").Handler(chain.Append(m.Retain).ThenFunc(c.LoginPost))
-	router.Methods("Get").Path("/logout").Handler(chain.ThenFunc(c.LogoutShow))
-
-	// forgotten/reset
-	router.Methods("Get").Path("/forgotten").Handler(chain.Append(m.Retain).ThenFunc(c.ForgottenShow))
-	router.Methods("Post").Path("/forgotten").Handler(chain.Append(m.Retain).ThenFunc(c.ForgottenPost))
-
-	// signup
-	router.Methods("Get").Path("/signup").Handler(chain.Append(m.Retain).ThenFunc(c.SignupShow))
-	router.Methods("Post").Path("/signup").Handler(chain.Append(m.Retain).ThenFunc(c.SignupPost))
-
-	// profile
-	router.Methods("Get", "Post").Path("/user/{name}").Handler(chain.ThenFunc(c.UserShow))
-
-	// competitions
-	router.Methods("Get").Path("/competition/new").Handler(chain.Append(m.Forbid).ThenFunc(c.CompetitionNew))
-	router.Methods("Get").Path("/competition/{id}").Handler(chain.ThenFunc(c.CompetitionShow))
-	router.Methods("Post").Path("/competition/new").Handler(chain.Append(m.Forbid).ThenFunc(c.CompetitionCreate))
-	router.Methods("Get", "Post").Path("/competitions").Handler(chain.ThenFunc(c.CompetitionsShow))
-
-	return router
+	return mux
 }

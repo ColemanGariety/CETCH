@@ -1,10 +1,10 @@
 package models
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"time"
-	"os"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
+	"os"
+	"time"
 )
 
 type Claims struct {
@@ -18,9 +18,9 @@ func ClaimsCreate(username string) (string, time.Time, Claims) {
 	expireToken := time.Now().Add(time.Hour * 8760).Unix() // 24 hours * 365 days = 8760 hours per year
 	expireCookie := time.Now().Add(time.Hour * 8760)
 
-	claims := Claims {
+	claims := Claims{
 		username,
-		jwt.StandardClaims {
+		jwt.StandardClaims{
 			ExpiresAt: expireToken,
 			Issuer:    "localhost:8080",
 		},
