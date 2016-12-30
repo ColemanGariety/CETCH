@@ -13,4 +13,4 @@ CREATE TABLE entries (
 
 -- +goose Down
 
-DROP TABLE users;
+DROP TABLE entries;
