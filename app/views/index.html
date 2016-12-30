@@ -15,5 +15,7 @@
 Deadline: Friday ({{ (formatDate .current_competition.Date) }}) at midnight
 
 <p class="description">{{ .current_competition.Description }}</p>
+<br/>
+<div class="join"><a href="/competition/{{ .current_competition.ID }}/join">Enter this Competition</a></div>
 
 {{end}}

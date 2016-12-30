@@ -1,7 +1,7 @@
 {{ define "body" }}
 <h3>#{{ .competition.ID}}: {{ .competition.Name }} {{ if .admin }}(<a href="/competition/{{ .competition.ID }}/edit">edit</a>){{ end }}</h3>
 
-<p>
+<p class="description">
   {{ .competition.Description }}
 </p>
 {{ end }}

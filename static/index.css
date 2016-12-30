@@ -10,6 +10,16 @@ body {
     font-weight: 400;
 }
 
+header {
+    padding-bottom: 1em;
+    border-bottom: 2px dashed #BBB;
+    display: inline-block;
+}
+
+header h3 {
+    margin-bottom: 0;
+}
+
 table td {
     padding: 3px;
     vertical-align: baseline;
@@ -49,7 +59,7 @@ textarea {
 }
 
 .description {
-    background-color: #EEE;
+    background-color: #F0F0F0;
     padding: 1.5em;
     font-style: italic;
 }
@@ -86,4 +96,36 @@ table.side-by-side td:first-child {
 table.side-by-side td:last-child {
     width: 50%;
     border: none;
+}
+
+.join {
+    text-align: center;
+}
+
+.join a {
+    padding: 1em;
+    border: 2px dashed #BBB;
+}
+
+.join a:active {
+    border-color: red;
+}
+
+[contenteditable=true]:not(:focus):empty:before {
+    content: attr(placeholder);
+    color: #999;
+    display: block;
+}
+
+form pre code {
+    height: 20em;
+}
+
+form pre code#result {
+    border-radius: 2px;
+    border: 1px solid #AAA;
+    z-index: -1;
+    margin-top: -303px;
+    margin-left: -.5px;
+    pointer-events: none;
 }
