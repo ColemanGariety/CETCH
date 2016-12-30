@@ -1,5 +1,5 @@
 {{ define "body" }}
-<h3>CETCH #{{ .competition.ID}}: {{ .competition.Name }}</h3>
+<h3>CETCH #{{ .competition.ID}}: {{ .competition.Name }} {{ if .admin }}(<a href="/competition/{{ .competition.ID }}/edit">edit</a>){{ end }}</h3>
 
 <p>
   {{ .competition.Description }}

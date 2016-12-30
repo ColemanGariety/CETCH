@@ -13,9 +13,9 @@
 			"Rev": "9ed569b5d1ac936e6494082958d63a6aa4fff99a"
 		},
 		{
-			"ImportPath": "github.com/gorilla/mux",
-			"Comment": "v1.1-27-g757bef9",
-			"Rev": "757bef944d0f21880861c2dd9c871ca543023cba"
+			"ImportPath": "github.com/go-zoo/bone",
+			"Comment": "1.2-12-g964b252",
+			"Rev": "964b25230a16a70e93973d6d46886b26113ab654"
 		},
 		{
 			"ImportPath": "github.com/jinzhu/gorm",

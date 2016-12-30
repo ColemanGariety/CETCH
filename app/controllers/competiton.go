@@ -12,8 +12,8 @@ import (
 )
 
 func CompetitionsShow(w http.ResponseWriter, r *http.Request) {
-	competitions, _ := (&models.Competitions{}).FindAll()
-	utils.Render(w, r, "competitions.html", &utils.Props{"competitions": *competitions})
+	comps, _ := (&models.Competitions{}).Where("date < ?", time.Now())
+	utils.Render(w, r, "competitions.html", &utils.Props{"competitions": comps})
 }
 
 func CompetitionShow(w http.ResponseWriter, r *http.Request) {
@@ -33,11 +33,13 @@ func CompetitionNew(w http.ResponseWriter, r *http.Request) {
 
 func CompetitionCreate(w http.ResponseWriter, r *http.Request) {
 	solution, _ := strconv.ParseFloat(r.FormValue("solution"), 64)
+	date, _ := time.Parse("2006-01-02", r.FormValue("date"))
 
 	form := utils.Props{
 		"errors":      make(map[string]string),
 		"name":        r.FormValue("name"),
 		"description": r.FormValue("description"),
+		"date":        date,
 		"solution":    solution,
 	}
 
@@ -57,6 +59,50 @@ func CompetitionCreate(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func CompetitionEdit(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(bone.GetValue(r, "id"))
+	comp, _ := (&models.Competition{}).FindById(id)
+	compDate := comp.Date.Format("2006-01-02")
+	utils.Render(w, r, "competition_edit.html", &utils.Props{
+		"competition": comp,
+		"competitionDate": compDate,
+	})
+}
+
+func CompetitionUpdate(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(bone.GetValue(r, "id"))
+	solution, _ := strconv.ParseFloat(r.FormValue("solution"), 64)
+	date, _ := time.Parse("2006-01-02", r.FormValue("date"))
+
+	form := utils.Props{
+		"errors":      make(map[string]string),
+		"name":        r.FormValue("name"),
+		"description": r.FormValue("description"),
+		"date":        date,
+		"solution":    solution,
+	}
+
+	form.ValidatePresence("name")
+	form.ValidatePresence("description")
+	form.ValidatePresence("solution")
+
+	comp, _ := (&models.Competition{}).FindById(id)
+	if form.IsValid() {
+		comp.Name = form["name"].(string)
+		comp.Description = form["description"].(string)
+		comp.Date = form["date"].(time.Time)
+		comp.Solution = form["solution"].(float64)
+		comp.Save()
+	} else {
+
+	}
+
+	utils.Render(w, r, "competition_edit.html", &utils.Props{
+		"competition": comp,
+		"competitionDate": form["date"].(time.Time).Format("2006-01-02"),
+	})
+}
+
 type CompetitionDay struct {
 	Date        string
 	Competition models.Competition
@@ -64,7 +110,7 @@ type CompetitionDay struct {
 
 func ScheduleShow(w http.ResponseWriter, r *http.Request) {
 	date := utils.NextFriday()
-	
+
 	// sort competitions by date
 	comps, _ := (&models.Competitions{}).Where("date > ? OR date = ?", time.Now(), "0001-01-01")
 

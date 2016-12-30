@@ -8,11 +8,13 @@
   </head>
   <body>
     <header>
+      <br/>
+      <h3 class="inline-block"><img class="emoji" src="/static/computer.png"/><img class="emoji" src="/static/zap.png"/>CETCH</h3>
       <a href="/">Home</a>
       <a href="/competitions">Archive</a>
       {{ if .admin }}
       <a href="/schedule">Schedule</a>
-      <a href="/competition/new">New</a>
+      <a href="/competition/new">Create</a>
       {{ end }}
       -
       {{ if .authorized }}

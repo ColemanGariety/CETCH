@@ -1,9 +1,20 @@
-@import url('https://fonts.googleapis.com/css?family=Inconsolata');
-
 body {
     font-family: Consolas, Inconsolata, Source Code Pro, DejaVu Sans Mono, Anonymous Pro, monospace;
-    background-color: #FFF;
     color: #222;
+    width: 600px;
+    margin: 0 auto;
+    font-weight: 400;
+}
+
+nav {
+    text-align: right;
+}
+
+.emoji {
+    width: 1em;
+    height: 1em;
+    position: relative;
+    top: 0.25em;
 }
 
 table td {
@@ -11,17 +22,49 @@ table td {
 }
 
 table, table th, table td {
-    border: 1px solid #222;
+    border: 1px solid #BBB;
 }
 
 form table tr {
-    background-color: #FFF !important;
+    background-color: #FFF;
 }
 
 form table, form table th, form table td {
     border: none;
 }
 
+input[type="text"], input[type="password"] {
+    border: 1px solid #BBB !important;
+    padding: 1px !important;
+}
+
+textarea {
+    width: 100%;
+}
+
 .error {
     color: red;
+}
+
+.normal {
+    font-weight: normal;
+}
+
+.description {
+    background-color: #EEE;
+    padding: 1.5em;
+    font-style: italic;
+}
+
+.inline-block {
+    display: inline-block;
+    margin: 0;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: limegreen;
 }

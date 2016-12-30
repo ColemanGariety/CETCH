@@ -43,7 +43,7 @@ func TestLoginNonexistentUsername(t *testing.T) {
 	r, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	LoginPost(w, r)
+	Login(w, r)
 
 	assert.Contains(t, w.Body.String(), "<input type=\"text\" name=\"username\" value=\"foo\" />")
 	assert.Contains(t, w.Body.String(), "<input type=\"password\" name=\"password\" value=\"bar\" />")
@@ -60,7 +60,7 @@ func TestLoginIncorrectPassword(t *testing.T) {
 	r, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	LoginPost(w, r)
+	Login(w, r)
 
 	assert.Contains(t, w.Body.String(), "<input type=\"text\" name=\"username\" value=\"foo\" />")
 	assert.Contains(t, w.Body.String(), "<input type=\"password\" name=\"password\" value=\"bar\" />")
@@ -78,7 +78,7 @@ func TestLoginSuccess(t *testing.T) {
 	r, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	LoginPost(w, r)
+	Login(w, r)
 
 	assert.Equal(t, "/user/foo", w.Header().Get("Location"))
 	assert.Equal(t, 307, w.Code)

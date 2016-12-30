@@ -9,14 +9,22 @@
       <td>Competition</td>
     </thead>
     <tbody>
-      {{ range $day := .days }}
-      <tr>
-        <td>{{ .Date }}</td>
-        <td>
-          <input type="text" class="reorderable-target" readonly="true" draggable="true" name="{{ .Date }}" value="{{ .Competition.Name }}" />
-        </td>
-
-      </tr>
+      {{ range $i, $day := .days }}
+        <tr {{ if (eq $i 0)}} class="red" {{ else if (eq $i 1) }} class="green" {{ end}}>
+          <td>{{ .Date }}</td>
+          <td>
+            <input
+              type="text"
+              {{ if (not (eq $i 0)) }}
+              class="reorderable-target"
+              draggable="true"
+              {{ end }}
+              readonly="true"
+              name="{{ .Date }}"
+              value="{{ .Competition.Name }}"
+            />
+          </td>
+        </tr>
       {{ end }}
     </tbody>
   </table>
@@ -26,13 +34,13 @@
 </form>
 <h3>Unscheduled Competitions</h3>
 {{ if (eq (len .comps) 0) }}
-None
+  None
 {{ else }}
-<ul>
-  {{ range $comp := .comps }}
-  <li><input type="text" readonly="true" value="{{ $comp.Name }}" class="reorderable-target" draggable="true" /></li>
-  {{ end }}
-</ul>
+  <ul>
+    {{ range $comp := .comps }}
+      <li><input type="text" readonly="true" value="{{ $comp.Name }}" class="reorderable-target" draggable="true" /></li>
+    {{ end }}
+  </ul>
 {{ end }}
 <br>
 <br/>

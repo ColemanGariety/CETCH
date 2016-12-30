@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"time"
 )
 
 type Props map[string]interface{}
@@ -74,8 +75,16 @@ func (props Props) SetError(field string, value string) {
 
 var basePath = os.Getenv("base_path")
 
+func formatDate(date time.Time) string {
+	return date.Format("02/01/2006")
+}
+
+var funcMap = template.FuncMap{
+	"formatDate": formatDate,
+}
+
 func Render(w http.ResponseWriter, r *http.Request, filename string, props interface{}) {
-	tmpl := template.Must(template.New("base").ParseFiles(path.Join(basePath, "./app/views/layout.html"), path.Join(basePath, "app/views", filename)))
+	tmpl := template.Must(template.New("base").Funcs(funcMap).ParseFiles(path.Join(basePath, "./app/views/layout.html"), path.Join(basePath, "app/views", filename)))
 
 	endProps := make(map[string]interface{})
 	for k, v := range *props.(*Props) {

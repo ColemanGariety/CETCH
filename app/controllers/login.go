@@ -15,7 +15,7 @@ func LoginShow(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, r, "login.html", &utils.Props{})
 }
 
-func LoginPost(w http.ResponseWriter, r *http.Request) {
+func Login(w http.ResponseWriter, r *http.Request) {
 	form := utils.Props{
 		"errors":   make(map[string]string),
 		"username": r.FormValue("username"),

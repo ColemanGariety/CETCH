@@ -3,7 +3,6 @@ package controllers
 import (
 	"net/http"
 	// "net/smtp"
-	// "log"
 
 	"github.com/JacksonGariety/cetch/app/models"
 	"github.com/JacksonGariety/cetch/app/utils"
@@ -15,7 +14,7 @@ func ForgottenShow(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, r, "forgotten.html", &utils.Props{})
 }
 
-func ForgottenPost(w http.ResponseWriter, r *http.Request) {
+func ForgottenSendEmail(w http.ResponseWriter, r *http.Request) {
 	form := utils.Props{
 		"errors": make(map[string]string),
 		"email":  r.FormValue("email"),

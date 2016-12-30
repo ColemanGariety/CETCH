@@ -1,10 +1,10 @@
 {{ define "body" }}
-<h3>New Competition</h3>
-<form action="/competition/new" method="post">
+<h3>Edit "{{ .competition.Name }}"</h3>
+<form action="/competition/{{ .competition.ID }}/edit" method="post">
   <table>
     <tr>
       <td>Name:*</td>
-      <td><input type="text" name="name" value="{{ .name }}" /></td>
+      <td><input type="text" name="name" value="{{ .competition.Name }}" /></td>
       <td class="error">
         {{ with .errors.name }}
         <span> ({{ . }})</span>
@@ -14,7 +14,7 @@
     <tr>
       <td>Description:*</td>
       <td>
-        <textarea name="description" rows="15" cols="80">{{ .description  }}</textarea>
+        <textarea name="description" rows="15" cols="80">{{ .competition.Description  }}</textarea>
       </td>
       <td class="error">
         {{ with .errors.description }}
@@ -24,11 +24,16 @@
     </tr>
     <tr>
       <td>Date:</td>
-      <td><input type="date" name="date" /></td>
+      <td><input type="date" name="date" value="{{ .competitionDate }}" /></td>
+      <td class="error">
+        {{ with .errors.date }}
+        <span> ({{ . }})</span>
+        {{ end }}
+      </td>
     </tr>
     <tr>
       <td>Solution:*</td>
-      <td><input type="text" name="solution" value="{{ .solution }}" /></td>
+      <td><input type="text" name="solution" value="{{ .competition.Solution }}" /></td>
       <td class="error">
         {{ with .errors.solution }}
         <span> ({{ . }})</span>
@@ -37,6 +42,6 @@
     </tr>
   </table>
   <br/>
-  <input type="submit" value="Create Competition" />
+  <input type="submit" value="Update Competition" />
 </form>
 {{ end }}

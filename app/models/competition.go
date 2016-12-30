@@ -7,11 +7,11 @@ import (
 
 type Competition struct {
 	gorm.Model
-	Name        string
-	Description string
-	Position    int
-	Date        time.Time
-	Solution    float64
+	Name          string
+	Description   string
+	Position      int
+	Date          time.Time
+	Solution      float64
 }
 
 type Competitions []Competition
@@ -22,6 +22,10 @@ func NewCompetition(name string, description string, position int) *Competition 
 		Description: description,
 		Position:    position,
 	}
+}
+
+func (competition *Competition) Order(query string) (*gorm.DB) {
+	return db.Order(query)
 }
 
 func (competition *Competition) FirstWhere(query string, vars ...interface{}) (*Competition, error) {

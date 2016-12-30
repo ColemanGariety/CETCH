@@ -1,6 +1,7 @@
 {{define "body"}}
-<h3>CETCH (code execution time championships)</h3>
-Current competition:
-<h3>{{ .current_competition.Name }}</h3>
-<p>{{ .current_competition.Description }}</p>
+<p>CETCH is a computer science competition between programmers all over the world. Every week we solve a computer science problem of varying difficulty and enter our solution here. Each entry is run in a sandbox and the execution times are clocked. Fastest execution time wins!</p>
+<span class="normal">This week: </span><h3 class="inline-block"><a href="/competition/{{ .current_competition.ID }}">{{ .current_competition.Name }}</a></h3>
+<br/>
+Deadline: Friday ({{ (formatDate .current_competition.Date) }}) at midnight
+<p class="description">{{ .current_competition.Description }}</p>
 {{end}}
