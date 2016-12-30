@@ -24,7 +24,7 @@
     </tr>
     <tr>
       <td>Date:</td>
-      <td><input type="date" name="date" value="{{ .competitionDate }}" /></td>
+      <td><input type="date" name="date" value="{{ (formatDateForForm .competition.Date) }}" /></td>
       <td class="error">
         {{ with .errors.date }}
         <span> ({{ . }})</span>
@@ -33,7 +33,7 @@
     </tr>
     <tr>
       <td>Solution:*</td>
-      <td><input type="text" name="solution" value="{{ .competition.Solution }}" /></td>
+      <td><input type="text" name="solution" value="{{ (formatSolution .competition.Solution) }}" /></td>
       <td class="error">
         {{ with .errors.solution }}
         <span> ({{ . }})</span>

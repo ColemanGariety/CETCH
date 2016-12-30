@@ -16,7 +16,7 @@ func StripSpaces(str string) string {
 }
 
 func NextFriday() time.Time {
-	date := time.Now()
+	date := time.Now().AddDate(0, 0, 1)
 	for {
 		if date.Weekday() == time.Friday {
 			date = time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, time.UTC)

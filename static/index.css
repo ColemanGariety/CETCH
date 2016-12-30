@@ -1,28 +1,26 @@
+::selection { background: #FFCD47; }
+::-moz-selection { background: #FFCD47; }
+::-webkit-selection { background: #FFCD47; }
+
 body {
     font-family: Consolas, Inconsolata, Source Code Pro, DejaVu Sans Mono, Anonymous Pro, monospace;
     color: #222;
-    width: 600px;
+    width: 650px;
     margin: 0 auto;
     font-weight: 400;
 }
 
-nav {
-    text-align: right;
-}
-
-.emoji {
-    width: 1em;
-    height: 1em;
-    position: relative;
-    top: 0.25em;
-}
-
 table td {
     padding: 3px;
+    vertical-align: baseline;
 }
 
 table, table th, table td {
     border: 1px solid #BBB;
+}
+
+.no-border {
+    border: none;
 }
 
 form table tr {
@@ -43,7 +41,7 @@ textarea {
 }
 
 .error {
-    color: red;
+    color: #F55;
 }
 
 .normal {
@@ -56,15 +54,36 @@ textarea {
     font-style: italic;
 }
 
-.inline-block {
-    display: inline-block;
-    margin: 0;
-}
-
 .red {
-    background-color: red;
+    background-color: #F55;
 }
 
 .green {
     background-color: limegreen;
+}
+
+.emoji {
+    width: 1em;
+    height: 1em;
+    position: relative;
+    top: 0.15em;
+}
+
+.no-bottom {
+    margin-bottom: 0;
+}
+
+table.side-by-side {
+    width: 100%;
+    border: none;
+}
+
+table.side-by-side td:first-child {
+    width: 50%;
+    border: none;
+}
+
+table.side-by-side td:last-child {
+    width: 50%;
+    border: none;
 }

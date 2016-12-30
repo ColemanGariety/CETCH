@@ -1,49 +1,70 @@
 {{ define "body" }}
 
-<h3>Competition Schedule</h3>
+<h3>Schedule</h3>
 
-<form action="/schedule" method="POST">
-  <table>
-    <thead>
-      <td>Date</td>
-      <td>Competition</td>
-    </thead>
-    <tbody>
-      {{ range $i, $day := .days }}
-        <tr {{ if (eq $i 0)}} class="red" {{ else if (eq $i 1) }} class="green" {{ end}}>
-          <td>{{ .Date }}</td>
-          <td>
-            <input
-              type="text"
-              {{ if (not (eq $i 0)) }}
-              class="reorderable-target"
-              draggable="true"
+<span>This is the admin schedule. Drag the items and hit save to reschedule CETCH. The upcoming competition cannot be rescheduled.</span>
+
+<table class="side-by-side">
+  <tbody>
+    <tr>
+      <td>
+        <form action="/schedule" method="POST">
+          <h4>Next 10 Fridays:</h4>
+          <table>
+            <thead>
+              <td>Date</td>
+              <td>Competition</td>
+            </thead>
+            <tbody>
+              {{ range $i, $day := .days }}
+                <tr {{ if (eq $i 0)}} class="red" {{ end}}>
+                  <td>{{ .Date }}</td>
+                  <td>
+                    <input
+                      type="text"
+                      {{ if (not (eq $i 0)) }}
+                      class="reorderable-target"
+                      draggable="true"
+                      {{ end }}
+                      readonly="true"
+                      name="{{ .Date }}"
+                      value="{{ .Competition.Name }}"
+                    />
+                  </td>
+                </tr>
               {{ end }}
-              readonly="true"
-              name="{{ .Date }}"
-              value="{{ .Competition.Name }}"
-            />
-          </td>
-        </tr>
-      {{ end }}
-    </tbody>
-  </table>
-  <br/>
-  <input type="submit" value="Save" />
-  <input type="reset">
-</form>
-<h3>Unscheduled Competitions</h3>
-{{ if (eq (len .comps) 0) }}
-  None
-{{ else }}
-  <ul>
-    {{ range $comp := .comps }}
-      <li><input type="text" readonly="true" value="{{ $comp.Name }}" class="reorderable-target" draggable="true" /></li>
-    {{ end }}
-  </ul>
-{{ end }}
-<br>
+            </tbody>
+          </table>
+          <br/>
+          <input type="submit" value="Save" />
+          <input type="reset">
+        </form>
+      </td>
+      <td>
+        <h4>Unscheduled:</h4>
+        {{ if (eq (len .comps) 0) }}
+          None
+        {{ else }}
+          <ul>
+            {{ range $comp := .comps }}
+              <li><input type="text" readonly="true" value="{{ $comp.Name }}" class="reorderable-target" draggable="true" /></li>
+            {{ end }}
+          </ul>
+        {{ end }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <br/>
+
+<h4>All Competitions:</h4>
+
+<ul>
+  {{ range $comp := .all }}
+    <li>{{ $comp.Name }} (<a href="/competition/{{ $comp.ID }}">show</a>, <a href="/competition/{{ $comp.ID }}/edit">edit</a>)</li>
+  {{ end }}
+</ul>
 
 <script type="text/javascript" src="/static/reorderable.js"></script>
 {{ end }}
