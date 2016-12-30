@@ -1,10 +1,9 @@
 {{ define "body" }}
+
 <h3>Join CETCH #{{ .competition.ID}}: {{ .competition.Name }}?</h3>
 <form action="/competition/join" method="post">
   <br/>
   <input type="submit" value="Join Competition" />
 </form>
+
 {{ end }}
-
-
-

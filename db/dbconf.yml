@@ -6,6 +6,6 @@ test:
   driver: postgres
   open: user=cetch dbname=cetch_test sslmode=disable
 
-development:
+production:
   driver: postgres
   open: user=cetch dbname=cetch sslmode=disable

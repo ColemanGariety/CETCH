@@ -159,8 +159,7 @@ func CompetitionJoin(w http.ResponseWriter, r *http.Request) {
 	if exists, _ := comp.ExistsById(id); exists {
 		utils.Render(w, r, "competition_join.html", &utils.Props{"competition": comp})
 	} else {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, "404 not found")
+		utils.NotFound(w, r)
 	}
 }
 
@@ -170,5 +169,5 @@ func CompetitionJoinComp(w http.ResponseWriter, r *http.Request) {
 		CompetitionID: id,
 		UserID: 1,
 	}).Create()
-	http.Redirect(w, r, "/competitions", 307)
+	http.Redirect(w, r, "/archive", 307)
 }
