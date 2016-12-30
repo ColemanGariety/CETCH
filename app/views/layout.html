@@ -1,4 +1,5 @@
 {{ define "layout" }}
+
 <!doctype html>
 <html>
   <head>
@@ -8,24 +9,27 @@
   </head>
   <body>
     <header>
-      <br/>
-      <h3 class="inline-block"><img class="emoji" src="/static/computer.png"/><img class="emoji" src="/static/zap.png"/>CETCH</h3>
-      <a href="/">Home</a>
-      <a href="/competitions">Archive</a>
-      {{ if .admin }}
-      <a href="/schedule">Schedule</a>
-      <a href="/competition/new">Create</a>
-      {{ end }}
-      -
-      {{ if .authorized }}
-      <a href="{{.userpath}}">Profile</a>
-      <a href="/logout">Logout</a>
-      {{ else }}
-      <a href="/login">Login</a>
-      <a href="/signup">Signup</a>
-      {{ end }}
+      <h3><img class="emoji" src="/static/computer.png"/><img class="emoji" src="/static/zap.png"/>CETCH (Code Execution Time CHampionship)</h3>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/competitors">Competitors</a>
+        <a href="/archive">Archive</a>
+        {{ if .admin }}
+          <a href="/schedule">Schedule</a>
+          <a href="/competition/new">Create</a>
+        {{ end }}
+        -
+        {{ if .authorized }}
+          <a href="{{.userpath}}">Profile</a>
+          <a href="/logout">Logout</a>
+        {{ else }}
+          <a href="/login">Login</a>
+          <a href="/signup">Signup</a>
+        {{ end }}
+      </nav>
     </header>
     {{ template "body" .}}
   </body>
 </html>
+
 {{ end }}

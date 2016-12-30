@@ -4,14 +4,14 @@
   <thead>
     <td>#</td>
     <td>Name</td>
-    <td>Date</td>
+    <td>Ended On</td>
   </thead>
   <tbody>
     {{ range $comp := .competitions }}
     <tr>
       <td>{{ $comp.ID }}</td>
       <td><a href="/competition/{{ $comp.ID }}">{{ $comp.Name }}</a></td>
-      <td>{{ $comp.Date }}</td>
+      <td>{{ (formatDate $comp.Date) }}</td>
     </tr>
     {{ end }}
   </tbody>

@@ -32,6 +32,7 @@ func NewRouter() http.Handler {
 	mux.Post("/signup", chain.Append(m.Retain).ThenFunc(c.SignupPost))
 	mux.Get("/user/:name", chain.ThenFunc(c.UserShow))
 	mux.Post("/user/:name", chain.ThenFunc(c.UserShow))
+	mux.Get("/competitors", chain.ThenFunc(c.UsersShow))
 	mux.Get("/competition/new", chain.Append(m.Forbid).ThenFunc(c.CompetitionNew))
 	mux.Post("/competition/new", chain.Append(m.Forbid).ThenFunc(c.CompetitionCreate))
 	mux.Get("/competition/:id", chain.ThenFunc(c.CompetitionShow))
@@ -41,6 +42,8 @@ func NewRouter() http.Handler {
 	mux.Post("/competition/join", chain.Append(m.Forbid).ThenFunc(c.CompetitionJoinComp))
 	mux.Get("/competitions", chain.ThenFunc(c.CompetitionsShow))
 	mux.Post("/competitions", chain.Append(m.Forbid).ThenFunc(c.CompetitionsShow))
+	mux.Get("/archive", chain.ThenFunc(c.Archive))
+	mux.Post("/archive", chain.Append(m.Forbid).ThenFunc(c.Archive))
 	mux.Get("/schedule", chain.Append(m.Forbid).ThenFunc(c.ScheduleShow))
 	mux.Post("/schedule", chain.Append(m.Forbid).ThenFunc(c.SchedulePost))
 

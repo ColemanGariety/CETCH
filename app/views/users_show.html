@@ -1,0 +1,21 @@
+{{ define "body" }}
+<h3>Top Competitors</h3>
+
+<table>
+  <thead>
+    <td>ID</td>
+    <td>Username</td>
+    <td>Points</td>
+  </thead>
+  <tbody>
+    {{ range $user := .users }}
+      <tr>
+        <td>{{ $user.ID }}</td>
+        <td>{{ $user.Name }}</td>
+        <td>0</td>
+      </tr>
+    {{ end }}
+  </tbody>
+</table>
+
+{{ end }}

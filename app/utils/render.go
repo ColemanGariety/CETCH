@@ -8,6 +8,7 @@ import (
 	"path"
 	"strings"
 	"time"
+	"strconv"
 )
 
 type Props map[string]interface{}
@@ -76,11 +77,21 @@ func (props Props) SetError(field string, value string) {
 var basePath = os.Getenv("base_path")
 
 func formatDate(date time.Time) string {
-	return date.Format("02/01/2006")
+	return date.Format("01/02/2006")
+}
+
+func formatDateForForm(date time.Time) string {
+	return date.Format("2006-01-02")
+}
+
+func formatSolution(solution float64) string {
+	return strconv.FormatFloat(solution, 'f', 6, 64)
 }
 
 var funcMap = template.FuncMap{
 	"formatDate": formatDate,
+	"formatDateForForm": formatDateForForm,
+	"formatSolution": formatSolution,
 }
 
 func Render(w http.ResponseWriter, r *http.Request, filename string, props interface{}) {
@@ -102,4 +113,8 @@ func Render(w http.ResponseWriter, r *http.Request, filename string, props inter
 	if err := tmpl.ExecuteTemplate(w, "layout", endProps); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func NotFound(w http.ResponseWriter, r *http.Request) {
+	Render(w, r, "404.html", &Props{})
 }

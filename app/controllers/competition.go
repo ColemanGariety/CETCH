@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/go-zoo/bone"
 	"net/http"
 	"strconv"
@@ -11,9 +10,9 @@ import (
 	"github.com/JacksonGariety/cetch/app/utils"
 )
 
-func CompetitionsShow(w http.ResponseWriter, r *http.Request) {
-	comps, _ := (&models.Competitions{}).Where("date < ?", time.Now())
-	utils.Render(w, r, "competitions.html", &utils.Props{"competitions": comps})
+func Archive(w http.ResponseWriter, r *http.Request) {
+	comps, _ := (&models.Competitions{}).Where("date < NOW() OR date = NOW()")
+	utils.Render(w, r, "archive.html", &utils.Props{"competitions": comps})
 }
 
 func CompetitionShow(w http.ResponseWriter, r *http.Request) {
@@ -22,8 +21,7 @@ func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 	if exists, _ := comp.ExistsById(id); exists {
 		utils.Render(w, r, "competition_show.html", &utils.Props{"competition": comp})
 	} else {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, "404 not found")
+		utils.NotFound(w, r)
 	}
 }
 
@@ -55,17 +53,15 @@ func CompetitionCreate(w http.ResponseWriter, r *http.Request) {
 			Description: form["description"].(string),
 			Solution: form["solution"].(float64),
 		}).Create()
-		http.Redirect(w, r, "/competitions", 307)
+		http.Redirect(w, r, "/archive", 307)
 	}
 }
 
 func CompetitionEdit(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(bone.GetValue(r, "id"))
 	comp, _ := (&models.Competition{}).FindById(id)
-	compDate := comp.Date.Format("2006-01-02")
 	utils.Render(w, r, "competition_edit.html", &utils.Props{
 		"competition": comp,
-		"competitionDate": compDate,
 	})
 }
 
@@ -97,10 +93,7 @@ func CompetitionUpdate(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	utils.Render(w, r, "competition_edit.html", &utils.Props{
-		"competition": comp,
-		"competitionDate": form["date"].(time.Time).Format("2006-01-02"),
-	})
+	utils.Render(w, r, "competition_edit.html", &utils.Props{ "competition": comp })
 }
 
 type CompetitionDay struct {
@@ -112,7 +105,7 @@ func ScheduleShow(w http.ResponseWriter, r *http.Request) {
 	date := utils.NextFriday()
 
 	// sort competitions by date
-	comps, _ := (&models.Competitions{}).Where("date > ? OR date = ?", time.Now(), "0001-01-01")
+	comps, _ := (&models.Competitions{}).Where("date > NOW() OR date = ?", "0001-01-01")
 
 	competitionsByDate := make(map[time.Time]interface{})
 	for _, v := range *comps {
@@ -135,7 +128,13 @@ func ScheduleShow(w http.ResponseWriter, r *http.Request) {
 		date = date.AddDate(0, 0, 7)
 	}
 
-	utils.Render(w, r, "schedule.html", &utils.Props{ "days": days, "comps": competitionsByDate })
+	all, _ := (&models.Competitions{}).FindAll()
+
+	utils.Render(w, r, "schedule.html", &utils.Props{
+		"days": days,
+		"comps": competitionsByDate,
+		"all": all,
+	})
 }
 
 func SchedulePost(w http.ResponseWriter, r *http.Request) {

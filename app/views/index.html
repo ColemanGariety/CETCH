@@ -1,7 +1,19 @@
 {{define "body"}}
-<p>CETCH is a computer science competition between programmers all over the world. Every week we solve a computer science problem of varying difficulty and enter our solution here. Each entry is run in a sandbox and the execution times are clocked. Fastest execution time wins!</p>
-<span class="normal">This week: </span><h3 class="inline-block"><a href="/competition/{{ .current_competition.ID }}">{{ .current_competition.Name }}</a></h3>
-<br/>
+
+<h3>What is this?</h3>
+
+<p>CETCH is a computer science competition with participants from all over the world. Each week we solve a computer science puzzle of varying difficulty and upload our programs here. On Friday at midnight, all the entries are run in a sandbox and the execution times are clocked. <b>The fastest solution wins.</b> A new competition begins immediately after the previous one has ended.</p>
+
+<h3>Rules:</h3>
+<ol>
+  <li>You may only use languages as specified by the competition</li>
+  <li>You may only use those language's standard libraries</li>
+  <li>Your entry program may not contain the solution itself</li>
+</ol>
+
+<h3 class="no-bottom">This week: <a href="/competition/{{ .current_competition.ID }}">{{ .current_competition.Name }}</a></h3>
 Deadline: Friday ({{ (formatDate .current_competition.Date) }}) at midnight
+
 <p class="description">{{ .current_competition.Description }}</p>
+
 {{end}}

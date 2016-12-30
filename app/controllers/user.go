@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/go-zoo/bone"
 	"net/http"
 
@@ -17,7 +16,13 @@ func UserShow(w http.ResponseWriter, r *http.Request) {
 			"admin":    user.Admin,
 		})
 	} else {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, "404 not found")
+		utils.NotFound(w, r)
 	}
+}
+
+func UsersShow(w http.ResponseWriter, r *http.Request) {
+	users, _ := (&models.Users{}).FindAll()
+	utils.Render(w, r, "users_show.html", &utils.Props{
+		"users": users,
+	})
 }
