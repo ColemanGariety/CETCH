@@ -12,6 +12,7 @@ type Competition struct {
 	Position      int
 	Date          time.Time
 	Solution      float64
+	Entry       []Entry
 }
 
 type Competitions []Competition

@@ -13,6 +13,7 @@ type User struct {
 	Name         string
 	PasswordHash string
 	Admin        bool
+	Entry       []Entry
 }
 
 type Users []User
