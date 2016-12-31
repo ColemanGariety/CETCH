@@ -6,9 +6,10 @@
 
 <h3>Rules:</h3>
 <ol>
-  <li>You may only use languages as specified by the competition</li>
-  <li>You may only use those language's standard libraries</li>
-  <li>Your entry program may not contain the solution itself</li>
+  <li>You must use one of the languages specified</li>
+  <li>You must only use the standard libraries for that language</li>
+  <li>Your program must only use the information presented in the problem</li>
+  <li>Fastest execution time wins</li>
 </ol>
 
 <h3 class="no-bottom">This week: <a href="/competition/{{ .current_competition.ID }}">{{ .current_competition.Name }}</a></h3>
@@ -16,8 +17,6 @@ Deadline: Friday ({{ (formatDate .current_competition.Date) }}) at midnight
 
 <p class="description">{{ .current_competition.Description }}</p>
 
-<br/>
-
-<h3 class="join"><a href="/entry/new">Enter this Competition</a></h3>
+<h3><a href="/entry/new">Enter this Competition</a></h3>
 
 {{end}}

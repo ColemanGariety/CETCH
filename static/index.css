@@ -16,8 +16,13 @@ header {
     display: inline-block;
 }
 
-table td {
+td {
     vertical-align: baseline;
+    padding: .25em;
+}
+
+form td {
+    padding-left: 0;
 }
 
 table, table th, table td {
@@ -91,10 +96,6 @@ table.side-by-side td:first-child {
 table.side-by-side td:last-child {
     width: 50%;
     border: none;
-}
-
-.join {
-    text-align: center;
 }
 
 [contenteditable=true]:not(:focus):empty:before {

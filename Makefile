@@ -1,20 +1,22 @@
-setup:
-	goose -env production up
-
-build:
-	go build
-
 run:
+	go build
 	env session_hash=needed_hash dbname=cetch env=production base_path=$$GOPATH/src/github.com/JacksonGariety/cetch ./cetch
 
 install:
 	go get github.com/tools/godep
+	go get bitbucket.org/liamstask/goose/cmd/goose
 	godep restore
 
 install_dev:
 	go get github.com/pilu/fresh
-	go get bitbucket.org/liamstask/goose/cmd/goose
 	go get github.com/stretchr/testify
+
+install_production_arch:
+	sudo pacman -U mbox/mbox-20130226-1-x86_64.pkg.tar.xz
+
+db_setup_production:
+	createuser cetch -s -U postgres
+	createdb cetch -U cetch
 
 db_status:
 	goose status

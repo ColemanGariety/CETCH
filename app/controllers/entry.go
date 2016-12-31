@@ -53,7 +53,7 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, fmt.Sprintf("/entry/%v", entry.ID), 307)
 	} else {
-		fmt.Fprintf(w, "%s", err)
+		fmt.Fprintf(w, "%s", string(runnerOut))
 	}
 
 }
