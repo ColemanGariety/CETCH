@@ -24,6 +24,7 @@ func Authenticate(next http.Handler) http.Handler {
 				"authorized_username": claims.Username,
 				"userpath":            user.Userpath(),
 				"admin":               user.Admin,
+				"current_user":        user,
 			})
 		} else {
 			ctx = context.WithValue(r.Context(), "data", &utils.Props{
@@ -38,15 +39,14 @@ func Authenticate(next http.Handler) http.Handler {
 	})
 }
 
-// unauthorized users recieve 401
+// unauthorized users are redirected to signup
 func Protect(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		data := r.Context().Value("data").(*utils.Props)
 		if (*data)["authorized"].(bool) {
 			next.ServeHTTP(w, r)
 		} else {
-			w.WriteHeader(http.StatusUnauthorized)
-			fmt.Fprintf(w, "401 unauthorized")
+			utils.NotAuthorized(w, r)
 		}
 	})
 }
@@ -58,8 +58,7 @@ func Forbid(next http.Handler) http.Handler {
 		if (*data)["authorized"].(bool) && (*data)["admin"].(bool) {
 			next.ServeHTTP(w, r)
 		} else {
-			w.WriteHeader(http.StatusUnauthorized)
-			fmt.Fprintf(w, "403 forbidden")
+			utils.Forbidden(w, r)
 		}
 	})
 }

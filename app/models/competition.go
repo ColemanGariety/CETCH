@@ -29,6 +29,11 @@ func (competition *Competition) Order(query string) (*gorm.DB) {
 	return db.Order(query)
 }
 
+func (competition *Competition) Current() (*Competition, error) {
+	c := competition.Order("date asc").Where("date > NOW()").First(competition)
+	return competition, c.Error
+}
+
 func (competition *Competition) FirstWhere(query string, vars ...interface{}) (*Competition, error) {
 	comp := &Competition{}
 	c := db.Where(query, vars...).First(comp)

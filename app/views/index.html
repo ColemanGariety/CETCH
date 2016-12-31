@@ -2,7 +2,7 @@
 
 <h3>What is this?</h3>
 
-<p>CETCH is a computer science competition with participants from all over the world. Each week we solve a computer science puzzle of varying difficulty and upload our programs here. On Friday at midnight, all the entries are run in a sandbox and the execution times are clocked. <b>The fastest solution wins.</b> A new competition begins immediately after the previous one has ended.</p>
+<p>CETCH is a computer science competition involving participants from all over the world. Each week we solve a computer science puzzle of varying complexity and upload our programs. On Friday at midnight, all the entries are run in a sandbox and the execution times are clocked. <b>The fastest solution wins.</b> A new competition begins immediately after the previous one has ended.</p>
 
 <h3>Rules:</h3>
 <ol>
@@ -15,7 +15,9 @@
 Deadline: Friday ({{ (formatDate .current_competition.Date) }}) at midnight
 
 <p class="description">{{ .current_competition.Description }}</p>
+
 <br/>
-<div class="join"><a href="/competition/{{ .current_competition.ID }}/join">Enter this Competition</a></div>
+
+<h3 class="join"><a href="/entry/new">Enter this Competition</a></h3>
 
 {{end}}

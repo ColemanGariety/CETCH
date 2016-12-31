@@ -3,7 +3,7 @@
 ::-webkit-selection { background: #FFCD47; }
 
 body {
-    font-family: Consolas, Inconsolata, Source Code Pro, DejaVu Sans Mono, Anonymous Pro, monospace;
+    font-family: Consolas, Inconsolata, DejaVu Sans Mono, monospace;
     color: #222;
     width: 650px;
     margin: 0 auto;
@@ -16,12 +16,7 @@ header {
     display: inline-block;
 }
 
-header h3 {
-    margin-bottom: 0;
-}
-
 table td {
-    padding: 3px;
     vertical-align: baseline;
 }
 
@@ -102,30 +97,33 @@ table.side-by-side td:last-child {
     text-align: center;
 }
 
-.join a {
-    padding: 1em;
-    border: 2px dashed #BBB;
-}
-
-.join a:active {
-    border-color: red;
-}
-
 [contenteditable=true]:not(:focus):empty:before {
     content: attr(placeholder);
     color: #999;
     display: block;
 }
 
-form pre code {
-    height: 20em;
+#container {
+    position: relative;
 }
 
-form pre code#result {
-    border-radius: 2px;
-    border: 1px solid #AAA;
-    z-index: -1;
-    margin-top: -303px;
-    margin-left: -.5px;
+pre code {
+    border: 1px solid #BBB !important;
+    cursor: text;
+    height: 20em;
+    width: 100%;
+    padding: 0.5em;
+    margin: 0;
+    vertical-align: baseline;
+    background-color: transparent !important;
+}
+
+pre code div, pre code span, pre pre {
+    font-family: monospace;
+    margin: 0;
+}
+
+pre code#result {
+    position: absolute;
     pointer-events: none;
 }

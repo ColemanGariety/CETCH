@@ -11,9 +11,11 @@ import (
 func UserShow(w http.ResponseWriter, r *http.Request) {
 	user := &models.User{Name: bone.GetValue(r, "name")}
 	if exists, _ := user.Exists(); exists {
+		entries := (&models.Entries{}).FindByUserId(user.ID)
 		utils.Render(w, r, "user.html", &utils.Props{
 			"username": user.Name,
 			"admin":    user.Admin,
+			"entries": entries,
 		})
 	} else {
 		utils.NotFound(w, r)

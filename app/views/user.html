@@ -4,11 +4,23 @@
 {{ if (eq .username .authorized_username) }}
 This is your profile.
 {{ end }}
-
-<br/>
-
 {{ if .admin }}
 You are an admin.
+{{ end }}
+
+
+<h4>Entries:</h4>
+{{ if (eq (len .entries) 0)}}
+  You haven't entered any competitions yet.
+{{ else }}
+  <table>
+    {{ range $entry := .entries }}
+      <tr>
+        <td>{{ $entry.ID }}</td>
+        <td><a href="/entry/{{ $entry.ID }}">Show</a></td>
+      </tr>
+    {{ end }}
+  </table>
 {{ end }}
 
 {{ end }}

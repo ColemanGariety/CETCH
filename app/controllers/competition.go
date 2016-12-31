@@ -152,22 +152,3 @@ func SchedulePost(w http.ResponseWriter, r *http.Request) {
 
 	ScheduleShow(w, r)
 }
-
-func CompetitionJoin(w http.ResponseWriter, r *http.Request) {
-	id, _ := strconv.Atoi(bone.GetValue(r, "id"))
-	comp := &models.Competition{}
-	if exists, _ := comp.ExistsById(id); exists {
-		utils.Render(w, r, "competition_join.html", &utils.Props{"competition": comp})
-	} else {
-		utils.NotFound(w, r)
-	}
-}
-
-func CompetitionJoinComp(w http.ResponseWriter, r *http.Request) {
-	id, _ := strconv.Atoi(bone.GetValue(r, "id"))
-	(&models.Entry{
-		CompetitionID: id,
-		UserID: 1,
-	}).Create()
-	http.Redirect(w, r, "/archive", 307)
-}

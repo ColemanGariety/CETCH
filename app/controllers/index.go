@@ -9,8 +9,7 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	comp := (&models.Competition{})
-	comp.Order("date asc").Where("date > NOW()").First(comp)
+	comp, _ := (&models.Competition{}).Current()
 	utils.Render(w, r, "index.html", &utils.Props{
 		"current_competition": comp,
 	})

@@ -11,6 +11,8 @@ import (
 	"strconv"
 )
 
+var BasePath = os.Getenv("base_path")
+
 type Props map[string]interface{}
 
 func (props Props) ValidatePresence(field string) bool {
@@ -74,8 +76,6 @@ func (props Props) SetError(field string, value string) {
 	props["errors"].(map[string]string)[field] = value
 }
 
-var basePath = os.Getenv("base_path")
-
 func formatDate(date time.Time) string {
 	return date.Format("01/02/2006")
 }
@@ -95,7 +95,7 @@ var funcMap = template.FuncMap{
 }
 
 func Render(w http.ResponseWriter, r *http.Request, filename string, props interface{}) {
-	tmpl := template.Must(template.New("base").Funcs(funcMap).ParseFiles(path.Join(basePath, "./app/views/layout.html"), path.Join(basePath, "app/views", filename)))
+	tmpl := template.Must(template.New("base").Funcs(funcMap).ParseFiles(path.Join(BasePath, "./app/views/layout.html"), path.Join(BasePath, "app/views", filename)))
 
 	endProps := make(map[string]interface{})
 	for k, v := range *props.(*Props) {
@@ -113,6 +113,15 @@ func Render(w http.ResponseWriter, r *http.Request, filename string, props inter
 	if err := tmpl.ExecuteTemplate(w, "layout", endProps); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func NotAuthorized(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/signup", 307)
+}
+
+func Forbidden(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusForbidden)
+	fmt.Fprintf(w, "403 forbidden")
 }
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
