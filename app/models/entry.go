@@ -9,6 +9,7 @@ type Entry struct {
 	gorm.Model
 	UserID          uint
 	CompetitionID   uint
+	Competition     Competition
 	Language        string
 	Code            string
 	ExecTime        float64
@@ -16,18 +17,7 @@ type Entry struct {
 
 type Entries []Entry
 
-func (entry *Entry) Create() (*Entry, error) {
-	db.NewRecord(entry)
-	c := db.Create(&entry)
-	return entry, c.Error
-}
-
-func (entry *Entry) Find() (*Entry, error) {
-	c := db.Where(&entry).First(&entry)
-	return entry, c.Error
-}
-
 func (entries *Entries) FindByUserId(id uint) *Entries {
-	db.Where("user_id = ?", id).Find(&entries)
+	DB.Where("user_id = ?", id).Find(&entries)
 	return entries
 }

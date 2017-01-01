@@ -44,8 +44,9 @@ func validateLoginForm(form utils.Props) bool {
 	hasPassword := form.ValidatePresence("password")
 
 	if form.ValidatePresence("username") {
-		user, err := (&models.User{Name: form["username"].(string)}).Find()
-		if err != nil {
+		user := (&models.User{Name: form["username"].(string) })
+		exists := models.Exists(user)
+		if !exists {
 			form.SetError("username", "invalid username or password")
 		} else if hasPassword {
 			err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(form["password"].(string)))

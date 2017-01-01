@@ -13,60 +13,20 @@ type User struct {
 	Name         string
 	PasswordHash string
 	Admin        bool
-	Entry       []Entry
+	Entries       []Entry
 }
 
 type Users []User
 
-func NewUser(email string, name string, password string, admin bool) *User {
-	return &User{
-		Email:        email,
-		Name:         name,
-		PasswordHash: hashPassword(password),
-		Admin:        admin,
-	}
-}
-
-func (user *User) Find() (*User, error) {
-	c := db.Where(&user).First(&user)
-	return user, c.Error
-}
-
-func (user *User) Exists() (bool, error) {
-	c := db.Where(&user).First(&user)
-	return !(c.RecordNotFound()), c.Error
-}
-
-func (user *User) Create() (*User, error) {
-	db.NewRecord(user)
-	c := db.Create(&user)
-	return user, c.Error
-}
-
 func (user *User) CreateFromPassword(password string) (*User, error) {
 	user.PasswordHash = hashPassword(password)
-	db.NewRecord(user)
-	c := db.Create(&user)
+	DB.NewRecord(user)
+	c := DB.Create(&user)
 	return user, c.Error
-}
-
-func (user *User) Delete() error {
-	c := db.Delete(&user)
-	return c.Error
 }
 
 func (user *User) Userpath() string {
 	return fmt.Sprintf("/user/%s", user.Name)
-}
-
-func (users *Users) FindAll() (*Users, error) {
-	c := db.Find(&users)
-	return users, c.Error
-}
-
-func (users *Users) DeleteAll() error {
-	c := db.Unscoped().Find(&users).Delete(Users{})
-	return c.Error
 }
 
 func hashPassword(password string) string {

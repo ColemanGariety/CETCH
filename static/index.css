@@ -18,11 +18,11 @@ header {
 
 td {
     vertical-align: baseline;
-    padding: .25em;
+    padding: .4em;
 }
 
 form td {
-    padding-left: 0;
+    padding: 2px;
 }
 
 table, table th, table td {
@@ -108,23 +108,7 @@ table.side-by-side td:last-child {
     position: relative;
 }
 
-pre code {
+pre {
     border: 1px solid #BBB !important;
-    cursor: text;
-    height: 20em;
-    width: 100%;
-    padding: 0.5em;
-    margin: 0;
-    vertical-align: baseline;
-    background-color: transparent !important;
-}
-
-pre code div, pre code span, pre pre {
-    font-family: monospace;
-    margin: 0;
-}
-
-pre code#result {
-    position: absolute;
-    pointer-events: none;
+    padding: 1em;
 }

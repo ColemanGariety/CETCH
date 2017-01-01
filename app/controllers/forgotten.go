@@ -45,7 +45,7 @@ func ForgottenSendEmail(w http.ResponseWriter, r *http.Request) {
 
 func validateForgottenForm(form utils.Props) bool {
 	if form.ValidatePresence("email") {
-		exists, _ := (&models.User{Email: form["email"].(string)}).Exists()
+		exists := models.Exists(&models.User{Email: form["email"].(string)})
 		if !exists {
 			form.SetError("email", "unrecognized email")
 		}

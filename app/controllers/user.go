@@ -9,8 +9,8 @@ import (
 )
 
 func UserShow(w http.ResponseWriter, r *http.Request) {
-	user := &models.User{Name: bone.GetValue(r, "name")}
-	if exists, _ := user.Exists(); exists {
+	user := models.User{Name: bone.GetValue(r, "name")}
+	if models.Exists(&user) {
 		entries := (&models.Entries{}).FindByUserId(user.ID)
 		utils.Render(w, r, "user.html", &utils.Props{
 			"username": user.Name,
@@ -23,7 +23,8 @@ func UserShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func UsersShow(w http.ResponseWriter, r *http.Request) {
-	users, _ := (&models.Users{}).FindAll()
+	users := &models.Users{}
+	models.All(users)
 	utils.Render(w, r, "users_show.html", &utils.Props{
 		"users": users,
 	})

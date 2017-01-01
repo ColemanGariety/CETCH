@@ -38,7 +38,7 @@ func SignupPost(w http.ResponseWriter, r *http.Request) {
 func validateSignupForm(form utils.Props) bool {
 	if form.ValidatePresence("email") {
 		if form.ValidateEmail("email") {
-			exists, _ := (&models.User{Email: form["email"].(string)}).Exists()
+			exists := models.Exists(&models.User{Email: form["email"].(string)})
 			if exists {
 				form.SetError("email", "email is already in use")
 			}
@@ -52,7 +52,7 @@ func validateSignupForm(form utils.Props) bool {
 	if form.ValidatePresence("username") {
 		form.ValidateNoSpace("username")
 
-		exists, _ := (&models.User{Name: form["username"].(string)}).Exists()
+		exists := models.Exists(&models.User{Name: form["username"].(string)})
 		if exists {
 			form.SetError("username", "username is already in use")
 		}

@@ -8,15 +8,27 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"github.com/go-zoo/bone"
 
 	"github.com/JacksonGariety/cetch/app/models"
 	"github.com/JacksonGariety/cetch/app/utils"
 )
 
 func EntryShow(w http.ResponseWriter, r *http.Request) {
-	entry, _ := (&models.Entry{}).Find()
+	id, err := strconv.Atoi(bone.GetValue(r, "id"))
+	entry := models.Entry{}
+	competition := new(models.Competition)
+
+	if !models.ExistsById(&entry, id) || err != nil {
+		utils.NotFound(w, r)
+		return
+	}
+
+	models.DB.Model(&entry).Related(&competition)
+
 	utils.Render(w, r, "entry.html", &utils.Props{
 		"entry": entry,
+		"competition": competition,
 	})
 }
 
@@ -46,7 +58,11 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	runner.Wait()
 
 	if string(errorsString) != "" {
-		fmt.Fprintf(w, "%s", errorsString)
+		comp, _ := (&models.Competition{}).Current()
+		utils.Render(w, r, "enter.html", &utils.Props{
+			"competition": comp,
+			"outputError": errorsString,
+		})
 		return
 	}
 
@@ -54,18 +70,20 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	result, err := strconv.ParseFloat(strings.Trim(outputString, "\n\r"), 64)
 	if result == comp.Solution && err == nil {
 		user := (*r.Context().Value("data").(*utils.Props))["current_user"]
-		entry := (&models.Entry{
+		entry := models.Entry{
 			CompetitionID: comp.ID,
 			UserID: user.(*models.User).ID,
 			Language: "go",
 			Code: codeString,
-		})
+		}
 
-		entry.Create()
+		models.Create(&entry)
 
 		http.Redirect(w, r, fmt.Sprintf("/entry/%v", entry.ID), 307)
 	} else {
-		fmt.Fprintf(w, "%s", outputString)
+		utils.Render(w, r, "enter.html", &utils.Props{
+			"competition": comp,
+			"outputError": outputString,
+		})
 	}
-
 }

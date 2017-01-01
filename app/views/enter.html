@@ -13,6 +13,12 @@
       </tr>
     </tbody>
   </table>
+  {{ with .outputError }}
+    <br/>
+    <div class="error">Unexpected output:</div>
+    <pre><code>$ go build
+{{ . }}</code></pre>
+  {{ end }}
   <br/>
   <input type="submit" value="enter" />
 </form>
