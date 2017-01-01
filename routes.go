@@ -45,6 +45,7 @@ func NewRouter() http.Handler {
 	mux.Get("/entry/new", chain.Append(m.Protect).ThenFunc(c.EntryNew))
 	mux.Post("/entry/new", chain.Append(m.Protect).ThenFunc(c.EntryCreate))
 	mux.Get("/entry/:id", chain.Append(m.Protect).ThenFunc(c.EntryShow))
+	mux.Post("/entry/:id", chain.Append(m.Protect).ThenFunc(c.EntryShow))
 
 	return mux
 }

@@ -36,10 +36,22 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 
 	// pass it to the runner
 	runner := exec.Command(path.Join(utils.BasePath, "./runners/go.sh"), codeString)
-	runnerOut, _ := runner.CombinedOutput()
+	runnerOut, _ := runner.StdoutPipe()
+	runnerErr, _ := runner.StderrPipe()
+	runner.Start()
+	output, _ := ioutil.ReadAll(runnerOut)
+	errors, _ := ioutil.ReadAll(runnerErr)
+	outputString := string(output)
+	errorsString := string(errors)
+	runner.Wait()
+
+	if string(errorsString) != "" {
+		fmt.Fprintf(w, "%s", errorsString)
+		return
+	}
 
 	comp, _ := (&models.Competition{}).Current()
-	result, err := strconv.ParseFloat(strings.Trim(string(runnerOut), "\n\r"), 64)
+	result, err := strconv.ParseFloat(strings.Trim(outputString, "\n\r"), 64)
 	if result == comp.Solution && err == nil {
 		user := (*r.Context().Value("data").(*utils.Props))["current_user"]
 		entry := (&models.Entry{
@@ -53,7 +65,7 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, fmt.Sprintf("/entry/%v", entry.ID), 307)
 	} else {
-		fmt.Fprintf(w, "%s", string(runnerOut))
+		fmt.Fprintf(w, "%s", outputString)
 	}
 
 }
