@@ -7,12 +7,12 @@ import (
 
 type Entry struct {
 	gorm.Model
-	UserID          uint
-	CompetitionID   uint
-	Competition     Competition
 	Language        string
 	Code            string
 	ExecTime        float64
+	UserID          uint
+	CompetitionID   uint
+	Competition     Competition
 }
 
 type Entries []Entry

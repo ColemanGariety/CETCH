@@ -17,13 +17,13 @@ import (
 func EntryShow(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(bone.GetValue(r, "id"))
 	entry := models.Entry{}
-	competition := new(models.Competition)
 
 	if !models.ExistsById(&entry, id) || err != nil {
 		utils.NotFound(w, r)
 		return
 	}
 
+	competition := new(models.Competition)
 	models.DB.Model(&entry).Related(&competition)
 
 	utils.Render(w, r, "entry.html", &utils.Props{
