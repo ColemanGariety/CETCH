@@ -5,7 +5,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/JacksonGariety/cetch/app/models"
@@ -14,7 +13,7 @@ import (
 
 func setup() {
 	utils.InitTemplates()
-	models.InitDB(os.Getenv("dbname"))
+	models.InitDB("user=cetch dbname=cetch_test sslmode=disable")
 }
 
 func teardown() {

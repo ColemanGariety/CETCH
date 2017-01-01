@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
-	"os"
 	"testing"
 
 	"github.com/JacksonGariety/cetch/app/models"
@@ -15,7 +14,7 @@ import (
 
 func signupTestSetup() {
 	utils.InitTemplates()
-	models.InitDB(os.Getenv("dbname"))
+	models.InitDB("user=cetch dbname=cetch_test sslmode=disable")
 }
 
 func signupTestTeardown() {

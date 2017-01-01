@@ -13,6 +13,7 @@
 ::-webkit-selection { background: #FFCD47; }
 
 body {
+    background-color: #f9f6ee;
     font-family: Consolas, Inconsolata, DejaVu Sans Mono, monospace;
     color: #222;
     width: 650px;

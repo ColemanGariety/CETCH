@@ -72,7 +72,7 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 		user := (*r.Context().Value("data").(*utils.Props))["current_user"]
 		entry := models.Entry{
 			CompetitionID: comp.ID,
-			UserID: user.(*models.User).ID,
+			UserID: user.(models.User).ID,
 			Language: "go",
 			Code: codeString,
 		}

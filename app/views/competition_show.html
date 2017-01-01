@@ -4,7 +4,7 @@
 
 {{ if .current }}
   {{ if .authorized }}
-    {{ if .entry }}
+    {{ if .entry.ID }}
       {{ template "entry" .}}
     {{ else }}
       {{ template "entry_upload" .}}

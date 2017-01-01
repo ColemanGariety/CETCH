@@ -1,10 +1,10 @@
 #!/bin/bash
 
-src=$(mktemp).go
+src=$(mktemp).hs
 echo "$1" >> $src
 
 dist=$(mktemp)
-go build -o $dist $src
+ghc -hidir /tmp -odir /tmp -o $dist $src
 
 out=$(bwrap --ro-bind /usr /usr \
             --ro-bind /tmp /tmp \
@@ -17,5 +17,4 @@ out=$(bwrap --ro-bind /usr /usr \
             --symlink usr/bin /bin \
             --symlink usr/sbin /sbin \
             $dist)
-
 echo $out

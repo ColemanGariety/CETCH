@@ -1,17 +1,15 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var DB *gorm.DB
 
-func InitDB(dbname string) {
+func InitDB(dbstring string) {
 	var err error
-	DB, err = gorm.Open("postgres", fmt.Sprintf("user=cetch dbname=%s sslmode=disable", dbname))
+	DB, err = gorm.Open("postgres", dbstring)
 
 	if err != nil {
 		panic(err)

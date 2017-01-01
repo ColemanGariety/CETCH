@@ -1,6 +1,6 @@
 {{ define "layout" }}
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -30,7 +30,9 @@
         {{ end }}
       </nav>
     </header>
-    {{ template "body" .}}
+    <main>
+      {{ template "body" .}}
+    </main>
   </body>
 </html>
 

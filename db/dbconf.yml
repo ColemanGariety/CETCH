@@ -8,4 +8,4 @@ test:
 
 production:
   driver: postgres
-  open: user=cetch dbname=cetch sslmode=disable
+  open: $dbstring
