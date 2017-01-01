@@ -11,6 +11,10 @@ import (
 func Index(w http.ResponseWriter, r *http.Request) {
 	comp, _ := (&models.Competition{}).Current()
 	utils.Render(w, r, "index.html", &utils.Props{
-		"current_competition": comp,
+		"competition": comp,
 	})
+}
+
+func Rules(w http.ResponseWriter, r *http.Request) {
+	utils.Render(w, r, "rules.html", &utils.Props{})
 }

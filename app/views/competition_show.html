@@ -1,35 +1,13 @@
 {{ define "body" }}
-<h3>CETCH #{{ .competition.ID}}: {{ .competition.Name }} {{ if .admin }}(<a href="/competition/{{ .competition.ID }}/edit">edit</a>){{ end }}</h3>
-<div>Deadline: Friday ({{ (formatDate .competition.Date) }}) at midnight</div>
-<div>Language: Go</div>
 
-<p class="description">
-  {{ .competition.Description }}
-</p>
+{{ template "competition_meta" .}}
 
 {{ if .current }}
   {{ if .authorized }}
     {{ if .entry }}
-      Input:
-      <pre><code class="go">{{ .entry.Code }}</code></pre>
-
-      Output:
-      <pre><code class="bash">$ go build file.go
-$ ./file
-{{ .competition.Solution }}</code></pre>
+      {{ template "entry" .}}
     {{ else }}
-      <form action="/entry/new" enctype="multipart/form-data" method="POST">
-        <table>
-          <tbody>
-            <tr>
-              <td>Upload your entry:</td>
-              <td><input type="file" name="code" /></td>
-            </tr>
-          </tbody>
-        </table>
-        <br/>
-        <input type="submit" value="Submit Entry" />
-      </form>
+      {{ template "entry_upload" .}}
     {{ end }}
   {{ else }}
     Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.

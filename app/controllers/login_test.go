@@ -10,9 +10,11 @@ import (
 	"testing"
 
 	"github.com/JacksonGariety/cetch/app/models"
+	"github.com/JacksonGariety/cetch/app/utils"
 )
 
 func loginTestSetup() {
+	utils.InitTemplates()
 	models.InitDB(os.Getenv("dbname"))
 }
 

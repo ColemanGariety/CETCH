@@ -4,33 +4,10 @@
 
 <p>CETCH is a computer science competition involving coders all over the world. Each week we solve a computer science puzzle of varying complexity and upload the solution. On Friday at midnight, all the entries are run in a sandbox and the execution times are clocked. <b>The program with the fastest execution time wins.</b></p>
 
-<h3>Rules:</h3>
-<ol>
-  <li>Your solution must employ one of the allowed languages</li>
-  <li>Your solution must use only that language's standard libraries</li>
-  <li>Your solution must be derived exclusively from the problem statement</li>
-  <li>The fastest execution time wins</li>
-</ol>
-
-<h3 class="no-bottom">This week: <a href="/competition/{{ .current_competition.ID }}">{{ .current_competition.Name }}</a></h3>
-<div>Deadline: Friday ({{ (formatDate .current_competition.Date) }}) at midnight</div>
-<div>Language: Go</div>
-
-<p class="description">{{ .current_competition.Description }}</p>
+{{ template "competition_meta" .}}
 
 {{ if .authorized }}
-  <form action="/entry/new" enctype="multipart/form-data" method="POST">
-    <table>
-      <tbody>
-        <tr>
-          <td>Upload your entry:</td>
-          <td><input type="file" name="code" /></td>
-        </tr>
-      </tbody>
-    </table>
-    <br/>
-    <input type="submit" value="Submit Entry" />
-  </form>
+  {{ template "entry_upload" .}}
 {{ else }}
   Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.
 {{ end }}

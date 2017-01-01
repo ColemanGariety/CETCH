@@ -23,6 +23,7 @@ func NewRouter() http.Handler {
 
 	mux.Get("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	mux.Get("/", chain.ThenFunc(c.Index))
+	mux.Get("/rules", chain.ThenFunc(c.Rules))
 	mux.Get("/login", chain.Append(m.Retain).ThenFunc(c.LoginShow))
 	mux.Post("/login", chain.Append(m.Retain).ThenFunc(c.Login))
 	mux.Get("/logout", chain.ThenFunc(c.LogoutShow))

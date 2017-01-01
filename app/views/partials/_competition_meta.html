@@ -1,0 +1,9 @@
+{{ define "competition_meta" }}
+
+<h3 class="no-bottom">This week: <a href="/competition/{{ .competition.ID }}">{{ .competition.Name }}</a></h3>
+<div>Deadline: Friday ({{ (formatDate .competition.Date) }}) at midnight</div>
+<div>Languages: Go</div>
+
+<p class="description">{{ .competition.Description }}</p>
+
+{{ end }}
