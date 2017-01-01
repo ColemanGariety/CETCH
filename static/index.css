@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'Consolas';
+    src: url('/static/consolas-webfont.eot');
+    src: url('/static/consolas-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/static/consolas-webfont.woff') format('woff'),
+    url('/static/consolas-webfont.ttf') format('truetype'),
+    font-weight: normal;
+    font-style: normal;
+}
+
 ::selection { background: #FFCD47; }
 ::-moz-selection { background: #FFCD47; }
 ::-webkit-selection { background: #FFCD47; }

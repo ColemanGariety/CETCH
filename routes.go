@@ -38,6 +38,7 @@ func NewRouter() http.Handler {
 	mux.Get("/competition/:id", chain.ThenFunc(c.CompetitionShow))
 	mux.Get("/competition/:id/edit", chain.Append(m.Forbid).ThenFunc(c.CompetitionEdit))
 	mux.Post("/competition/:id/edit", chain.Append(m.Forbid).ThenFunc(c.CompetitionUpdate))
+	mux.Get("/current", chain.ThenFunc(c.Current))
 	mux.Post("/archive", chain.Append(m.Forbid).ThenFunc(c.Archive))
 	mux.Get("/archive", chain.ThenFunc(c.Archive))
 	mux.Get("/schedule", chain.Append(m.Forbid).ThenFunc(c.ScheduleShow))

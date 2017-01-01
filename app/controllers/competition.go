@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"fmt"
 
 	"github.com/JacksonGariety/cetch/app/models"
 	"github.com/JacksonGariety/cetch/app/utils"
@@ -14,6 +15,11 @@ func Archive(w http.ResponseWriter, r *http.Request) {
 	comps := new(models.Competitions)
 	models.Where(comps, "date < NOW() OR date = NOW()")
 	utils.Render(w, r, "archive.html", &utils.Props{"competitions": comps})
+}
+
+func Current(w http.ResponseWriter, r *http.Request) {
+	current, _ := new(models.Competition).Current()
+	http.Redirect(w, r, fmt.Sprintf("/competition/%v", current.ID), 307)
 }
 
 func CompetitionShow(w http.ResponseWriter, r *http.Request) {

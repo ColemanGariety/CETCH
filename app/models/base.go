@@ -36,3 +36,7 @@ func All(models interface{}) *gorm.DB {
 func Where(models interface{}, query string, vars ...interface{}) *gorm.DB {
 	return DB.Where(query, vars...).Find(models)
 }
+
+func DeleteAll(models interface{}) *gorm.DB {
+	return DB.Unscoped().Delete(models)
+}

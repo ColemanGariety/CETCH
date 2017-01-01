@@ -17,7 +17,7 @@ func loginTestSetup() {
 }
 
 func loginTestTeardown() {
-	(&models.Users{}).DeleteAll()
+	models.DeleteAll(new(models.Users))
 	models.CloseDB()
 }
 
