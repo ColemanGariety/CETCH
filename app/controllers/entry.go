@@ -40,6 +40,17 @@ func EntryNew(w http.ResponseWriter, r *http.Request) {
 }
 
 func EntryCreate(w http.ResponseWriter, r *http.Request) {
+	comp, _ := (&models.Competition{}).Current()
+	current_user := (*r.Context().Value("data").(*utils.Props))["current_user"]
+	entry := &models.Entry{
+		UserID: current_user.(models.User).ID,
+		CompetitionID: comp.ID,
+	}
+	if models.Exists(&entry) {
+		utils.BadRequest(w, r)
+		return
+	}
+
 	// read the file
 	reader, _ := r.MultipartReader()
 	part, _ := reader.NextPart()
@@ -62,7 +73,6 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	var timeResult float64;
 
 	if len(errorArray) != 2 {
-		comp, _ := (&models.Competition{}).Current()
 		utils.Render(w, r, "enter.html", &utils.Props{
 			"competition": comp,
 			"stderrError": true,
@@ -77,7 +87,6 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	comp, _ := (&models.Competition{}).Current()
 	result, err := strconv.ParseFloat(strings.Trim(outputString, "\n\r"), 64)
 	if result == comp.Solution && err == nil {
 		user := (*r.Context().Value("data").(*utils.Props))["current_user"]

@@ -9,7 +9,11 @@
 {{ template "competition_meta" .}}
 
 {{ if .authorized }}
-  {{ template "entry_upload" .}}
+  {{ if .entry.ID }}
+    {{ template "entry" .}}
+  {{ else }}
+    {{ template "entry_upload" .}}
+  {{ end }}
 {{ else }}
   Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.
 {{ end }}

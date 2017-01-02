@@ -1,8 +1,13 @@
 {{ define "entry" }}
-Input:
+
+<h3>Your Entry:</h3>
+
+<p>Your submission to this competition has been recieved. Check back here on Friday to see the results.</p>
+
+<h4>Input:</h4>
 <pre><code class="go">{{ .entry.Code }}</code></pre>
 
-Output:
+<h4>Output:</h4>
 <pre><code class="bash">$ go build file.go
 $ ./file
 {{ .competition.Solution }}</code></pre>

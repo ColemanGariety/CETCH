@@ -31,14 +31,12 @@ func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 
 		var entry *models.Entry
 		if current_user != nil {
-			entry = new(models.Entry)
+			entry = &models.Entry{
+				UserID: current_user.(models.User).ID,
+				CompetitionID: comp.ID,
+			}
 
-			// this is a complex relationship
-			// competitions and users each have many entries
-			// entries have one competition and one user
-			// we need to get the entry for a specific user
-			// and a sepcific competition
-			models.DB.Where("user_id = ? AND competition_id = ?", current_user.(models.User).ID, comp.ID).First(&entry)
+			models.DB.First(&entry)
 		} else {
 			entry = nil
 		}
