@@ -57,13 +57,24 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	errorsString := string(errors)
 	runner.Wait()
 
-	if string(errorsString) != "" {
+	errorArray := strings.Split(errorsString, "\n")
+
+	var timeResult float64;
+
+	if len(errorArray) != 2 {
 		comp, _ := (&models.Competition{}).Current()
 		utils.Render(w, r, "enter.html", &utils.Props{
 			"competition": comp,
-			"outputError": errorsString,
+			"stderrError": true,
 		})
 		return
+	} else {
+		// last element is an empty string
+		// second to last is time in format 0.00
+		// the rest are real errors
+		// need a safer way to do this
+		timeResult, _ = strconv.ParseFloat(errorArray[len(errorArray)-2], 64)
+
 	}
 
 	comp, _ := (&models.Competition{}).Current()
@@ -75,6 +86,7 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 			UserID: user.(models.User).ID,
 			Language: "go",
 			Code: codeString,
+			ExecTime: timeResult,
 		}
 
 		models.Create(&entry)
@@ -83,7 +95,7 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	} else {
 		utils.Render(w, r, "enter.html", &utils.Props{
 			"competition": comp,
-			"outputError": outputString,
+			"stdoutError": true,
 		})
 	}
 }

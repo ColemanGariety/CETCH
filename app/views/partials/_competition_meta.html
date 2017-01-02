@@ -1,9 +1,10 @@
 {{ define "competition_meta" }}
 
-<h3 class="no-bottom">This week: <a href="/competition/{{ .competition.ID }}">{{ .competition.Name }}</a></h3>
-<div>Deadline: Friday ({{ (formatDate .competition.Date) }}) at midnight</div>
+<div>Deadline: Friday, {{ (formatDate .competition.Date) }}, at midnight</div>
 <div>Languages: Go</div>
 
 <p class="description">{{ .competition.Description }}</p>
+
+<p>Instructions: Using one of the languages listed above, write a program that prints the solution (and only the solution) to stdout. Upload that program here.</p>
 
 {{ end }}

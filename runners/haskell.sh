@@ -16,5 +16,5 @@ out=$(bwrap --ro-bind /usr /usr \
             --symlink usr/lib64 /lib64 \
             --symlink usr/bin /bin \
             --symlink usr/sbin /sbin \
-            $dist)
+            bash -c "TIMEFORMAT='%3R'; time $dist")
 echo $out

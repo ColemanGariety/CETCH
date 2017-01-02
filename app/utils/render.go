@@ -15,7 +15,7 @@ import (
 var BasePath = os.Getenv("base_path")
 
 func formatDate(date time.Time) string {
-	return date.Format("01/02/2006")
+	return date.Format("January 2")
 }
 
 func formatDateForForm(date time.Time) string {

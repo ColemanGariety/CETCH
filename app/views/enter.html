@@ -1,8 +1,7 @@
 {{ define "body" }}
 
-<h3>Enter CETCH #{{ .competition.ID}}: {{ .competition.Name }}</h3>
-
-<p class="description">{{ .competition.Description }}</p>
+<h3>{{ .competition.Name }}</h3>
+{{ template "competition_meta" .}}
 
 {{ template "entry_upload" .}}
 

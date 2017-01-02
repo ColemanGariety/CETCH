@@ -9,11 +9,21 @@
       </tr>
     </tbody>
   </table>
-  {{ with .outputError }}
+  {{ with .stderrError }}
     <br/>
-    <div class="error">Unexpected output:</div>
-    <pre><code>$ go build
-{{ . }}</code></pre>
+    <div class="error">
+      Error: could not compile or run your solution.
+    </div>
+  {{ end }}
+  {{ with .stdoutError }}
+    <br/>
+    <div class="error">
+      Unexpected output. One of these things happened:
+      <ul>
+        <li>Your solution is incorrect</li>
+        <li>You printed something other than the solution</li>
+      </ul>
+    </div>
   {{ end }}
   <br/>
   <input type="submit" value="Submit Entry" />

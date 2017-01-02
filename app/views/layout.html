@@ -13,12 +13,11 @@
       <nav>
         <a href="/">Home</a>
         <!-- <a href="/competitors">Competitors</a> -->
-        <a href="/current">Compete</a>
+        <a href="/current">Current</a>
         <a href="/archive">Archive</a>
         <a href="/rules">Rules</a>
         {{ if .admin }}
           <a href="/schedule">Schedule</a>
-          <a href="/competition/new">Create</a>
         {{ end }}
         -
         {{ if .authorized }}
@@ -32,6 +31,7 @@
     </header>
     <main>
       {{ template "body" .}}
+      <br/>
     </main>
   </body>
 </html>

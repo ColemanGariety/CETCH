@@ -2,8 +2,10 @@
 
 <h3>What is this?</h3>
 
-<p>CETCH is a computer science competition involving coders all over the world. Each week we solve a computer science puzzle of varying complexity and upload the solution. On Friday at midnight, all the entries are run in a sandbox and the execution times are clocked. <b>The program with the fastest execution time wins.</b></p>
+<p>CETCH is a computer science competition. Each week we present a computationally soluble problem of varying complexity. It's up to you to solve it in one of the allowed languages. On Friday at midnight, all the entries are run in a sandbox and the execution times are clocked. The program with the fastest execution time wins.</p>
 
+<h3>This week:</h3>
+<div><u>{{ .competition.Name }}</u></div>
 {{ template "competition_meta" .}}
 
 {{ if .authorized }}
