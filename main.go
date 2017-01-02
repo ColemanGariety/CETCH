@@ -29,8 +29,6 @@ func main() {
 		dbstring = fmt.Sprintf("user=cetch dbname=%s sslmode=disable", os.Getenv("dbname"))
 	}
 
-	log.Println(dbstring)
-
 	models.InitDB(dbstring)
 
 	log.Println("Whispering...")

@@ -14,16 +14,30 @@
 
 body {
     font-family: Consolas, Inconsolata, DejaVu Sans Mono, monospace;
-    color: #222;
+    color: #333;
     width: 610px;
     margin: 0 auto;
-    font-size: 15px;
+    font-size: 14px;
+    line-height: 1.4em;
+}
+
+p {
+    text-align: justify;
+}
+
+h3 {
+    font-size: 1.4em;
+    color: #000;
 }
 
 header {
     padding-bottom: 1em;
     border-bottom: 1.5px dashed #AAA;
     display: inline-block;
+}
+
+header h3 {
+    margin-bottom: 0;
 }
 
 td {
@@ -69,13 +83,14 @@ textarea {
 }
 
 .description {
+    background-color: #FCFCFC;
     padding: 1.5em;
     font-style: italic;
     border-radius: 1px;
     border: 1px solid #BBB !important;
-    -webkit-box-shadow: 0 0 2px rgba(0,0,0,.1);
-    -moz-box-shadow: 0 0 2px rgba(0,0,0,.1);
-    box-shadow: 0 0 2px rgba(0,0,0,.1);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.1);
+    box-shadow: 0 0 3px rgba(0,0,0,.1);
 }
 
 .red {
@@ -123,16 +138,23 @@ table.side-by-side td:last-child {
 }
 
 pre {
+    line-height: 1.2em;
+    margin: 2em;
+    background-color: #FCFCFC;
     font-size: .85em;
     border: 1px solid #BBB !important;
     padding: 1em;
     border-radius: 1px;
-    -webkit-box-shadow: 0 0 2px rgba(0,0,0,.1);
-    -moz-box-shadow: 0 0 2px rgba(0,0,0,.1);
-    box-shadow: 0 0 2px rgba(0,0,0,.1);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.1);
+    box-shadow: 0 0 3px rgba(0,0,0,.1);
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+pre code {
+    background-color: #FCFCFC !important;
 }
