@@ -13,17 +13,16 @@
 ::-webkit-selection { background: #FFCD47; }
 
 body {
-    background-color: #f9f6ee;
     font-family: Consolas, Inconsolata, DejaVu Sans Mono, monospace;
     color: #222;
-    width: 650px;
+    width: 610px;
     margin: 0 auto;
-    font-weight: 400;
+    font-size: 15px;
 }
 
 header {
     padding-bottom: 1em;
-    border-bottom: 2px dashed #BBB;
+    border-bottom: 1.5px dashed #AAA;
     display: inline-block;
 }
 
@@ -70,9 +69,13 @@ textarea {
 }
 
 .description {
-    background-color: #F0F0F0;
     padding: 1.5em;
     font-style: italic;
+    border-radius: 1px;
+    border: 1px solid #BBB !important;
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 0 2px rgba(0,0,0,.1);
+    box-shadow: 0 0 2px rgba(0,0,0,.1);
 }
 
 .red {
@@ -120,6 +123,11 @@ table.side-by-side td:last-child {
 }
 
 pre {
+    font-size: .85em;
     border: 1px solid #BBB !important;
     padding: 1em;
+    border-radius: 1px;
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,.1);
+    -moz-box-shadow: 0 0 2px rgba(0,0,0,.1);
+    box-shadow: 0 0 2px rgba(0,0,0,.1);
 }

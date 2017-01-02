@@ -25,7 +25,6 @@ func Current(w http.ResponseWriter, r *http.Request) {
 func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(bone.GetValue(r, "id"))
 	comp := &models.Competition{}
-	current, _ := (&models.Competition{}).Current()
 
 	if models.ExistsById(comp, id) {
 		current_user := (*r.Context().Value("data").(*utils.Props))["current_user"]
@@ -46,7 +45,7 @@ func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 
 		utils.Render(w, r, "competition_show.html", &utils.Props{
 			"competition": comp,
-			"current": comp.ID == current.ID,
+			"current": comp.IsCurrent(),
 			"entry": entry,
 		})
 	} else {
