@@ -19,7 +19,7 @@ func Authenticate(next http.Handler) http.Handler {
 		claims, ok := isAuthentic(r)
 		if ok {
 			user := models.User{Name: claims.Username}
-			models.Find(&user)
+			models.DB.Select("name, admin").First(&user)
 			ctx = context.WithValue(r.Context(), "data", &utils.Props{
 				"authorized":          ok,
 				"authorized_username": claims.Username,

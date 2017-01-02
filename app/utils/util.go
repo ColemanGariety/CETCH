@@ -15,10 +15,10 @@ func StripSpaces(str string) string {
 	}, str)
 }
 
-func NextFriday() time.Time {
+func NextSaturday() time.Time {
 	date := time.Now().AddDate(0, 0, 1)
 	for {
-		if date.Weekday() == time.Friday {
+		if date.Weekday() == time.Saturday {
 			date = time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, time.UTC)
 			break
 		}

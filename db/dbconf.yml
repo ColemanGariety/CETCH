@@ -1,11 +1,14 @@
 development:
   driver: postgres
+  port: 8080
   open: user=cetch dbname=cetch_development sslmode=disable
 
 test:
   driver: postgres
+  port: 8080
   open: user=cetch dbname=cetch_test sslmode=disable
 
 production:
   driver: postgres
+  port: 80
   open: $dbstring

@@ -15,15 +15,15 @@ install_dev:
 	go get github.com/stretchr/testify
 
 watch:
-	env session_hash=dev_hash dbname=cetch_development base_path=$$GOPATH/src/github.com/JacksonGariety/cetch fresh
+	env env=development session_hash=dev_hash base_path=$$GOPATH/src/github.com/JacksonGariety/cetch fresh
 
 test:
 	dropdb cetch_test --if-exists
 	createdb cetch_test
 	goose -env test up
-	env session_hash=test_hash dbname=cetch_test base_path=$$GOPATH/src/github.com/JacksonGariety/cetch/ go test ./app/...
+	env env=test session_hash=test_hash base_path=$$GOPATH/src/github.com/JacksonGariety/cetch/ go test ./app/...
 	dropdb cetch_test
 
 run:
 	go build
-	env session_hash=needed_hash dbname=cetch env=production base_path=$$GOPATH/src/github.com/JacksonGariety/cetch ./cetch
+	env env=production session_hash=needed_hash base_path=$$GOPATH/src/github.com/JacksonGariety/cetch ./cetch

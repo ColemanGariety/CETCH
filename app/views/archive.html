@@ -1,19 +1,33 @@
 {{ define "body" }}
-<h3>Competition Archive</h3>
-<table>
-  <thead>
-    <td>#</td>
-    <td>Name</td>
-    <td>Ended On</td>
-  </thead>
+
+<h3>Archive</h3>
+<span>The archive serves as a sort of <i>museum of code</i>. Winning entries are ordered by how many times faster they were than the competing entries.</span>
+<table class="side-by-side">
   <tbody>
-    {{ range $comp := .competitions }}
     <tr>
-      <td>{{ $comp.ID }}</td>
-      <td><a href="/competition/{{ $comp.ID }}">{{ $comp.Name }}</a></td>
-      <td>{{ (formatDate $comp.Date) }}</td>
+      <td>
+        <h4>Past Competitions</h4>
+        <table>
+          <thead>
+            <td>#</td>
+            <td>Name</td>
+            <td>Ended On</td>
+          </thead>
+          <tbody>
+            {{ range $comp := .competitions }}
+              <tr>
+                <td>{{ $comp.ID }}</td>
+                <td><a href="/competition/{{ $comp.ID }}">{{ $comp.Name }}</a></td>
+                <td>{{ (formatDate $comp.Date) }}</td>
+              </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </td>
+      <td>
+        <h4>Winning Entries</h4>
+      </td>
     </tr>
-    {{ end }}
   </tbody>
 </table>
 {{ end }}

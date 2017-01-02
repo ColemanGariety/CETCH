@@ -13,7 +13,7 @@ import (
 
 func Archive(w http.ResponseWriter, r *http.Request) {
 	comps := new(models.Competitions)
-	models.Where(comps, "date < NOW() OR date = NOW()")
+	models.Where(comps, "date < NOW() AND date != '0001-01-01'")
 	utils.Render(w, r, "archive.html", &utils.Props{"competitions": comps})
 }
 

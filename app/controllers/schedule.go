@@ -9,7 +9,7 @@ import (
 )
 
 func ScheduleShow(w http.ResponseWriter, r *http.Request) {
-	date := utils.NextFriday()
+	date := utils.NextSaturday()
 
 	// sort competitions by date
 	comps := &models.Competitions{}

@@ -13,12 +13,13 @@
 ::-webkit-selection { background: #FFCD47; }
 
 body {
+    overflow-y: scroll;
     font-family: Consolas, Inconsolata, DejaVu Sans Mono, monospace;
     color: #333;
     width: 610px;
     margin: 0 auto;
     font-size: 14px;
-    line-height: 1.4em;
+    line-height: 1.5em;
 }
 
 p {
@@ -117,12 +118,12 @@ table.side-by-side {
     border: none;
 }
 
-table.side-by-side td:first-child {
+table.side-by-side > tbody > tr > td:first-child {
     width: 50%;
     border: none;
 }
 
-table.side-by-side td:last-child {
+table.side-by-side > tbody > tr > td:last-child {
     width: 50%;
     border: none;
 }
@@ -138,7 +139,7 @@ table.side-by-side td:last-child {
 }
 
 pre {
-    line-height: 1.2em;
+    line-height: 1.25em;
     margin: 2em;
     background-color: #FCFCFC;
     font-size: .85em;

@@ -10,12 +10,18 @@ import (
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	comp, _ := (&models.Competition{}).Current()
-	current_user := (*r.Context().Value("data").(*utils.Props))["current_user"]
-	entry := &models.Entry{
-		UserID: current_user.(models.User).ID,
-		CompetitionID: comp.ID,
+
+	var entry models.Entry
+	currentUser := (*r.Context().Value("data").(*utils.Props))["current_user"]
+	if currentUser != nil {
+		entry = models.Entry{
+			UserID: currentUser.(models.User).ID,
+			CompetitionID: comp.ID,
+		}
 	}
-	models.Find(entry)
+
+	models.Find(&entry)
+
 	utils.Render(w, r, "index.html", &utils.Props{
 		"competition": comp,
 		"entry": entry,

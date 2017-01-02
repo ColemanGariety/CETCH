@@ -2,7 +2,7 @@
 
 <h3>Your Entry:</h3>
 
-<p>Your submission to this competition has been recieved. Check back here on Friday to see the results.</p>
+<p>Your submission to this competition has been recieved. Check back here on Friday at midnight to see the results.</p>
 
 <h4>Input:</h4>
 <pre><code class="go">{{ .entry.Code }}</code></pre>
@@ -10,7 +10,7 @@
 <h4>Output:</h4>
 <pre><code class="bash">$ go build file.go
 $ ./file
-{{ .competition.Solution }}</code></pre>
+{{ (formatSolution .competition.Solution) }}</code></pre>
 
 <link rel="stylesheet" type="text/css" href="/static/github-gist.css" />
 <script type="text/javascript" src="/static/highlight.pack.js"></script>

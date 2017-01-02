@@ -20,10 +20,10 @@ type Competition struct {
 type Competitions []Competition
 
 func (competition *Competition) Current() (*Competition, error) {
-	c := DB.Order("date asc").Where("date = ?", utils.NextFriday()).First(competition)
+	c := DB.Order("date asc").Where("date = ?", utils.NextSaturday()).First(competition)
 	return competition, c.Error
 }
 
 func (competition *Competition) IsCurrent() bool {
-	return competition.Date.Equal(utils.NextFriday())
+	return competition.Date.Equal(utils.NextSaturday())
 }

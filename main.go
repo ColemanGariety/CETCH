@@ -3,34 +3,25 @@ package main
 import (
 	"log"
 	"net/http"
+	"io/ioutil"
+	"gopkg.in/yaml.v2"
 	"os"
-	"fmt"
+	"path"
 
 	"github.com/JacksonGariety/cetch/app/models"
 	"github.com/JacksonGariety/cetch/app/utils"
 )
 
-var Production = os.Getenv("env") == "production"
+var Env = os.Getenv("env")
 
 func main() {
+	config := make(map[string]map[string]string)
+	data, _ := ioutil.ReadFile(path.Join(utils.BasePath, "db/dbconf.yml"))
+	_ = yaml.Unmarshal([]byte(data), &config)
+
 	utils.InitTemplates()
-
-	var port string
-	if Production {
-		port = ":80"
-	} else {
-		port = ":8080"
-	}
-
-	var dbstring string
-	if Production {
-		dbstring = os.Getenv("dbstring")
-	} else {
-		dbstring = fmt.Sprintf("user=cetch dbname=%s sslmode=disable", os.Getenv("dbname"))
-	}
-
-	models.InitDB(dbstring)
+	models.InitDB(config[Env]["open"])
 
 	log.Println("Whispering...")
-	log.Fatal(http.ListenAndServe(port, NewRouter()))
+	log.Fatal(http.ListenAndServe(":" + config[Env]["port"], NewRouter()))
 }
