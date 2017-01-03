@@ -2,12 +2,11 @@
 
 <h3>Your Entry:</h3>
 
-<p>Your submission to this competition has been recieved. Check back here on Friday at midnight to see the results.</p>
+<div>Execution Time: <b>{{ .entry.ExecTime }} seconds</b></div>
+<div>Average for Competition: <b>{{ .competition.AverageExecTime }} seconds</b></div>
+<div>How Many Times Faster: <b>{{ (timesFaster .entry.ExecTime .competition.AverageExecTime) }} times faster than the average</b></div>
 
-<h4>Input:</h4>
-<pre><code class="go">{{ .entry.Code }}</code></pre>
-
-<h4>Output:</h4>
+<pre><code>{{ .entry.Code }}</code></pre>
 <pre><code class="bash">$ go build file.go
 $ ./file
 {{ (formatSolution .competition.Solution) }}</code></pre>

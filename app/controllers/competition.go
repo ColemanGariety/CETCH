@@ -36,7 +36,7 @@ func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 				CompetitionID: comp.ID,
 			}
 
-			models.DB.First(&entry)
+			models.DB.Where(&entry).First(&entry)
 		} else {
 			entry = nil
 		}
@@ -44,7 +44,7 @@ func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 		utils.Render(w, r, "competition_show.html", &utils.Props{
 			"competition": comp,
 			"current": comp.IsCurrent(),
-			"entry": entry,
+			"entry": *entry,
 		})
 	} else {
 		utils.NotFound(w, r)

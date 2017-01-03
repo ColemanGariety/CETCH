@@ -1,10 +1,20 @@
 {{ define "entry_upload" }}
 
-<p>Instructions: Using one of the languages listed above, write a program that prints the solution (and only the solution) to stdout. Upload that program here.</p>
+<p>Instructions: Using one of the languages listed above, write a program that prints the solution (and only the solution) to <a href="https://en.wikipedia.org/wiki/Standard_streams" target="_blank">stdout</a>. Upload that program here.</p>
 
 <form action="/entry/new" enctype="multipart/form-data" method="POST">
   <table>
     <tbody>
+      <tr>
+        <td>Language:</td>
+        <td>
+          <select name="language">
+            <option value="go" {{ with .language }} {{ if (eq . "go")}} selected="selected" {{ end }} {{ end }}>Go</option>
+            <option value="python" {{ with .language }} {{ if (eq . "python")}} selected="selected" {{ end }} {{ end }}>Python</option>
+            <option value="haskell" {{ with .language }} {{ if (eq . "haskell")}} selected="selected" {{ end }} {{ end }}>Haskell</option>
+          </select>
+        </td>
+      </tr>
       <tr>
         <td>Upload (e.g. solution.go):</td>
         <td><input type="file" name="code" /></td>

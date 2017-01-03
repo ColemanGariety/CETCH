@@ -27,3 +27,22 @@ func (competition *Competition) Current() (*Competition, error) {
 func (competition *Competition) IsCurrent() bool {
 	return competition.Date.Equal(utils.NextSaturday())
 }
+
+func (competition *Competition) AverageExecTime() float64 {
+	entries := Entries{}
+	DB.Select("exec_time").Where("competition_id = ?", competition.ID).Find(&entries)
+
+	var avg float64
+
+	for _, entry := range entries {
+		avg = avg + entry.ExecTime
+	}
+
+	return avg / float64(len(entries))
+}
+
+func (competition *Competition) Winner() *Entry {
+	entry := Entry{}
+	DB.Order("exec_time desc").Where("competition_id = ?", competition.ID).First(&entry)
+	return &entry
+}

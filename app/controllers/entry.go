@@ -2,12 +2,9 @@ package controllers
 
 import (
 	"net/http"
-	"io/ioutil"
-	"os/exec"
-	"path"
 	"fmt"
 	"strconv"
-	"strings"
+	"io/ioutil"
 	"github.com/go-zoo/bone"
 
 	"github.com/JacksonGariety/cetch/app/models"
@@ -33,10 +30,8 @@ func EntryShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func EntryNew(w http.ResponseWriter, r *http.Request) {
-	comp, _ := (&models.Competition{}).Current()
-	utils.Render(w, r, "enter.html", &utils.Props{
-		"competition": comp,
-	})
+	current, _ := new(models.Competition).Current()
+	http.Redirect(w, r, fmt.Sprintf("/competition/%v", current.ID), 307)
 }
 
 func EntryCreate(w http.ResponseWriter, r *http.Request) {
@@ -53,49 +48,34 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 
 	// read the file
 	reader, _ := r.MultipartReader()
+
+	// language
 	part, _ := reader.NextPart()
+	language, _ := ioutil.ReadAll(part)
+	languageString := string(language)
+
+	// code
+	part, _ = reader.NextPart()
 	code, _ := ioutil.ReadAll(part)
 	codeString := string(code)
 
 	// pass it to the runner
-	runner := exec.Command(path.Join(utils.BasePath, "./runners/go.sh"), codeString)
-	runnerOut, _ := runner.StdoutPipe()
-	runnerErr, _ := runner.StderrPipe()
-	runner.Start()
-	output, _ := ioutil.ReadAll(runnerOut)
-	errors, _ := ioutil.ReadAll(runnerErr)
-	outputString := string(output)
-	errorsString := string(errors)
-	runner.Wait()
+	result, execTime, err := models.ProgramResultAndExecTime(codeString, languageString)
 
-	errorArray := strings.Split(errorsString, "\n")
-
-	var timeResult float64;
-
-	if len(errorArray) != 2 {
+	if execTime == nil {
 		utils.Render(w, r, "enter.html", &utils.Props{
+			"language": languageString,
 			"competition": comp,
 			"stderrError": true,
 		})
-		return
-	} else {
-		// last element is an empty string
-		// second to last is time in format 0.00
-		// the rest are real errors
-		// need a safer way to do this
-		timeResult, _ = strconv.ParseFloat(errorArray[len(errorArray)-2], 64)
-
-	}
-
-	result, err := strconv.ParseFloat(strings.Trim(outputString, "\n\r"), 64)
-	if result == comp.Solution && err == nil {
+	} else if *result == comp.Solution && err == nil {
 		user := (*r.Context().Value("data").(*utils.Props))["current_user"]
 		entry := models.Entry{
 			CompetitionID: comp.ID,
 			UserID: user.(models.User).ID,
 			Language: "go",
 			Code: codeString,
-			ExecTime: timeResult,
+			ExecTime: *execTime,
 		}
 
 		models.Create(&entry)
@@ -103,6 +83,7 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, fmt.Sprintf("/entry/%v", entry.ID), 307)
 	} else {
 		utils.Render(w, r, "enter.html", &utils.Props{
+			"language": languageString,
 			"competition": comp,
 			"stdoutError": true,
 		})
