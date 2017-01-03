@@ -9,12 +9,14 @@ func Render(w http.ResponseWriter, r *http.Request, filename string, props inter
 	tmpl := templates[filename]
 
 	if tmpl != nil {
-		data, _ := r.Context().Value("data").(*Props)
-		for k, v := range *props.(*Props) {
-			(*data)[k] = v
+		data := r.Context().Value("data")
+		if data != nil {
+			for k, v := range *data.(*Props) {
+				(*props.(*Props))[k] = v
+			}
 		}
 
-		if err := tmpl.ExecuteTemplate(w, "layout", data); err != nil {
+		if err := tmpl.ExecuteTemplate(w, "layout", props); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	} else {
@@ -32,7 +34,8 @@ func Forbidden(w http.ResponseWriter, r *http.Request) {
 }
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
-	Render(w, r, "404.html", &Props{})
+	w.WriteHeader(http.StatusNotFound)
+	fmt.Fprintf(w, "404 not found")
 }
 
 func BadRequest(w http.ResponseWriter, r *http.Request) {
