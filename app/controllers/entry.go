@@ -54,6 +54,11 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	language, _ := ioutil.ReadAll(part)
 	languageString := string(language)
 
+	if (languageString == "") {
+		utils.BadRequest(w, r)
+		return
+	}
+
 	// code
 	part, _ = reader.NextPart()
 	code, _ := ioutil.ReadAll(part)
@@ -69,13 +74,22 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 			"stderrError": true,
 		})
 	} else if *result == comp.Solution && err == nil {
+		// run it 4 times and get the average
+		n := 4
+		avg := *execTime
+		for i := 0; i < n; i++ {
+			_, execTime, _ := models.ProgramResultAndExecTime(codeString, languageString)
+			avg += *execTime
+		}
+		avg = avg / float64(n)
+
 		user := (*r.Context().Value("data").(*utils.Props))["current_user"]
 		entry := models.Entry{
 			CompetitionID: comp.ID,
 			UserID: user.(models.User).ID,
 			Language: "go",
 			Code: codeString,
-			ExecTime: *execTime,
+			ExecTime: avg,
 		}
 
 		models.Create(&entry)

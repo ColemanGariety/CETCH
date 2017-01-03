@@ -8,21 +8,17 @@ import (
 func Render(w http.ResponseWriter, r *http.Request, filename string, props interface{}) {
 	tmpl := templates[filename]
 
-	endProps := make(map[string]interface{})
-	for k, v := range *props.(*Props) {
-		endProps[k] = v
-	}
-
-	data, ok := r.Context().Value("data").(*Props)
-
-	if ok {
-		for k, v := range *data {
-			endProps[k] = v
+	if tmpl != nil {
+		data, _ := r.Context().Value("data").(*Props)
+		for k, v := range *props.(*Props) {
+			(*data)[k] = v
 		}
-	}
 
-	if err := tmpl.ExecuteTemplate(w, "layout", endProps); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		if err := tmpl.ExecuteTemplate(w, "layout", data); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	} else {
+		NotFound(w, r)
 	}
 }
 

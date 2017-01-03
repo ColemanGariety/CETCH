@@ -14,7 +14,23 @@ import (
 func Archive(w http.ResponseWriter, r *http.Request) {
 	comps := new(models.Competitions)
 	models.Where(comps, "date < NOW() AND date != '0001-01-01'")
-	utils.Render(w, r, "archive.html", &utils.Props{"competitions": comps})
+
+	fastest := models.Entries{}
+	for _, comp := range *comps {
+		winner := *comp.Winner()
+		if winner.ID != 0 {
+			fastest = append(fastest, *comp.Winner())
+		}
+	}
+
+	for i, entry := range fastest {
+		models.DB.Model(entry).Related(&fastest[i].User)
+	}
+
+	utils.Render(w, r, "archive.html", &utils.Props{
+		"competitions": comps,
+		"fastest": fastest,
+	})
 }
 
 func Current(w http.ResponseWriter, r *http.Request) {
@@ -27,24 +43,20 @@ func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 	comp := &models.Competition{}
 
 	if models.ExistsById(comp, id) {
-		current_user := (*r.Context().Value("data").(*utils.Props))["current_user"]
+		currentUser := (*r.Context().Value("data").(*utils.Props))["current_user"]
 
-		var entry *models.Entry
-		if current_user != nil {
-			entry = &models.Entry{
-				UserID: current_user.(models.User).ID,
-				CompetitionID: comp.ID,
-			}
-
-			models.DB.Where(&entry).First(&entry)
-		} else {
-			entry = nil
+		entry := models.Entry{}
+		if currentUser != nil {
+			entry.UserID = currentUser.(models.User).ID
+			entry.CompetitionID = comp.ID
 		}
+
+		models.DB.Where(&entry).First(&entry)
 
 		utils.Render(w, r, "competition_show.html", &utils.Props{
 			"competition": comp,
 			"current": comp.IsCurrent(),
-			"entry": *entry,
+			"entry": entry,
 		})
 	} else {
 		utils.NotFound(w, r)

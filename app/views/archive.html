@@ -9,14 +9,12 @@
         <h4>Past Competitions</h4>
         <table>
           <thead>
-            <td>#</td>
             <td>Name</td>
             <td>Ended On</td>
           </thead>
           <tbody>
             {{ range $comp := .competitions }}
               <tr>
-                <td>{{ $comp.ID }}</td>
                 <td><a href="/competition/{{ $comp.ID }}">{{ $comp.Name }}</a></td>
                 <td>{{ (formatDate $comp.Date) }}</td>
               </tr>
@@ -25,7 +23,25 @@
         </table>
       </td>
       <td>
-        <h4>Winning Entries</h4>
+        <h4>Fastest Programs</h4>
+        <table>
+          <thead>
+            <td>Entry</td>
+            <td>User</td>
+            <td>Times Faster</td>
+            <td>Submit Date</td>
+          </thead>
+          <tbody>
+            {{ range $entry := .fastest }}
+              <tr>
+                <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</td>
+                <td>{{ $entry.User.Name }}</td>
+                <td>{{ (formatSolution $entry.TimesFaster) }}x</td>
+                <td>{{ (formatDate $entry.CreatedAt) }}</td>
+              </tr>
+            {{ end }}
+        </tbody>
+        </table>
       </td>
     </tr>
   </tbody>

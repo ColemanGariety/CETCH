@@ -4,7 +4,7 @@ src=$(mktemp).hs
 echo "$1" >> $src
 
 dist=$(mktemp)
-ghc -hidir /tmp -odir /tmp -o $dist $src
+ghc -O2 -hidir /tmp -odir /tmp -o $dist $src
 
 out=$(bwrap --ro-bind /usr /usr \
             --ro-bind /tmp /tmp \

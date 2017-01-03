@@ -2,6 +2,10 @@ install:
 	go get github.com/tools/godep
 	go get bitbucket.org/liamstask/goose/cmd/goose
 	godep restore
+	sudo pacman -S ghc
+	sudo pacman -S python2
+	sudo pacman -S cabal-install
+	cabal-install primes
 	git clone https://github.com/projectatomic/bubblewrap.git
 	cd bubblewrap && exec ./autogen.sh
 	sudo $(MAKE) install -C bubblewrap
