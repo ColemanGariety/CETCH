@@ -8,6 +8,7 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
+	prev, _ := (&models.Competition{}).Previous()
 	comp, _ := (&models.Competition{}).Current()
 
 	entry := models.Entry{}
@@ -20,11 +21,16 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		}
 
 		models.DB.Where(&entry).First(&entry)
+		models.DB.Model(entry).Related(&entry.Competition)
 	}
+
+	winner := prev.Winner()
+	models.DB.Model(winner).Related(&winner.Competition)
 
 	utils.Render(w, r, "index.html", &utils.Props{
 		"competition": comp,
 		"entry": entry,
+		"winner": winner,
 	})
 }
 

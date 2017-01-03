@@ -75,7 +75,7 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 		})
 	} else if *result == comp.Solution && err == nil {
 		// run it 4 times and get the average
-		n := 4
+		n := 6
 		avg := *execTime
 		for i := 0; i < n; i++ {
 			_, execTime, _ := models.ProgramResultAndExecTime(codeString, languageString)

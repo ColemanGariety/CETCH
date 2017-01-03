@@ -12,8 +12,8 @@ type Entry struct {
 	ExecTime        float64
 	UserID          uint
 	CompetitionID   uint
-	Competition     Competition
 	User            User `gorm:"ForeignKey:UserID"`
+	Competition     Competition `form:"ForeignKey:CompetitionID"`
 }
 
 type Entries []Entry

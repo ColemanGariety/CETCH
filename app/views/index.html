@@ -2,20 +2,19 @@
 
 <h3>What is this?</h3>
 
-<p>CETCH is a computer code benchmarking challenge. Each week we present a computationally soluble problem of varying complexity. It's up to you to solve it in one of the allowed languages. On Friday at midnight, all the entries are run in a sandbox and the execution times are clocked. The program with the fastest execution time wins.</p>
+<p>CETCH is a computer program benchmarking competition. Each week we present a computationally soluble problem of varying complexity. It's up to you to solve it in one of the allowed languages. On Friday at midnight, all the entries are run in a sandbox and the execution times are clocked. The program with the fastest execution time wins.</p>
 
 <h3>This week:</h3>
-<div><u>{{ .competition.Name }}</u></div>
+<div><a href="/competition/{{ .competition.ID }}">{{ .competition.Name }}</a></div>
 {{ template "competition_meta" .}}
 
-{{ if .authorized }}
-  {{ if .entry.ID }}
-    {{ template "entry" .}}
-  {{ else }}
-    {{ template "entry_upload" .}}
-  {{ end }}
+<h3>Last Week's Winner:</h3>
+{{ if .winner }}
+  {{ template "entry" .winner}}
 {{ else }}
-  Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.
+  No competition last week.
 {{ end }}
+
+{{ template "entry_upload" .}}
 
 {{end}}

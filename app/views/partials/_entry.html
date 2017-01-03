@@ -1,15 +1,11 @@
 {{ define "entry" }}
 
-<h3>Your Entry:</h3>
+<div>Competition: <a href="/competition/{{ .CompetitionID }}">{{ .Competition.Name }}</a></div>
+<div>Execution Time: <b>{{ (formatExecTime .ExecTime) }} seconds</b></div>
+<div>Average for Competition: <b>{{ (formatExecTime .Competition.AverageExecTime) }} seconds</b></div>
+<div>How Many Times Faster: <b>{{ (formatExecTime (timesFaster .ExecTime .Competition.AverageExecTime)) }} times faster than the average</b></div>
 
-<div>Execution Time: <b>{{ .entry.ExecTime }} seconds</b></div>
-<div>Average for Competition: <b>{{ .competition.AverageExecTime }} seconds</b></div>
-<div>How Many Times Faster: <b>{{ (timesFaster .entry.ExecTime .competition.AverageExecTime) }} times faster than the average</b></div>
-
-<pre><code>{{ .entry.Code }}</code></pre>
-<pre><code class="bash">$ go build file.go
-$ ./file
-{{ (formatSolution .competition.Solution) }}</code></pre>
+<pre><code>{{ .Code }}</code></pre>
 
 <link rel="stylesheet" type="text/css" href="/static/github-gist.css" />
 <script type="text/javascript" src="/static/highlight.pack.js"></script>

@@ -4,15 +4,7 @@
 {{ template "competition_meta" .}}
 
 {{ if .current }}
-  {{ if .authorized }}
-    {{ if .entry.ID }}
-      {{ template "entry" .}}
-    {{ else }}
-      {{ template "entry_upload" .}}
-    {{ end }}
-  {{ else }}
-    Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.
-  {{ end }}
+  {{ template "entry_upload" .}}
 {{ else }}
   This competition has ended.
 {{ end }}

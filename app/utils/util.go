@@ -15,6 +15,18 @@ func StripSpaces(str string) string {
 	}, str)
 }
 
+func LastSaturday() time.Time {
+	date := time.Now()
+	for {
+		if date.Weekday() == time.Saturday {
+			date = time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 0, time.UTC)
+			break
+		}
+		date = date.AddDate(0, 0, -1)
+	}
+	return date
+}
+
 func NextSaturday() time.Time {
 	date := time.Now().AddDate(0, 0, 1)
 	for {

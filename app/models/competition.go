@@ -24,11 +24,15 @@ func (competition *Competition) Current() (*Competition, error) {
 	return competition, c.Error
 }
 
-func (competition *Competition) IsCurrent() bool {
+func (competition *Competition) Previous() (*Competition, error) {
+	c := DB.Order("date asc").Where("date = ?", utils.LastSaturday()).First(competition)
+	return competition, c.Error
+}
+func (competition Competition) IsCurrent() bool {
 	return competition.Date.Equal(utils.NextSaturday())
 }
 
-func (competition *Competition) AverageExecTime() float64 {
+func (competition Competition) AverageExecTime() float64 {
 	entries := Entries{}
 	DB.Select("exec_time").Where("competition_id = ?", competition.ID).Find(&entries)
 

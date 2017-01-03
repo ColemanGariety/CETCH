@@ -16,7 +16,7 @@ body {
     overflow-y: scroll;
     font-family: Consolas, Inconsolata, DejaVu Sans Mono, monospace;
     color: #333;
-    width: 610px;
+    width: 650px;
     margin: 0 auto;
     font-size: 14px;
     line-height: 1.5em;
@@ -126,6 +126,11 @@ table.side-by-side > tbody > tr > td:first-child {
 table.side-by-side > tbody > tr > td:last-child {
     width: 50%;
     border: none;
+}
+
+table.side-by-side pre {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 [contenteditable=true]:not(:focus):empty:before {
