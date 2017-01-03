@@ -2,7 +2,7 @@
 
 {{ if .authorized }}
   {{ if .entry.ID }}
-    <h3>Your Entry:</h3>
+    <h3>Entry Recieved:</h3>
     {{ template "entry" .entry}}
   {{ else }}
     <p>Instructions: Using one of the languages listed above, write a program that prints the solution (and only the solution) to <a href="https://en.wikipedia.org/wiki/Standard_streams" target="_blank">stdout</a>. Upload that program here.</p>

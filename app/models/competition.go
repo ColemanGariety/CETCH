@@ -46,7 +46,9 @@ func (competition Competition) AverageExecTime() float64 {
 }
 
 func (competition *Competition) Winner() *Entry {
-	entry := Entry{}
-	DB.Order("exec_time asc").Where("competition_id = ?", competition.ID).First(&entry)
-	return &entry
+	winner := Entry{}
+	DB.Order("exec_time asc").Where("competition_id = ?", competition.ID).First(&winner)
+	DB.Model(winner).Related(&winner.User)
+	DB.Model(winner).Related(&winner.Competition)
+	return &winner
 }

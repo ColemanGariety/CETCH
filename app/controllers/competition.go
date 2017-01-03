@@ -53,6 +53,7 @@ func CompetitionShow(w http.ResponseWriter, r *http.Request) {
 
 		models.DB.Where(&entry).First(&entry)
 		models.DB.Model(entry).Related(&entry.Competition)
+		models.DB.Model(&entry).Related(&entry.User)
 
 		utils.Render(w, r, "competition_show.html", &utils.Props{
 			"competition": comp,

@@ -128,11 +128,6 @@ table.side-by-side > tbody > tr > td:last-child {
     border: none;
 }
 
-table.side-by-side pre {
-    margin-left: 0;
-    margin-right: 0;
-}
-
 [contenteditable=true]:not(:focus):empty:before {
     content: attr(placeholder);
     color: #999;
@@ -145,7 +140,6 @@ table.side-by-side pre {
 
 pre {
     line-height: 1.25em;
-    margin: 2em;
     background-color: #FCFCFC;
     font-size: .85em;
     border: 1px solid #BBB !important;

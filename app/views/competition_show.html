@@ -6,7 +6,25 @@
 {{ if .current }}
   {{ template "entry_upload" .}}
 {{ else }}
-  This competition has ended.
+  <h3>Winner:</h3>
+  {{ template "entry" .competition.Winner}}
+  <h3>Runners Up:</h3>
+  <table>
+    <thead>
+      <td>Entry</td>
+      <td>User</td>
+      <td>Speed</td>
+    </thead>
+    <tbody>
+      {{ range $entry := .fastest }}
+        <tr>
+          <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</td>
+            <td>{{ $entry.User.Name }}</td>
+            <td>{{ (formatSolution $entry.TimesFaster) }}x</td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
 {{ end }}
 
 <link rel="stylesheet" type="text/css" href="/static/github-gist.css" />

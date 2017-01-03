@@ -25,7 +25,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	winner := prev.Winner()
-	models.DB.Model(winner).Related(&winner.Competition)
 
 	utils.Render(w, r, "index.html", &utils.Props{
 		"competition": comp,

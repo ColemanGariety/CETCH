@@ -8,13 +8,15 @@
 <div><a href="/competition/{{ .competition.ID }}">{{ .competition.Name }}</a></div>
 {{ template "competition_meta" .}}
 
-<h3>Last Week's Winner:</h3>
-{{ if .winner }}
-  {{ template "entry" .winner}}
+{{ if .authorized }}
+<div><a href="/competition/{{ .competition.ID }}">Enter this competition</a></div>
 {{ else }}
-  No competition last week.
+<div>Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.</div>
 {{ end }}
 
-{{ template "entry_upload" .}}
+{{ if .winner.ID }}
+  <h3>Last Week's Winner:</h3>
+  {{ template "entry" .winner}}
+{{ end }}
 
 {{end}}

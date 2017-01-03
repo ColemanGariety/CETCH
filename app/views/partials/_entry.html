@@ -1,5 +1,6 @@
 {{ define "entry" }}
 
+<div>User: <a href="/user/{{ .User.Name }}">{{ .User.Name }}</a></div>
 <div>Competition: <a href="/competition/{{ .CompetitionID }}">{{ .Competition.Name }}</a></div>
 <div>Execution Time: <b>{{ (formatExecTime .ExecTime) }} seconds</b></div>
 <div>Average for Competition: <b>{{ (formatExecTime .Competition.AverageExecTime) }} seconds</b></div>
@@ -10,4 +11,5 @@
 <link rel="stylesheet" type="text/css" href="/static/github-gist.css" />
 <script type="text/javascript" src="/static/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
+
 {{ end }}

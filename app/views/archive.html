@@ -7,41 +7,49 @@
     <tr>
       <td>
         <h4>Past Competitions</h4>
-        <table>
-          <thead>
-            <td>Name</td>
-            <td>Ended On</td>
-          </thead>
-          <tbody>
-            {{ range $comp := .competitions }}
-              <tr>
-                <td><a href="/competition/{{ $comp.ID }}">{{ $comp.Name }}</a></td>
-                <td>{{ (formatDate $comp.Date) }}</td>
-              </tr>
-            {{ end }}
-          </tbody>
-        </table>
+        {{ if (eq (len .competitions) 0)}}
+          Nothing in the archive yet...
+        {{ else }}
+          <table>
+            <thead>
+              <td>Name</td>
+              <td>Ended On</td>
+            </thead>
+            <tbody>
+              {{ range $comp := .competitions }}
+                <tr>
+                  <td><a href="/competition/{{ $comp.ID }}">{{ $comp.Name }}</a></td>
+                  <td>{{ (formatDate $comp.Date) }}</td>
+                </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        {{ end }}
       </td>
       <td>
         <h4>Fastest Programs</h4>
-        <table>
-          <thead>
-            <td>Entry</td>
-            <td>User</td>
-            <td>How much faster than average?</td>
-            <td>Submit Date</td>
-          </thead>
-          <tbody>
-            {{ range $entry := .fastest }}
-              <tr>
-                <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</td>
-                <td>{{ $entry.User.Name }}</td>
-                <td>{{ (formatSolution $entry.TimesFaster) }}x</td>
-                <td>{{ (formatDate $entry.CreatedAt) }}</td>
-              </tr>
-            {{ end }}
-        </tbody>
-        </table>
+        {{ if (eq (len .fastest) 0)}}
+          No archived programs yet...
+        {{ else }}
+          <table>
+            <thead>
+              <td>Entry</td>
+              <td>User</td>
+              <td>Speed</td>
+              <td>Date</td>
+            </thead>
+            <tbody>
+              {{ range $entry := .fastest }}
+                <tr>
+                  <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</td>
+                    <td>{{ $entry.User.Name }}</td>
+                    <td>{{ (formatSolution $entry.TimesFaster) }}x</td>
+                    <td>{{ (formatDate $entry.CreatedAt) }}</td>
+                </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        {{ end }}
       </td>
     </tr>
   </tbody>

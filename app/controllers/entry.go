@@ -20,13 +20,10 @@ func EntryShow(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	competition := new(models.Competition)
-	models.DB.Model(&entry).Related(&competition)
+	models.DB.Model(&entry).Related(&entry.Competition)
+	models.DB.Model(&entry).Related(&entry.User)
 
-	utils.Render(w, r, "entry.html", &utils.Props{
-		"entry": entry,
-		"competition": competition,
-	})
+	utils.Render(w, r, "entry.html", &utils.Props{ "entry": entry })
 }
 
 func EntryNew(w http.ResponseWriter, r *http.Request) {
