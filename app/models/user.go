@@ -29,6 +29,13 @@ func (user *User) Userpath() string {
 	return fmt.Sprintf("/user/%s", user.Name)
 }
 
+func (user *User) CurrentEntry() *Entry {
+	current := new(Entry)
+	DB.Order("created_at asc").Select("exec_time, competition_id").Where("user_id = ?", user.ID).First(current)
+	DB.Model(&current).Related(&current.Competition)
+	return current
+}
+
 func hashPassword(password string) string {
 	hash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	return string(hash)

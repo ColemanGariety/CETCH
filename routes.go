@@ -19,6 +19,7 @@ func NewRouter() http.Handler {
 		m.Timeout,
 		gziphandler.GzipHandler,
 		m.Authenticate,
+		m.StickyEntry,
 	)
 
 	mux.Get("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))

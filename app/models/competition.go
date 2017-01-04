@@ -42,7 +42,7 @@ func (competition Competition) RunnersUp() Entries {
 	winner := competition.Winner()
 	DB.Model(&competition).Related(&runnersUp)
 
-// Remove the winner
+	// Remove the winner
 	for i, entry := range runnersUp {
 		if entry.ID == winner.ID {
 			runnersUp = append(runnersUp[:i], runnersUp[i+1:]...)

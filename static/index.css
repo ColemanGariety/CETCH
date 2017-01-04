@@ -1,9 +1,6 @@
 @font-face {
     font-family: 'Consolas';
-    src: url('/static/consolas-webfont.eot');
-    src: url('/static/consolas-webfont.eot?#iefix') format('embedded-opentype'),
-    url('/static/consolas-webfont.woff') format('woff'),
-    url('/static/consolas-webfont.ttf') format('truetype'),
+    src: url('/static/consolas-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -13,12 +10,11 @@
 ::-webkit-selection { background: #FFCD47; }
 
 body {
-    overflow-y: scroll;
-    font-family: Consolas, Inconsolata, DejaVu Sans Mono, monospace;
+    font-family: Consolas, Inconsolata, monospace;
     color: #333;
-    width: 650px;
-    margin: 0 auto;
-    font-size: 14px;
+    width: 600px;
+    margin-left: 3em;
+    font-size: 13px;
     line-height: 1.5em;
 }
 
@@ -39,6 +35,28 @@ header {
 
 header h3 {
     margin-bottom: 0;
+}
+
+main {
+    position: relative;
+}
+
+aside {
+    position: absolute;
+    top: 85px;
+    left: 600px;
+    margin-left: 6em;
+    font-size: .9em;
+    width: 300px;
+}
+
+@media (max-width: 950px) {
+    aside {
+        position: static !important;
+        margin: 0;
+        left: 0;
+        top: 0;
+    }
 }
 
 td {
@@ -138,8 +156,13 @@ table.side-by-side > tbody > tr > td:last-child {
     position: relative;
 }
 
+pre, pre code {
+    font-family: Consolas;
+    background-color: #FCFCFC !important;
+}
+
 pre {
-    line-height: 1.25em;
+    line-height: 1.33em;
     background-color: #FCFCFC;
     font-size: .85em;
     border: 1px solid #BBB !important;
@@ -153,8 +176,4 @@ pre {
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
-}
-
-pre code {
-    background-color: #FCFCFC !important;
 }

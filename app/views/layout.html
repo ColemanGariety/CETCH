@@ -32,8 +32,27 @@
     <main>
       {{ template "body" .}}
       <br/>
-      <br/>
     </main>
+    {{ with .sticky_entry }}
+      <aside>
+        <h3>Current Entry:</h3>
+        {{ template "entry" .}}
+      </aside>
+      <br/>
+    {{ end }}
+    <script>
+     var headerHeight = 85
+     var aside = document.querySelector("aside")
+     document.addEventListener("scroll", function () {
+       if (document.body.scrollTop > 85) {
+         aside.style.top = "0"
+         aside.style.position = "fixed"
+       } else {
+         aside.style.top = headerHeight + "px"
+         aside.style.position = "absolute"
+       }
+     })
+    </script>
   </body>
 </html>
 
