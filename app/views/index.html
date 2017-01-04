@@ -9,9 +9,9 @@
 {{ template "competition_meta" .}}
 
 {{ if .authorized }}
-<div><a href="/competition/{{ .competition.ID }}">Enter this competition</a></div>
+  <div><a href="/competition/{{ .competition.ID }}">Enter this competition</a></div>
 {{ else }}
-<div>Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.</div>
+  <div>Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.</div>
 {{ end }}
 
 {{ if .winner.ID }}

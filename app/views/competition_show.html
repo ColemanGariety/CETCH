@@ -16,7 +16,7 @@
       <td>Speed</td>
     </thead>
     <tbody>
-      {{ range $entry := .fastest }}
+      {{ range $entry := .competition.RunnersUp }}
         <tr>
           <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</td>
             <td>{{ $entry.User.Name }}</td>
