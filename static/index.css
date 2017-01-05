@@ -1,25 +1,15 @@
-@font-face {
-    font-family: 'Consolas';
-    src: url('/static/consolas-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono');::selection { background: #FFCD47; }
 
-::selection { background: #FFCD47; }
 ::-moz-selection { background: #FFCD47; }
 ::-webkit-selection { background: #FFCD47; }
 
 body {
-    font-family: Consolas, Inconsolata, monospace;
+    font-family: Fira Mono, Consolas, Inconsolata, monospace;
     color: #333;
     width: 600px;
     margin-left: 3em;
     font-size: 13px;
     line-height: 1.5em;
-}
-
-p {
-    text-align: justify;
 }
 
 h3 {
