@@ -11,7 +11,7 @@ import (
 func UserShow(w http.ResponseWriter, r *http.Request) {
 	user := models.User{Name: bone.GetValue(r, "name")}
 	if models.Exists(&user) {
-		entries := (&models.Entries{}).FindByUserId(user.ID)
+		entries := new(models.Entries).FindByUserId(user.ID)
 
 		for i, entry := range *entries {
 			models.DB.Model(entry).Related(&(*entries)[i].Competition)

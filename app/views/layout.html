@@ -13,11 +13,13 @@
       <nav>
         <a href="/">Home</a>
         <!-- <a href="/competitors">Competitors</a> -->
-        <a href="/entry/new">Current</a>
+        <a href="/current">Current</a>
         <a href="/archive">Archive</a>
         <a href="/rules">Rules</a>
+        <a href="/about">About</a>
         {{ if .admin }}
           <a href="/schedule">Schedule</a>
+          <a href="/competition/new">Create</a>
         {{ end }}
         -
         {{ if .authorized }}
@@ -36,6 +38,7 @@
     {{ with .sticky_entry }}
       <aside>
         <h3>Current Entry:</h3>
+        <a href="/entry/{{ .ID }}">Show Entry</a>
         {{ template "entry" .}}
       </aside>
       <br/>
@@ -54,6 +57,14 @@
          aside.style.position = "absolute"
        }
      }
+    </script>
+    <script>
+     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+     ga('create', 'UA-29461279-10', 'auto');
+     ga('send', 'pageview');
     </script>
   </body>
 </html>

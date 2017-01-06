@@ -25,7 +25,7 @@ func (competition *Competition) Current() (*Competition, error) {
 }
 
 func (competition *Competition) Previous() (*Competition, error) {
-	c := DB.Order("date asc").Where("date = ?", utils.LastSaturday()).First(competition)
+	c := DB.Order("date asc").Select("id, name, date, description").Where("date = ?", utils.LastSaturday()).First(competition)
 	return competition, c.Error
 }
 
@@ -37,20 +37,15 @@ func (competition Competition) IsPast() bool {
 	return competition.Date.Before(utils.NextSaturday())
 }
 
-func (competition Competition) RunnersUp() Entries {
-	runnersUp := Entries{}
-	winner := competition.Winner()
-	DB.Model(&competition).Related(&runnersUp)
-	// Remove the winner
-	for i, entry := range runnersUp {
-		if entry.ID == winner.ID {
-			runnersUp = append(runnersUp[:i], runnersUp[i+1:]...)
-		} else {
-			DB.Model(&entry).Related(&runnersUp[i].User)
-		}
+func (competition Competition) All() Entries {
+	all := Entries{}
+	DB.Order("exec_time asc").Model(&competition).Related(&all)
+
+	for i, entry := range all {
+		DB.Model(&entry).Related(&all[i].User)
 	}
 
-	return runnersUp
+	return all
 }
 
 func (competition Competition) AverageExecTime() float64 {

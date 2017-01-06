@@ -32,7 +32,7 @@ func (user *User) Userpath() string {
 
 func (user *User) CurrentEntry() *Entry {
 	current := new(Entry)
-	c := DB.Order("exec_time asc").Select("exec_time, created_at, competition_id").Where("user_id = ? AND created_at >= ?", user.ID, utils.LastSaturday()).First(current)
+	c := DB.Order("exec_time asc").Where("user_id = ? AND created_at >= ?", user.ID, utils.LastSaturday()).First(current)
 	if c.Error == nil {
 		DB.Model(&current).Related(&current.Competition)
 		return current

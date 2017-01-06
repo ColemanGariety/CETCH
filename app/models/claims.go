@@ -22,7 +22,7 @@ func ClaimsCreate(username string) (string, time.Time, Claims) {
 		username,
 		jwt.StandardClaims{
 			ExpiresAt: expireToken,
-			Issuer:    "localhost:8080",
+			Issuer:    "cetch.net",
 		},
 	}
 

@@ -32,12 +32,17 @@ func timesFaster(execTime float64, averageExecTime float64) float64 {
 	return averageExecTime / execTime
 }
 
+func add(a int, b int) int {
+	return a + b
+}
+
 var funcMap = template.FuncMap{
 	"formatDate": formatDate,
 	"formatDateForForm": formatDateForForm,
 	"formatExecTime": formatExecTime,
 	"formatSolution": formatSolution,
 	"timesFaster": timesFaster,
+	"add": add,
 }
 
 var templates map[string]*template.Template

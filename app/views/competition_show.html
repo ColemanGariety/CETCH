@@ -1,26 +1,75 @@
 {{ define "body" }}
 
 <h3>{{ .competition.Name }}</h3>
-{{ template "competition_meta" .}}
+{{ template "competition_meta" .competition}}
 
 {{ if .current }}
-  {{ template "entry_upload" .}}
+  {{ if .authorized }}
+    {{ if .entry }}
+      <h3>Entry Recieved:</h3>
+      {{ template "entry" .entry}}
+    {{ else }}
+      <p>Instructions: Using one of the languages listed above, write a program that prints the solution (and only the solution) to <a href="https://en.wikipedia.org/wiki/Standard_streams" target="_blank">stdout</a>. Upload that program here.</p>
+      <form action="/competition/{{ .competition.ID }}" enctype="multipart/form-data" method="POST">
+        <table>
+          <tbody>
+            <tr>
+              <td>Language:</td>
+              <td>
+                <select name="language">
+                  <option value="go" {{ with .language }} {{ if (eq . "go")}} selected="selected" {{ end }} {{ end }}>Go</option>
+                  <option value="javascript" {{ with .language }} {{ if (eq . "javascript")}} selected="selected" {{ end }} {{ end }}>JavaScript</option>
+                  <option value="haskell" {{ with .language }} {{ if (eq . "haskell")}} selected="selected" {{ end }} {{ end }}>Haskell</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>Upload (e.g. solution.go):</td>
+              <td><input type="file" name="code" /></td>
+            </tr>
+          </tbody>
+        </table>
+        {{ with .stderrError }}
+          <br/>
+          <div class="error">
+            Error: could not compile or run your solution.
+          </div>
+        {{ end }}
+        {{ with .stdoutError }}
+          <br/>
+          <div class="error">
+            Unexpected output. One of these things happened:
+            <ul>
+              <li>Your solution is incorrect</li>
+              <li>You did not print the solution to stdout</li>
+            </ul>
+          </div>
+        {{ end }}
+        <br/>
+        <input type="submit" value="Submit Entry" />
+      </form>
+    {{ end }}
+  {{ else }}
+    Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to enter competitions.
+  {{ end }}
 {{ else }}
   <h3>Winner:</h3>
   {{ template "entry" .competition.Winner}}
-  <h3>Runners Up:</h3>
+  <h3>All Programs:</h3>
   <table>
     <thead>
+      <td>Position</td>
       <td>Entry</td>
       <td>User</td>
       <td>Speed</td>
     </thead>
     <tbody>
-      {{ range $entry := .competition.RunnersUp }}
+      {{ range $i, $entry := .competition.All }}
         <tr>
-          <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</td>
-            <td>{{ $entry.User.Name }}</td>
-            <td>{{ (formatSolution $entry.TimesFaster) }}x</td>
+          <td>{{ (add $i 1) }}</td>
+          <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</a></td>
+            <td><a href="/user/{{ $entry.User.Name }}">{{ $entry.User.Name }}</a></td>
+              <td>{{ (formatSolution $entry.TimesFaster) }}x</td>
         </tr>
       {{ end }}
     </tbody>

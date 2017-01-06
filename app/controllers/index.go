@@ -9,30 +9,20 @@ import (
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	prev, _ := (&models.Competition{}).Previous()
-	comp, _ := (&models.Competition{}).Current()
-
-	entry := models.Entry{}
-	data := r.Context().Value("data")
-	if data != nil {
-		currentUser := (*data.(*utils.Props))["current_user"]
-		if currentUser != nil {
-			entry.UserID = currentUser.(models.User).ID
-			entry.CompetitionID = comp.ID
-		}
-
-		models.DB.Where(&entry).First(&entry)
-		models.DB.Model(entry).Related(&entry.Competition)
-	}
+	curr, _ := (&models.Competition{}).Current()
 
 	winner := prev.Winner()
 
 	utils.Render(w, r, "index.html", &utils.Props{
-		"competition": comp,
-		"entry": entry,
+		"competition": curr,
 		"winner": winner,
 	})
 }
 
 func Rules(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, r, "rules.html", &utils.Props{})
+}
+
+func About(w http.ResponseWriter, r *http.Request) {
+	utils.Render(w, r, "about.html", &utils.Props{})
 }

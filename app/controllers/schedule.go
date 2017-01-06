@@ -12,8 +12,8 @@ func ScheduleShow(w http.ResponseWriter, r *http.Request) {
 	date := utils.NextSaturday()
 
 	// sort competitions by date
-	comps := &models.Competitions{}
-	models.Where(comps, "date > NOW()")
+	comps := new(models.Competitions)
+	models.Select("name, id, date").Where("date > NOW()").Find(comps)
 
 	competitionsByDate := make(map[time.Time]interface{})
 	for _, v := range *comps {
@@ -39,7 +39,7 @@ func ScheduleShow(w http.ResponseWriter, r *http.Request) {
 	models.DB.Order("created_at desc").Find(&all)
 
 	unscheduled := new(models.Competitions)
-	models.Where(unscheduled, "date = ?", "0001-01-01")
+	models.Select("name, id").Where("date = ?", "0001-01-01").Find(unscheduled)
 
 	utils.Render(w, r, "schedule.html", &utils.Props{
 		"days": days,
