@@ -13,9 +13,10 @@
       <nav>
         <a href="/">Home</a>
         <!-- <a href="/competitors">Competitors</a> -->
-        <a href="/entry/new">Current</a>
+        <a href="/current">Current</a>
         <a href="/archive">Archive</a>
         <a href="/rules">Rules</a>
+        <a href="/about">About</a>
         {{ if .admin }}
           <a href="/schedule">Schedule</a>
         {{ end }}
@@ -36,6 +37,7 @@
     {{ with .sticky_entry }}
       <aside>
         <h3>Current Entry:</h3>
+        <a href="/entry/{{ .ID }}">Show Entry</a>
         {{ template "entry" .}}
       </aside>
       <br/>

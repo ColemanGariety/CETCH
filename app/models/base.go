@@ -25,6 +25,10 @@ func FindById(model interface{}, id int) *gorm.DB {
 	return DB.First(model, id)
 }
 
+func Select(sel string) *gorm.DB {
+	return DB.Select(sel)
+}
+
 func Save(model interface{}) *gorm.DB {
 	return DB.Save(model)
 }

@@ -25,7 +25,7 @@ func (competition *Competition) Current() (*Competition, error) {
 }
 
 func (competition *Competition) Previous() (*Competition, error) {
-	c := DB.Order("date asc").Where("date = ?", utils.LastSaturday()).First(competition)
+	c := DB.Order("date asc").Select("id, name, date, description").Where("date = ?", utils.LastSaturday()).First(competition)
 	return competition, c.Error
 }
 

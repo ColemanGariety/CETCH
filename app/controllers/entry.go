@@ -26,11 +26,6 @@ func EntryShow(w http.ResponseWriter, r *http.Request) {
 	utils.Render(w, r, "entry.html", &utils.Props{ "entry": entry })
 }
 
-func EntryNew(w http.ResponseWriter, r *http.Request) {
-	current, _ := new(models.Competition).Current()
-	http.Redirect(w, r, fmt.Sprintf("/competition/%v", current.ID), 307)
-}
-
 func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	comp, _ := (&models.Competition{}).Current()
 	current_user := (*r.Context().Value("data").(*utils.Props))["current_user"]
@@ -65,9 +60,10 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 	result, execTime, err := models.ProgramResultAndExecTime(codeString, languageString)
 
 	if execTime == nil {
-		utils.Render(w, r, "enter.html", &utils.Props{
-			"language": languageString,
+		utils.Render(w, r, "competition_show.html", &utils.Props{
 			"competition": comp,
+			"language": languageString,
+			"current": true,
 			"stderrError": true,
 		})
 	} else if *result == comp.Solution && err == nil {
@@ -93,9 +89,10 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, fmt.Sprintf("/entry/%v", entry.ID), 307)
 	} else {
-		utils.Render(w, r, "enter.html", &utils.Props{
-			"language": languageString,
+		utils.Render(w, r, "competition_show.html", &utils.Props{
 			"competition": comp,
+			"language": languageString,
+			"current": true,
 			"stdoutError": true,
 		})
 	}
