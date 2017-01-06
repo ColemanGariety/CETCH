@@ -9,15 +9,19 @@ You are an admin.
 {{ end }}
 
 
-<h4>Entries:</h4>
+<h4>Fastest Entries:</h4>
 {{ if (eq (len .entries) 0)}}
   You haven't entered any competitions yet.
 {{ else }}
   <table>
+    <thead>
+      <td>#</td>
+      <td>How many times faster?</td>
+    </thead>
     {{ range $entry := .entries }}
       <tr>
-        <td>{{ $entry.ID }}</td>
-        <td><a href="/entry/{{ $entry.ID }}">Show</a></td>
+        <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</a></td>
+        <td>{{ (formatExecTime (timesFaster $entry.ExecTime $entry.Competition.AverageExecTime)) }}</td>
       </tr>
     {{ end }}
   </table>

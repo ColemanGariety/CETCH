@@ -41,7 +41,6 @@ func (competition Competition) RunnersUp() Entries {
 	runnersUp := Entries{}
 	winner := competition.Winner()
 	DB.Model(&competition).Related(&runnersUp)
-
 	// Remove the winner
 	for i, entry := range runnersUp {
 		if entry.ID == winner.ID {

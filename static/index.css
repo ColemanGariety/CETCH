@@ -1,15 +1,25 @@
-@import url('https://fonts.googleapis.com/css?family=Fira+Mono');::selection { background: #FFCD47; }
+@font-face {
+    font-family: 'ConsolasRegular';
+    src: url('/static/consolas-webfont.eot');
+         url('/static/consolas-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 ::-moz-selection { background: #FFCD47; }
 ::-webkit-selection { background: #FFCD47; }
 
 body {
-    font-family: Fira Mono, Consolas, Inconsolata, monospace;
+    font-family: Consolas, monospace;
     color: #333;
     width: 600px;
     margin-left: 3em;
     font-size: 13px;
     line-height: 1.5em;
+}
+
+a:active {
+    color: #ffab33;
 }
 
 h3 {
@@ -114,7 +124,7 @@ textarea {
     width: 1em;
     height: 1em;
     position: relative;
-    top: 0.15em;
+    top: 0.1em;
 }
 
 .no-bottom {
@@ -142,17 +152,17 @@ table.side-by-side > tbody > tr > td:last-child {
     display: block;
 }
 
-#container {
-    position: relative;
-}
-
 pre, pre code {
-    font-family: Consolas;
+    font-family: Consolas, monospace;
     background-color: #FCFCFC !important;
 }
 
+pre:hover, pre code:hover {
+    background-color: #FEFEFE !important;
+}
+
 pre {
-    line-height: 1.33em;
+    line-height: 1.5em;
     background-color: #FCFCFC;
     font-size: .85em;
     border: 1px solid #BBB !important;

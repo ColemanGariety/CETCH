@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"golang.org/x/crypto/bcrypt"
+	"github.com/JacksonGariety/cetch/app/utils"
 )
 
 type User struct {
@@ -31,9 +32,13 @@ func (user *User) Userpath() string {
 
 func (user *User) CurrentEntry() *Entry {
 	current := new(Entry)
-	DB.Order("created_at asc").Select("exec_time, competition_id").Where("user_id = ?", user.ID).First(current)
-	DB.Model(&current).Related(&current.Competition)
-	return current
+	c := DB.Order("exec_time asc").Select("exec_time, created_at, competition_id").Where("user_id = ? AND created_at >= ?", user.ID, utils.LastSaturday()).First(current)
+	if c.Error == nil {
+		DB.Model(&current).Related(&current.Competition)
+		return current
+	} else {
+		return nil
+	}
 }
 
 func hashPassword(password string) string {

@@ -4,9 +4,11 @@
   <div>User: <a href="/user/{{ . }}">{{ . }}</a></div>
 {{ end }}
 <div>Competition: <a href="/competition/{{ .CompetitionID }}">{{ .Competition.Name }}</a></div>
+<div>End Date: {{ (formatDate .Competition.Date) }}</div>
+<div>Submit Date: {{ (formatDate .CreatedAt) }}</div>
 <div>Execution Time: <b>{{ (formatExecTime .ExecTime) }} seconds</b></div>
 <div>Average for Competition: <b>{{ (formatExecTime .Competition.AverageExecTime) }} seconds</b></div>
-<div>How Many Times Faster: <b>{{ (formatExecTime (timesFaster .ExecTime .Competition.AverageExecTime)) }} times faster than the average</b></div>
+<div>How Many Times Faster: <b>{{ (formatExecTime (timesFaster .ExecTime .Competition.AverageExecTime)) }}x</b></div>
 
 {{ with .Code }}
   <pre><code>{{ . }}</code></pre>

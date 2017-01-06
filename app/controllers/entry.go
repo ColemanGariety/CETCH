@@ -72,13 +72,13 @@ func EntryCreate(w http.ResponseWriter, r *http.Request) {
 		})
 	} else if *result == comp.Solution && err == nil {
 		// run it 4 times and get the average
-		n := 6
+		n := 10
 		avg := *execTime
 		for i := 0; i < n; i++ {
 			_, execTime, _ := models.ProgramResultAndExecTime(codeString, languageString)
 			avg += *execTime
 		}
-		avg = avg / float64(n)
+		avg = avg / float64(n + 1)
 
 		user := (*r.Context().Value("data").(*utils.Props))["current_user"]
 		entry := models.Entry{

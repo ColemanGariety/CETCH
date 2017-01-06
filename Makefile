@@ -4,6 +4,7 @@ install:
 	godep restore
 	sudo pacman -S ghc
 	sudo pacman -S python2
+	sudo pacman -S nodejs
 	sudo pacman -S cabal-install
 	cabal-install primes
 	git clone https://github.com/projectatomic/bubblewrap.git
