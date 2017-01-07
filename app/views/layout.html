@@ -11,24 +11,7 @@
     <header>
       <h3><img class="emoji" src="/static/computer.png"/><img class="emoji" src="/static/zap.png"/>CETCH (Code Execution Time CHallenge)</h3>
       <nav>
-        <a href="/">Home</a>
-        <!-- <a href="/competitors">Competitors</a> -->
-        <a href="/current">Current</a>
-        <a href="/archive">Archive</a>
-        <a href="/rules">Rules</a>
-        <a href="/about">About</a>
-        {{ if .admin }}
-          <a href="/schedule">Schedule</a>
-          <a href="/competition/new">Create</a>
-        {{ end }}
-        -
-        {{ if .authorized }}
-          <a href="{{.userpath}}">Profile</a>
-          <a href="/logout">Logout</a>
-        {{ else }}
-          <a href="/login">Login</a>
-          <a href="/signup">Signup</a>
-        {{ end }}
+        <a href="/">Home</a>/<a href="/current">Current</a>/<a href="/archive">Archive</a>/<a href="/rules">Rules</a>/<a href="/about">About</a>/{{ if .admin }}<a href="/schedule">Schedule</a>/<a href="/competition/new">Create</a>/{{ end }}{{ if .authorized }}<a href="{{.userpath}}">Profile</a>/<a href="/logout">Logout</a>{{ else }}<a href="/login">Login</a>/<a href="/signup">Signup</a>{{ end }}
       </nav>
     </header>
     <main>

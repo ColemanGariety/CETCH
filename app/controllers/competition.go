@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 	"fmt"
+	"sort"
 
 	"github.com/JacksonGariety/cetch/app/models"
 	"github.com/JacksonGariety/cetch/app/utils"
@@ -25,7 +26,10 @@ func Archive(w http.ResponseWriter, r *http.Request) {
 
 	for i, entry := range fastest {
 		models.DB.Model(entry).Related(&fastest[i].User)
+		models.DB.Model(entry).Related(&fastest[i].Competition)
 	}
+
+	sort.Sort(fastest)
 
 	utils.Render(w, r, "archive.html", &utils.Props{
 		"competitions": comps,
