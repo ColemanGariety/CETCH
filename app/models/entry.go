@@ -84,3 +84,17 @@ func ProgramResultAndExecTime(codeString string, language string) (*float64, *fl
 
 	return result, execTime, error
 }
+
+func (entries Entries) Len() int {
+	return len(entries)
+}
+
+func (entries Entries) Less(i, j int) bool {
+	e := entries
+	return utils.TimesFaster(e[i].ExecTime, e[i].Competition.AverageExecTime()) < utils.TimesFaster(e[j].ExecTime, e[i].Competition.AverageExecTime())
+}
+
+func (entries Entries) Swap(i, j int) {
+	e := entries
+	e[i], e[j] = e[j], e[i]
+}

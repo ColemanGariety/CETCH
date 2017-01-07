@@ -38,3 +38,7 @@ func NextSaturday() time.Time {
 	}
 	return date
 }
+
+func TimesFaster(execTime float64, averageExecTime float64) float64 {
+	return averageExecTime / execTime
+}

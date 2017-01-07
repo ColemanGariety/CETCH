@@ -28,10 +28,6 @@ func formatExecTime(solution float64) string {
 	return strconv.FormatFloat(solution, 'f', 5, 64)
 }
 
-func timesFaster(execTime float64, averageExecTime float64) float64 {
-	return averageExecTime / execTime
-}
-
 func add(a int, b int) int {
 	return a + b
 }
@@ -41,7 +37,7 @@ var funcMap = template.FuncMap{
 	"formatDateForForm": formatDateForForm,
 	"formatExecTime": formatExecTime,
 	"formatSolution": formatSolution,
-	"timesFaster": timesFaster,
+	"timesFaster": TimesFaster,
 	"add": add,
 }
 
