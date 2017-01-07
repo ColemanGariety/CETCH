@@ -55,19 +55,21 @@
 {{ else }}
   <h3>Winner:</h3>
   {{ template "entry" .competition.Winner}}
-  <h3>Runners Up:</h3>
+  <h3>All Programs:</h3>
   <table>
     <thead>
+      <td>Position</td>
       <td>Entry</td>
       <td>User</td>
       <td>Speed</td>
     </thead>
     <tbody>
-      {{ range $entry := .competition.RunnersUp }}
+      {{ range $i, $entry := .competition.All }}
         <tr>
-          <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</td>
-            <td>{{ $entry.User.Name }}</td>
-            <td>{{ (formatSolution $entry.TimesFaster) }}x</td>
+          <td>{{ (add $i 1) }}</td>
+          <td><a href="/entry/{{ $entry.ID }}">{{ $entry.ID }}</a></td>
+            <td><a href="/user/{{ $entry.User.Name }}">{{ $entry.User.Name }}</a></td>
+              <td>{{ (formatSolution $entry.TimesFaster) }}x</td>
         </tr>
       {{ end }}
     </tbody>
