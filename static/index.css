@@ -115,7 +115,6 @@ textarea {
 
 .description {
     background-color: #FCFCFC;
-    padding: 1.5em;
     font-style: italic;
     border-radius: 1px;
     border: 1px solid #BBB !important;
@@ -178,7 +177,7 @@ pre {
     background-color: #FCFCFC;
     font-size: .85em;
     border: 1px solid #BBB !important;
-    padding: 1em;
+    padding: 1.5em;
     border-radius: 1px;
     -webkit-box-shadow: 0 0 3px rgba(0,0,0,.1);
     -moz-box-shadow: 0 0 3px rgba(0,0,0,.1);
@@ -188,4 +187,8 @@ pre {
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+pre code {
+    padding: 0 !important;
 }
