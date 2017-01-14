@@ -168,13 +168,8 @@ pre, pre code {
     background-color: #FCFCFC !important;
 }
 
-pre:hover, pre code:hover {
-    background-color: #FEFEFE !important;
-}
-
 pre {
     line-height: 1.5em;
-    background-color: #FCFCFC;
     font-size: .85em;
     border: 1px solid #BBB !important;
     padding: 1.5em;
