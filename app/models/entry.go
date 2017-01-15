@@ -44,6 +44,12 @@ func ProgramResultAndExecTime(codeString string, language string) (*float64, *fl
 		runnerPath = "./runners/go.sh"
 	case "haskell":
 		runnerPath = "./runners/haskell.sh"
+	case "python":
+		runnerPath = "./runners/python.sh"
+	case "javascript":
+		runnerPath = "./runners/javascript.sh"
+	case "c":
+		runnerPath = "./runners/c.sh"
 	}
 
 	runner := exec.Command(path.Join(utils.BasePath, runnerPath), codeString)
@@ -73,14 +79,13 @@ func ProgramResultAndExecTime(codeString string, language string) (*float64, *fl
 		// the rest are real errors
 		// need a safer way to do this
 		r, err := strconv.ParseFloat(strings.Trim(outputArray[len(outputArray)-2], "\n\r"), 64)
-		et, _ := strconv.ParseFloat(errorsArray[len(errorsArray) - 2], 64)
+		et, _ := strconv.ParseFloat(errorsArray[0], 64)
 		result = &r
 		execTime = &et
 		if err != nil {
 			error = err
 		}
 	}
-
 
 	return result, execTime, error
 }

@@ -13,6 +13,6 @@ out=$(bwrap --ro-bind /usr /usr \
             --symlink usr/lib64 /lib64 \
             --symlink usr/bin /bin \
             --symlink usr/sbin /sbin \
-            bash -c "TIMEFORMAT='%3R'; time python2 $dist")
+            bash -c "TIMEFORMAT='%3R'; time python2 $src")
 
 echo $out
