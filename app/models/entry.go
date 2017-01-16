@@ -96,7 +96,7 @@ func (entries Entries) Len() int {
 
 func (entries Entries) Less(i, j int) bool {
 	e := entries
-	return utils.TimesFaster(e[i].ExecTime, e[i].Competition.AverageExecTime()) < utils.TimesFaster(e[j].ExecTime, e[i].Competition.AverageExecTime())
+	return utils.TimesFaster(e[i].ExecTime, e[i].Competition.AverageExecTime()) > utils.TimesFaster(e[j].ExecTime, e[i].Competition.AverageExecTime())
 }
 
 func (entries Entries) Swap(i, j int) {
