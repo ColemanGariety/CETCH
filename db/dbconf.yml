@@ -10,5 +10,5 @@ test:
 
 production:
   driver: postgres
-  port: 80
+  port: 8001
   open: $dbstring
